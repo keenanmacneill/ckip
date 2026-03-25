@@ -12,8 +12,8 @@ const {
   deleteReport,
 } = require('../controllers/reports-controller');
 
-// router.get('/category/:category', getReportsByCategory);
-// router.get('/:id', getReportId);
+router.get('/category/:category', getReportsByCategory);
+router.get('/:id', getReportId);
 router.get('/', getAllReports);
 
 // router.post('/', createReport);

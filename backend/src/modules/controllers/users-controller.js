@@ -2,29 +2,29 @@ const db = require('../../db/knex');
 const bcrypt = require('bcrypt');
 
 const createUser = async user => {
-  return await db('users').insert(user).returning(['id', 'username']);
+  return await db('users').insert(user).returning(['id', 'email']);
 };
 
 exports.registerUser = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { email: email, password } = req.body;
 
-    if (!username || !password) {
+    if (!email || !password) {
       return res
         .status(400)
-        .json({ message: 'Username and password are required.' });
+        .json({ message: 'Email and password are required.' });
     }
 
-    const match = await db('users').select('*').where('username', username);
+    const match = await db('users').select('*').where('email', email);
 
     if (!match.length) {
-      return res.status(400).json({ message: 'Username not available.' });
+      return res.status(400).json({ message: 'Email not available.' });
     }
 
     const hashWord = await bcrypt.hash(password, 10);
-    const [newUser] = await createUser({ username, password: hashWord });
+    const [newUser] = await createUser({ email: email, password: hashWord });
 
-    res.status(201).json(`${newUser.username} has been successfully created.`);
+    res.status(201).json(`${newUser.email} has been successfully created.`);
   } catch (err) {
     res.status(500).json({ message: 'Internal server error.' });
   }
@@ -32,7 +32,7 @@ exports.registerUser = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await db('users').select('username');
+    const users = await db('users').select('email');
 
     res.status(200).json(users);
   } catch (err) {
@@ -43,7 +43,7 @@ exports.getAllUsers = async (req, res) => {
 exports.getUserId = async (req, res) => {
   try {
     const [match] = await db('users')
-      .select('username')
+      .select('email')
       .where('id', req.params.id);
 
     if (!match) {
@@ -51,7 +51,7 @@ exports.getUserId = async (req, res) => {
     }
 
     const user = await db('users')
-      .select('username')
+      .select('email')
       .where('id', req.params.id)
       .first();
 
@@ -64,7 +64,7 @@ exports.getUserId = async (req, res) => {
 exports.getUserReports = async (req, res) => {
   try {
     const [match] = await db('users')
-      .select('username')
+      .select('email')
       .where('id', req.params.id);
 
     if (!match) {
@@ -84,10 +84,10 @@ exports.getUserReports = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
     const [match] = await db('users')
-      .select('username')
+      .select('email')
       .where('id', req.params.id);
 
     if (!match) {
@@ -99,14 +99,12 @@ exports.updateUser = async (req, res) => {
       .where('id', req.params.id)
       .update({
         ...match,
-        username,
+        email,
         password: hashWord,
       })
-      .returning('username');
+      .returning('email');
 
-    res
-      .status(200)
-      .json(`${updatedUser.username} has been successfully updated.`);
+    res.status(200).json(`${updatedUser.email} has been successfully updated.`);
   } catch (err) {
     res.status(500).json({ message: 'Internal server error.' });
   }
@@ -115,7 +113,7 @@ exports.updateUser = async (req, res) => {
 exports.deleteUser = async (req, res) => {
   try {
     const [match] = await db('users')
-      .select('username')
+      .select('email')
       .where('id', req.params.id);
 
     if (!match) {
@@ -125,11 +123,11 @@ exports.deleteUser = async (req, res) => {
     const [deletedUser] = await db('users')
       .where('id', req.params.id)
       .del()
-      .returning('username');
+      .returning('email');
 
     res
       .status(200)
-      .json({ message: `${deletedUser.username} was successfully deleted.` });
+      .json({ message: `${deletedUser.email} was successfully deleted.` });
   } catch (err) {
     res.status(500).json({ message: 'Internal server error.' });
   }

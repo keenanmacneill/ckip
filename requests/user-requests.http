@@ -12,7 +12,7 @@ POST http://localhost:8080/users/
 Content-Type: application/json
 
 {
-  "username": "new-user",
+  "email": "new-user",
   "password": "password"
 }
 
@@ -21,7 +21,7 @@ PATCH http://localhost:8080/users/1
 Content-Type: application/json
 
 {
-  "username": "new-user1",
+  "email": "new-user1",
   "password": "asd"
 }
 

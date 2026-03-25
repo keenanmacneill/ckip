@@ -9,7 +9,7 @@ exports.generateUsers = async (num = 1) => {
     hashWord = await bcrypt.hash(faker.internet.password(), 10);
 
     array.push({
-      username: faker.internet.username(),
+      email: faker.internet.email(),
       password: hashWord,
     });
   }

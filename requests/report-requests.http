@@ -1,2 +1,8 @@
 ### Get all reports
 GET http://localhost:8080/reports
+
+### Get report
+GET http://localhost:8080/reports/1
+
+### Get reports by category
+GET http://localhost:8080/reports/category/key_leader
