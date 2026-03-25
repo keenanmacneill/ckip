@@ -18,10 +18,10 @@ router.get('/', getAllReports);
 
 router.post('/', createReport);
 
-router.patch('/:id/categories/:category', updateReportCategory);
+router.patch('/:id/category/:category', updateReportCategory);
 // router.patch('/:id', updateReport);
 
-// router.delete('/:id/categories/:category, deleteReportCategory)
+// router.delete('/:id/category/:category, deleteReportCategory)
 // router.delete('/:id, deleteReport)
 
 module.exports = router;

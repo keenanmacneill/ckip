@@ -99,31 +99,31 @@ exports.createReport = async (req, res) => {
 
     res.status(200).json(`${newReport.title} has been successfully posted.`);
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: 'Internal server error.' });
   }
 };
 
 exports.updateReportCategory = async (req, res) => {
   try {
-    const match = await db('reports')
-      .join('categories', 'category_id', 'categories.id')
-      .select('*')
-      .where('category', req.params.category);
+    const { id, category } = req.params;
 
-    if (!match.length) {
+    const categoryRow = await db('categories')
+      .where('category', category)
+      .select('id')
+      .first();
+
+    if (!categoryRow) {
       return res.status(404).json({ message: 'Category is not valid.' });
     }
 
-    const reports = await db('reports')
-      .join('report_categories', 'reports.id', 'report_id')
-      .join('categories', 'category_id', 'categories.id')
-      .join('users', 'submitted_by', 'users.id')
-      .select('title', 'summary', 'MGRS', 'created_at', 'email as submitted_by')
-      .where('category', req.params.category);
+    const [updatedReport] = await db('report_categories')
+      .where('report_id', id)
+      .update({ category_id: categoryRow.id })
+      .returning('*');
 
-    res.status(200).json(reports);
+    res.status(200).json(updatedReport);
   } catch (err) {
+    console.log(err);
     res.status(500).json({ message: 'Internal server error.' });
   }
 };

@@ -20,9 +20,6 @@ Content-Type: application/json
 }
 
 ### Update report
-PATCH http://localhost:8080/reports/1
+PATCH http://localhost:8080/reports/1/category/infrastructure
 Content-Type: application/json
 
-{
-  "category": "key_leader"
-}
