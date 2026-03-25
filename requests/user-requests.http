@@ -4,6 +4,9 @@ GET http://localhost:8080/users
 ### Get user by id
 GET http://localhost:8080/users/1
 
+### Get user's reports
+GET http://localhost:8080/users/1/reports
+
 ### Create new user
 POST http://localhost:8080/users/
 Content-Type: application/json
@@ -21,3 +24,6 @@ Content-Type: application/json
   "username": "new-user1",
   "password": "asd"
 }
+
+### Delete user
+DELETE http://localhost:8080/users/16

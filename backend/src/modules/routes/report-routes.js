@@ -1,19 +1,27 @@
 const express = require('express');
 const router = express.Router();
-const { getAllReports } = require('../controllers/reports-controller');
 
-// router.post('/:id/categories', createReportCategory);
-// router.post('/', registerReport);
+const {
+  getReportsByCategory,
+  getReportId,
+  getAllReports,
+  createReport,
+  updateReportCategory,
+  updateReport,
+  deleteReportCategory,
+  deleteReport,
+} = require('../controllers/reports-controller');
 
-// router.get('/:id/categories/:id', getReportCategoryId);
-// router.get('/:id/categories', getReportCategory);
+// router.get('/category/:category', getReportsByCategory);
 // router.get('/:id', getReportId);
 router.get('/', getAllReports);
 
-// router.patch('/:id/categories/:id', updateReportCategory);
+// router.post('/', createReport);
+
+// router.patch('/:id/categories/:category', updateReportCategory);
 // router.patch('/:id', updateReport);
 
-// router.delete('/:id/categories/:id, deleteReportCategory)
+// router.delete('/:id/categories/:category, deleteReportCategory)
 // router.delete('/:id, deleteReport)
 
 module.exports = router;

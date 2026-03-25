@@ -18,7 +18,7 @@ exports.registerUser = async (req, res) => {
     const match = await db('users').select('*').where('username', username);
 
     if (!match.length) {
-      return res.status(400).json({ message: 'Username not available' });
+      return res.status(400).json({ message: 'Username not available.' });
     }
 
     const hashWord = await bcrypt.hash(password, 10);
@@ -42,6 +42,14 @@ exports.getAllUsers = async (req, res) => {
 
 exports.getUserId = async (req, res) => {
   try {
+    const [match] = await db('users')
+      .select('username')
+      .where('id', req.params.id);
+
+    if (!match) {
+      return res.status(404).json({ message: 'User does not exist.' });
+    }
+
     const user = await db('users')
       .select('username')
       .where('id', req.params.id)
@@ -49,7 +57,27 @@ exports.getUserId = async (req, res) => {
 
     res.status(200).json(user);
   } catch (err) {
-    console.log(err);
+    res.status(500).json({ message: 'Internal server error.' });
+  }
+};
+
+exports.getUserReports = async (req, res) => {
+  try {
+    const [match] = await db('users')
+      .select('username')
+      .where('id', req.params.id);
+
+    if (!match) {
+      return res.status(404).json({ message: 'User does not exist.' });
+    }
+
+    const reports = await db('users')
+      .join('reports', 'users.id', 'submitted_by')
+      .select('title', 'summary', 'MGRS', 'created_at')
+      .where('users.id', req.params.id);
+
+    res.status(200).json(reports);
+  } catch (err) {
     res.status(500).json({ message: 'Internal server error.' });
   }
 };
@@ -80,7 +108,29 @@ exports.updateUser = async (req, res) => {
       .status(200)
       .json(`${updatedUser.username} has been successfully updated.`);
   } catch (err) {
-    console.log(err);
+    res.status(500).json({ message: 'Internal server error.' });
+  }
+};
+
+exports.deleteUser = async (req, res) => {
+  try {
+    const [match] = await db('users')
+      .select('username')
+      .where('id', req.params.id);
+
+    if (!match) {
+      return res.status(404).json({ message: 'User does not exist.' });
+    }
+
+    const [deletedUser] = await db('users')
+      .where('id', req.params.id)
+      .del()
+      .returning('username');
+
+    res
+      .status(200)
+      .json({ message: `${deletedUser.username} was successfully deleted.` });
+  } catch (err) {
     res.status(500).json({ message: 'Internal server error.' });
   }
 };
