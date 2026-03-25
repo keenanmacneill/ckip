@@ -45,7 +45,8 @@ exports.getReportId = async (req, res) => {
 
 exports.getReportsByCategory = async (req, res) => {
   try {
-    const match = await db('reports_categories')
+    const match = await db('report_categories')
+      .join('categories', 'category_id', 'categories.id')
       .select('*')
       .where('category', req.params.category);
 
@@ -53,14 +54,15 @@ exports.getReportsByCategory = async (req, res) => {
       return res.status(404).json({ message: 'Category does not exist.' });
     }
 
-    const [reports] = await db('reports')
-      .join('reports_categories', 'reports.id', 'report_id')
+    const reports = await db('reports')
+      .join('report_categories', 'reports.id', 'report_id')
       .join('categories', 'category_id', 'categories.id')
       .select('title', 'summary', 'MGRS', 'created_at', 'submitted_by')
       .where('category', req.params.category);
 
     res.status(200).json(reports);
   } catch (err) {
+    console.log(err);
     res.status(500).json({ message: 'Internal server error.' });
   }
 };
