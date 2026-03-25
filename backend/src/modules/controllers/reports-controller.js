@@ -3,17 +3,21 @@ const db = require('../../db/knex');
 exports.getAllReports = async (req, res) => {
   try {
     const reports = await db('reports')
+      .join('report_categories', 'reports.id', 'report_id')
+      .join('categories', 'category_id', 'categories.id')
       .join('users', 'submitted_by', 'users.id')
       .select(
+        'category',
         'title',
         'summary',
         'MGRS',
         'created_at',
-        'users.email as submitted_by',
+        'email as submitted_by',
       );
 
     res.status(200).json(reports);
   } catch (err) {
+    console.log(err);
     res.status(500).json({ message: 'Internal server error.' });
   }
 };
@@ -27,8 +31,11 @@ exports.getReportId = async (req, res) => {
     }
 
     const [report] = await db('reports')
+      .join('report_categories', 'reports.id', 'report_id')
+      .join('categories', 'category_id', 'categories.id')
       .join('users', 'submitted_by', 'users.id')
       .select(
+        'category',
         'title',
         'summary',
         'MGRS',
@@ -51,18 +58,72 @@ exports.getReportsByCategory = async (req, res) => {
       .where('category', req.params.category);
 
     if (!match.length) {
-      return res.status(404).json({ message: 'Category does not exist.' });
+      return res.status(404).json({ message: 'Category is not valid.' });
     }
 
     const reports = await db('reports')
       .join('report_categories', 'reports.id', 'report_id')
       .join('categories', 'category_id', 'categories.id')
-      .select('title', 'summary', 'MGRS', 'created_at', 'submitted_by')
+      .join('users', 'submitted_by', 'users.id')
+      .select('title', 'summary', 'MGRS', 'created_at', 'email as submitted_by')
       .where('category', req.params.category);
 
     res.status(200).json(reports);
   } catch (err) {
+    res.status(500).json({ message: 'Internal server error.' });
+  }
+};
+
+exports.createReport = async (req, res) => {
+  try {
+    const { title, summary, MGRS, submitted_by, category } = req.body;
+
+    const match = await db('categories').select('id').where('id', category);
+
+    if (!match.length) {
+      return res.status(404).json({ message: 'Category is not valid.' });
+    }
+
+    const newReport = await db.transaction(async trx => {
+      const [report] = await trx('reports')
+        .insert({ title, summary, MGRS, submitted_by })
+        .returning('*');
+
+      await trx('report_categories').insert({
+        report_id: report.id,
+        category_id: category,
+      });
+
+      return report;
+    });
+
+    res.status(200).json(`${newReport.title} has been successfully posted.`);
+  } catch (err) {
     console.log(err);
+    res.status(500).json({ message: 'Internal server error.' });
+  }
+};
+
+exports.updateReportCategory = async (req, res) => {
+  try {
+    const match = await db('reports')
+      .join('categories', 'category_id', 'categories.id')
+      .select('*')
+      .where('category', req.params.category);
+
+    if (!match.length) {
+      return res.status(404).json({ message: 'Category is not valid.' });
+    }
+
+    const reports = await db('reports')
+      .join('report_categories', 'reports.id', 'report_id')
+      .join('categories', 'category_id', 'categories.id')
+      .join('users', 'submitted_by', 'users.id')
+      .select('title', 'summary', 'MGRS', 'created_at', 'email as submitted_by')
+      .where('category', req.params.category);
+
+    res.status(200).json(reports);
+  } catch (err) {
     res.status(500).json({ message: 'Internal server error.' });
   }
 };

@@ -5,4 +5,24 @@ GET http://localhost:8080/reports
 GET http://localhost:8080/reports/1
 
 ### Get reports by category
-GET http://localhost:8080/reports/category/population
+GET http://localhost:8080/reports/category/key_leader
+
+### Create report
+POST http://localhost:8080/reports/
+Content-Type: application/json
+
+{
+  "title": "title1",
+  "summary": "summary1",
+  "MGRS": "mgrs",
+  "submitted_by": 2,
+  "category": "1"
+}
+
+### Update report
+PATCH http://localhost:8080/reports/1
+Content-Type: application/json
+
+{
+  "category": "key_leader"
+}
