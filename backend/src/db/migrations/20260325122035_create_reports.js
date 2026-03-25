@@ -2,7 +2,7 @@ exports.up = function (knex) {
   return knex.schema.createTable('reports', table => {
     table.increments('id');
     table.string('title').notNullable().unique();
-    table.string('summary').notNullable().unique();
+    table.text('summary').notNullable().unique();
     table.string('MGRS').notNullable();
     table.string('created_at').defaultTo(knex.fn.now());
 
