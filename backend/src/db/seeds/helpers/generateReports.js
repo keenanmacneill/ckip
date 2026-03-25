@@ -9,7 +9,7 @@ exports.generateReports = async (num = 1) => {
     array.push({
       title: faker.lorem.sentence(),
       summary: faker.lorem.paragraphs(),
-      MGRS: generateMGRS(),
+      mgrs: generateMGRS(),
       created_at: faker.date
         .between({ from: '2000-01-01', to: Date.now() })
         .toDateString(),

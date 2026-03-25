@@ -73,7 +73,7 @@ exports.getUserReports = async (req, res) => {
 
     const reports = await db('users')
       .join('reports', 'users.id', 'submitted_by')
-      .select('title', 'summary', 'MGRS', 'created_at')
+      .select('title', 'summary', 'mgrs', 'created_at')
       .where('users.id', req.params.id);
 
     res.status(200).json(reports);

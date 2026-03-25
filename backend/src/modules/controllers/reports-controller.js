@@ -10,14 +10,13 @@ exports.getAllReports = async (req, res) => {
         'category',
         'title',
         'summary',
-        'MGRS',
+        'mgrs',
         'created_at',
         'email as submitted_by',
       );
 
     res.status(200).json(reports);
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: 'Internal server error.' });
   }
 };
@@ -38,7 +37,7 @@ exports.getReportId = async (req, res) => {
         'category',
         'title',
         'summary',
-        'MGRS',
+        'mgrs',
         'created_at',
         'users.email as submitted_by',
       )
@@ -65,7 +64,7 @@ exports.getReportsByCategory = async (req, res) => {
       .join('report_categories', 'reports.id', 'report_id')
       .join('categories', 'category_id', 'categories.id')
       .join('users', 'submitted_by', 'users.id')
-      .select('title', 'summary', 'MGRS', 'created_at', 'email as submitted_by')
+      .select('title', 'summary', 'mgrs', 'created_at', 'email as submitted_by')
       .where('category', req.params.category);
 
     res.status(200).json(reports);
@@ -76,7 +75,7 @@ exports.getReportsByCategory = async (req, res) => {
 
 exports.createReport = async (req, res) => {
   try {
-    const { title, summary, MGRS, submitted_by, category } = req.body;
+    const { title, summary, mgrs, submitted_by, category } = req.body;
 
     const match = await db('categories').select('id').where('id', category);
 
@@ -86,7 +85,7 @@ exports.createReport = async (req, res) => {
 
     const newReport = await db.transaction(async trx => {
       const [report] = await trx('reports')
-        .insert({ title, summary, MGRS, submitted_by })
+        .insert({ title, summary, mgrs, submitted_by })
         .returning('*');
 
       await trx('report_categories').insert({
@@ -105,21 +104,34 @@ exports.createReport = async (req, res) => {
 
 exports.updateReport = async (req, res) => {
   try {
-    const { id, category } = req.params;
+    const { id } = req.params;
+    const { title, summary, mgrs, category } = req.body;
 
-    const categoryRow = await db('categories')
+    const match = await db('reports').select('id').where('id', id);
+
+    if (!match.length) {
+      return res.status(404).json({ message: 'Report does not exist.' });
+    }
+
+    const [categoryId] = await db('categories')
       .where('category', category)
-      .select('id')
-      .first();
+      .select('id');
 
-    if (!categoryRow) {
+    if (!categoryId) {
       return res.status(404).json({ message: 'Category is not valid.' });
     }
 
-    const [updatedReport] = await db('report_categories')
-      .where('report_id', id)
-      .update({ category_id: categoryRow.id })
-      .returning('*');
+    const updatedReport = await db.transaction(async trx => {
+      const [report] = await trx('reports')
+        .update({ title, summary, mgrs })
+        .returning('*');
+
+      await db('report_categories')
+        .where('report_id', id)
+        .update({ category_id: categoryId.id })
+        .returning('*');
+      return report;
+    });
 
     res.status(200).json(updatedReport);
   } catch (err) {

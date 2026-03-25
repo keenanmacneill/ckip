@@ -14,7 +14,7 @@ Content-Type: application/json
 {
   "title": "title1",
   "summary": "summary1",
-  "MGRS": "mgrs",
+  "mgrs": "mgrs",
   "submitted_by": 2,
   "category": "1"
 }
@@ -26,6 +26,6 @@ Content-Type: application/json
 {
   "title": "title",
   "summary": "summary",
-  "MGRS": "mgrs",
-
+  "mgrs": "mgrs",
+  "category": "key_leader"
 }

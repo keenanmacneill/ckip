@@ -3,7 +3,7 @@ exports.up = function (knex) {
     table.increments('id');
     table.string('title').notNullable();
     table.text('summary').notNullable();
-    table.string('MGRS').notNullable();
+    table.string('mgrs').notNullable();
     table.string('created_at').defaultTo(knex.fn.now());
 
     table.integer('submitted_by').notNullable().unsigned();
