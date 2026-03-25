@@ -1,7 +1,7 @@
 const { faker } = require('@faker-js/faker');
 const bcrypt = require('bcrypt');
 
-exports.generateUsers = async num => {
+exports.generateUsers = async (num = 1) => {
   const array = [];
   let hashWord;
 

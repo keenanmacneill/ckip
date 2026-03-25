@@ -2,7 +2,7 @@ const { faker } = require('@faker-js/faker');
 const { generateMGRS } = require('./generateMGRS');
 const { generateInt } = require('./generateInt');
 
-exports.generateReports = async num => {
+exports.generateReports = async (num = 1) => {
   const array = [];
 
   for (let i = 0; i < num; i++) {
