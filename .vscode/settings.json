@@ -6,8 +6,8 @@
       "server": "localhost",
       "port": 5432,
       "driver": "PostgreSQL",
-      "name": "workshop_db",
-      "database": "workshop_db",
+      "name": "project3_db",
+      "database": "project3_db",
       "username": "postgres",
       "password": "docker"
     }
