@@ -1,0 +1,2 @@
+### Get all reports
+GET http://localhost:8080/reports

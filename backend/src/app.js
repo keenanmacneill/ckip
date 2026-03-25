@@ -12,8 +12,12 @@ app.get('/', (req, res) => {
 
 const userRoutes = require('./modules/routes/user-routes');
 const reportRoutes = require('./modules/routes/report-routes');
+const categoryRoutes = require('./modules/routes/category-routes');
+const authRoutes = require('./modules/routes/auth-routes');
 
 app.use('/users', userRoutes);
 app.use('/reports', reportRoutes);
+app.use('/categories', categoryRoutes);
+app.use('/auth', authRoutes);
 
 module.exports = app;
