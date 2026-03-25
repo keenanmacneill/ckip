@@ -29,3 +29,7 @@ Content-Type: application/json
   "mgrs": "mgrs",
   "category": "key_leader"
 }
+
+### Delete report
+DELETE http://localhost:8080/reports/1
+Content-Type: application/json

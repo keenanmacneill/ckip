@@ -139,3 +139,26 @@ exports.updateReport = async (req, res) => {
     res.status(500).json({ message: 'Internal server error.' });
   }
 };
+
+exports.deleteReport = async (req, res) => {
+  try {
+    const [match] = await db('reports')
+      .select('title')
+      .where('id', req.params.id);
+
+    if (!match) {
+      return res.status(404).json({ message: 'Report does not exist.' });
+    }
+
+    const [deletedReport] = await db('reports')
+      .where('id', req.params.id)
+      .del()
+      .returning('title');
+
+    res
+      .status(200)
+      .json({ message: `${deletedReport.title} was successfully deleted.` });
+  } catch (err) {
+    res.status(500).json({ message: 'Internal server error.' });
+  }
+};

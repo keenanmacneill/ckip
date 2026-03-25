@@ -18,6 +18,6 @@ router.post('/', createReport);
 
 router.patch('/:id', updateReport);
 
-// router.delete('/:id, deleteReport)
+router.delete('/:id', deleteReport);
 
 module.exports = router;
