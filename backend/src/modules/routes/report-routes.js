@@ -6,9 +6,7 @@ const {
   getReportId,
   getAllReports,
   createReport,
-  updateReportCategory,
   updateReport,
-  deleteReportCategory,
   deleteReport,
 } = require('../controllers/reports-controller');
 
@@ -18,10 +16,8 @@ router.get('/', getAllReports);
 
 router.post('/', createReport);
 
-router.patch('/:id/category/:category', updateReportCategory);
-// router.patch('/:id', updateReport);
+router.patch('/:id', updateReport);
 
-// router.delete('/:id/category/:category, deleteReportCategory)
 // router.delete('/:id, deleteReport)
 
 module.exports = router;

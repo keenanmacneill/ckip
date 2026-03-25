@@ -103,7 +103,7 @@ exports.createReport = async (req, res) => {
   }
 };
 
-exports.updateReportCategory = async (req, res) => {
+exports.updateReport = async (req, res) => {
   try {
     const { id, category } = req.params;
 
