@@ -75,22 +75,27 @@ exports.getReportsByCategory = async (req, res) => {
 
 exports.createReport = async (req, res) => {
   try {
-    const { title, summary, mgrs, submitted_by, category } = req.body;
+    const { title, summary, mgrs, category } = req.body;
+    const { id } = req.cookies.user;
 
-    const match = await db('categories').select('id').where('id', category);
+    const [match] = await db('categories').where('category', category);
 
-    if (!match.length) {
+    if (!match) {
       return res.status(404).json({ message: 'Category is not valid.' });
     }
 
     const newReport = await db.transaction(async trx => {
+      const [categoryId] = await trx('categories')
+        .select('id')
+        .where('category', category);
+
       const [report] = await trx('reports')
-        .insert({ title, summary, mgrs, submitted_by })
+        .insert({ title, summary, mgrs, submitted_by: id })
         .returning('*');
 
       await trx('report_categories').insert({
         report_id: report.id,
-        category_id: category,
+        category_id: categoryId.id,
       });
 
       return report;
@@ -98,6 +103,7 @@ exports.createReport = async (req, res) => {
 
     res.status(200).json(`${newReport.title} has been successfully posted.`);
   } catch (err) {
+    console.log(err);
     res.status(500).json({ message: 'Internal server error.' });
   }
 };

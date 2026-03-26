@@ -15,8 +15,7 @@ Content-Type: application/json
   "title": "title1",
   "summary": "summary1",
   "mgrs": "mgrs",
-  "submitted_by": 2,
-  "category": "1"
+  "category": "key_leader"
 }
 
 ### Update report
