@@ -4,7 +4,10 @@ exports.up = function (knex) {
     table.string('title').notNullable();
     table.text('summary').notNullable();
     table.string('mgrs').notNullable();
+    table.string('lat_long').notNullable();
     table.string('created_at').defaultTo(knex.fn.now());
+    table.text('recommendations').notNullable();
+    table.string('priority').notNullable().defaultTo('info only');
 
     table.integer('submitted_by').notNullable().unsigned();
     table

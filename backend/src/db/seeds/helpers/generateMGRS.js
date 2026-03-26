@@ -9,5 +9,5 @@ exports.generateMGRS = () => {
   // 2. Convert to mgrs (5 = 1-meter precision, 3 = 100-meter precision)
   const mgrsCoordinate = mgrs.forward([lon, lat], 5);
 
-  return mgrsCoordinate;
+  return [mgrsCoordinate, lat, lon];
 };
