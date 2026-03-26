@@ -10,10 +10,10 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
-# Copy the rest of your source code
+# Copy the rest of   source code
 COPY . .
 
-# Expose the port your app listens on
+# Expose the port   app listens on
 EXPOSE 5173
 
 # Command to run when the container starts
