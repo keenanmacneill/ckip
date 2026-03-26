@@ -2,6 +2,8 @@ import Header from '../components/Header';
 import '../style/Dashboard.css';
 
 export default function Dashboard() {
+  const handleSubmit = () => {};
+
   return (
     <>
       <Header />
@@ -10,7 +12,7 @@ export default function Dashboard() {
           <div className="dashboard-header-title">Dashboard</div>
           <div className="dashboard-header-subtitle">
             {/* TO DO: sync refresh with last refresh */}
-            AO: Pineland - last sync 4 min ago
+            TG Pineland - last sync 4 min ago
           </div>
         </div>
         <div className="dashboard-utility-container">
@@ -19,7 +21,7 @@ export default function Dashboard() {
         </div>
       </div>
       <div className="dashboard-metrics-container">
-        {/* TO DO: insert metrics components here */}
+        {/* TO DO: insert metrics components here: total reports, pending review, AOs covered, priority alerts */}
         <img
           className="dashboard-metrics"
           src="https://placehold.co/400x200"
@@ -86,7 +88,9 @@ export default function Dashboard() {
               {/* TO DO: generate options from priority table */}
             </select>
           </div>
-          <button className="report-submit-button">Submit report</button>
+          <button className="report-submit-button" onClick={handleSubmit}>
+            Submit report
+          </button>
         </div>
       </div>
     </>

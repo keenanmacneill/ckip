@@ -1,18 +1,152 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg-primary: #02060f;
+  --bg-secondary: rgba(16, 22, 34, 0.92);
+  --bg-input: #182238;
+
+  --border-primary: rgba(113, 140, 186, 0.25);
+  --border-input: rgba(97, 121, 170, 0.25);
+  --border-focus: #4d7fff;
+
+  --text-primary: #f3f7ff;
+  --text-secondary: #93a8d5;
+  --text-muted: #8ea0c5;
+
+  --accent: #4e8cff;
+  --accent-dark: #3f7deb;
+  --link: #4f8dff;
+
+  --success: #27d89a;
+  --success-bg: rgba(7, 63, 48, 0.5);
+  --success-border: rgba(28, 185, 122, 0.35);
+
+  --radius-sm: 0.4rem;
+  --radius-md: 0.75rem;
+
+  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
 html,
-body {
-  height: 100%;
-  font-family: 'Roboto Mono', monospace;
-  padding: 0;
+body,
+#root {
+  min-height: 100%;
   margin: 0;
 }
 
-#root {
-  height: 100%;
+body {
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  background: radial-gradient(
+    circle at top,
+    #07101d 0%,
+    #030814 55%,
+    #02060f 100%
+  );
+  color: var(--text-primary);
+}
+
+h1,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #f5f8ff;
+}
+
+p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+input {
+  width: 100%;
+  height: 3rem;
+  padding: 0 0.95rem;
+  border: 1px solid var(--border-input);
+  border-radius: var(--radius-sm);
+  background: var(--bg-input);
+  color: var(--text-primary);
+  font-size: 1rem;
+  outline: none;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+input::placeholder {
+  color: #6f80a5;
+}
+
+input:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(77, 127, 255, 0.15);
 }
 
 button {
-  border-radius: 0.25rem;
-  border: 1px solid black;
+  height: 3rem;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(
+    180deg,
+    var(--accent) 0%,
+    var(--accent-dark) 100%
+  );
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    filter 0.15s ease,
+    transform 0.05s ease;
+}
+
+button:hover {
+  filter: brightness(1.05);
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+}
+
+.status-banner {
+  border: 1px solid var(--success-border);
+  border-radius: 0.45rem;
+  background: var(--success-bg);
+  color: var(--success);
+  font-size: 0.9rem;
+}
+
+.status-dot {
+  background: var(--success);
 }

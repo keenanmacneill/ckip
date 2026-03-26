@@ -1,0 +1,81 @@
+.auth-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2.2rem;
+}
+
+.auth-version {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #6ea0ff;
+}
+
+.auth-version span {
+  margin-left: 0.35rem;
+  letter-spacing: 0.08em;
+  color: #6d7b98;
+}
+
+.auth-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.8rem 0.9rem;
+}
+
+.auth-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.auth-title {
+  margin: 0.75rem 0 0;
+  line-height: 1.1;
+}
+
+.auth-subtitle {
+  margin-top: -0.4rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 0.8rem;
+}
+
+.auth-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.auth-label {
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #98abd3;
+}
+
+.auth-button {
+  margin-top: 0.35rem;
+}
+
+.auth-footer {
+  margin-top: 0.25rem;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #8ea0c5;
+}
