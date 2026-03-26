@@ -42,6 +42,7 @@ export default function Login() {
             <input id="password" type="password" placeholder="••••••••" />
           </div>
 
+          {/* TO DO: actually check email and password */}
           <button className="auth-button" onClick={signin}>
             Authenticate
           </button>

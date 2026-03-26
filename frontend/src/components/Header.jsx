@@ -4,32 +4,19 @@ import '../style/Header.css';
 export default function Header() {
   const navigate = useNavigate();
 
-  const goToDashboard = () => {
-    navigate('/dashboard');
-  };
-
-  const goToReports = () => {
-    navigate('/reports');
-  };
-
-  const logout = () => {
-    navigate('/');
-  };
-
   return (
-    <div className="header-container">
-      <div className="header-title">
-        CKIP / Civil Knowledge Integration Platform
-      </div>
-      <div className="nav-container">
-        <div className="nav-dashboard" onClick={goToDashboard}>
-          Dashboard
+    <div className="header">
+      <div className="header-inner">
+        <div className="header-title">
+          CKIP<span>/ Civil Knowledge Integration Platform</span>
         </div>
-        <div className="nav-reports" onClick={goToReports}>
-          Reports
-        </div>
-        <div className="nav-logout" onClick={logout}>
-          Logout
+
+        <div className="header-nav">
+          <button onClick={() => navigate('/dashboard')}>Dashboard</button>
+          <button onClick={() => navigate('/reports')}>Reports</button>
+          <button className="header-logout" onClick={() => navigate('/')}>
+            Logout
+          </button>
         </div>
       </div>
     </div>

@@ -79,3 +79,30 @@
   font-size: 0.95rem;
   color: #8ea0c5;
 }
+
+.auth-container-wide {
+  max-width: 28rem;
+}
+
+.auth-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+select {
+  width: 100%;
+  height: 3rem;
+  padding: 0 0.95rem;
+  border: 1px solid var(--border-input);
+  border-radius: var(--radius-sm);
+  background: var(--bg-input);
+  color: var(--text-primary);
+  font-size: 1rem;
+  outline: none;
+}
+
+select:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(77, 127, 255, 0.15);
+}
