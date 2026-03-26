@@ -10,30 +10,6 @@ exports.getAllCategories = async (req, res) => {
   }
 };
 
-exports.getCategoryReports = async (req, res) => {
-  try {
-    const match = await db('report_categories')
-      .join('categories', 'category_id', 'categories.id')
-      .select('*')
-      .where('category', req.params.category);
-
-    if (!match.length) {
-      return res.status(404).json({ message: 'Category is not valid.' });
-    }
-
-    const reports = await db('reports')
-      .join('report_categories', 'reports.id', 'report_id')
-      .join('categories', 'category_id', 'categories.id')
-      .join('users', 'submitted_by', 'users.id')
-      .select('title', 'summary', 'mgrs', 'created_at', 'email as submitted_by')
-      .where('category', req.params.category);
-
-    res.status(200).json(reports);
-  } catch (err) {
-    res.status(500).json({ message: 'Internal server error.' });
-  }
-};
-
 exports.createCategory = async (req, res) => {
   try {
     const { category } = req.body;
@@ -90,6 +66,30 @@ exports.updateCategory = async (req, res) => {
       );
   } catch (err) {
     console.log(err);
+    res.status(500).json({ message: 'Internal server error.' });
+  }
+};
+
+exports.deleteCategory = async (req, res) => {
+  try {
+    const { category } = req.params;
+    const [match] = await db('categories')
+      .select('*')
+      .where('category', category);
+
+    if (!match) {
+      return res.status(404).json({ message: 'Category does not exist.' });
+    }
+
+    const [deletedCategory] = await db('categories')
+      .where('category', category)
+      .del()
+      .returning('category');
+
+    res.status(200).json({
+      message: `${deletedCategory.category} was successfully deleted.`,
+    });
+  } catch (err) {
     res.status(500).json({ message: 'Internal server error.' });
   }
 };

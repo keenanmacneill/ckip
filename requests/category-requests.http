@@ -1,9 +1,6 @@
 ### Get all categories
 GET http://localhost:8080/categories
 
-### Get reports by category
-GET http://localhost:8080/categories/infrastructure/reports
-
 ### Create category
 POST http://localhost:8080/categories/
 Content-Type: application/json
@@ -13,9 +10,13 @@ Content-Type: application/json
 }
 
 ### Update category
-PATCH http://localhost:8080/categories/test2
+PATCH http://localhost:8080/categories/key_leader
 Content-Type: application/json
 
 {
-  "category": "key_leader"
+  "category": "test"
 }
+
+### Delete category
+DELETE http://localhost:8080/categories/key_leader/
+Content-Type: application/json
