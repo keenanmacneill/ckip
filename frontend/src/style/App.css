@@ -11,3 +11,8 @@ body {
 #root {
   height: 100%;
 }
+
+button {
+  border-radius: 0.25rem;
+  border: 1px solid black;
+}

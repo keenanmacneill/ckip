@@ -1,0 +1,70 @@
+.dashboard-header-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.dashboard-header-title {
+  font-size: 1.5rem;
+}
+
+.dashboard-utility-container {
+  display: flex;
+  gap: 1rem;
+}
+
+.export-button,
+.new-report-button {
+  padding: 0 1rem;
+  height: 2.5rem;
+}
+
+.dashboard-main-container {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.dashboard-map {
+  width: 70%;
+}
+
+.dashboard-report-container {
+  display: flex;
+  flex-flow: column;
+  width: 30%;
+  border: 1px solid black;
+  border-radius: 0.5rem;
+}
+
+.dashboard-report-title {
+  font-size: 1.25rem;
+  border-bottom: 1px solid black;
+  padding: 1rem;
+}
+
+.dashboard-report-body {
+  display: flex;
+  flex-flow: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-bottom: 1px solid black;
+}
+
+.report-title,
+.report-mgrs,
+.report-lat-long,
+.report-category,
+.report-priority {
+  height: 1.5rem;
+}
+
+.report-summary,
+.report-recommendations {
+  height: 5rem;
+}
+
+.report-submit-button {
+  height: 2rem;
+  margin: 1rem;
+}
