@@ -173,7 +173,6 @@ export default function Signup() {
             />
           </div>
 
-          {/* TO DO: check valid email domain */}
           <button className="auth-button" type="submit">
             Submit request
           </button>

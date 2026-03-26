@@ -33,7 +33,6 @@
   gap: 0.75rem;
 }
 
-/* override global button slightly for nav */
 .header-nav button {
   height: 2.4rem;
   padding: 0 0.9rem;
@@ -47,7 +46,6 @@
   background: rgba(255, 255, 255, 0.05);
 }
 
-/* logout = subtle danger/secondary */
 .header-logout {
   color: #ff7a7a;
   border-color: rgba(255, 122, 122, 0.35);
