@@ -1,6 +1,7 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './style/App.css';
 
+import AppContextProvider from './context/AppContextProvider';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
@@ -10,15 +11,17 @@ import Signup from './pages/Signup';
 
 export default function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/reports" element={<Reports />} />
-        <Route path="/reports/:id" element={<ReportDetails />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </Router>
+    <AppContextProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/reports" element={<Reports />} />
+          <Route path="/reports/:id" element={<ReportDetails />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Router>
+    </AppContextProvider>
   );
 }

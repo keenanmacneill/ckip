@@ -6,7 +6,12 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser(process.env.JWT));
-app.use(cors());
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+  }),
+);
 
 app.get('/', (req, res) => {
   res.status(200).json({ message: 'Working' });

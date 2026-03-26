@@ -1,17 +1,32 @@
+import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import AppContext from '../context/AppContext';
 import '../style/Auth.css';
 
 export default function Signup() {
+  const [emailValue, setEmailValue] = useState('');
+  const [passwordValue, setPasswordValue] = useState('');
+  const { register } = useContext(AppContext);
   const navigate = useNavigate();
 
-  const signup = e => {
+  const signup = async e => {
     e.preventDefault();
-    navigate('/');
+    const res = await register(emailValue, passwordValue);
+    if (res.ok) {
+      navigate('/');
+    } else {
+      const data = await res.json();
+      alert(data.message);
+    }
+  };
+
+  const handleKeyDown = e => {
+    if (e.key === 'Enter') signup(e);
   };
 
   return (
     <div className="auth-page">
-      <div className="auth-container auth-container-wide card">
+      <div className="auth-container card">
         <div className="auth-version">
           CKIP <span>// ACCESS REQUEST</span>
         </div>
@@ -37,6 +52,23 @@ export default function Signup() {
               id="email"
               type="email"
               placeholder="john.a.doe.mil@socom.mil"
+              value={emailValue}
+              onChange={e => setEmailValue(e.target.value)}
+              onKeyDown={handleKeyDown}
+            />
+          </div>
+
+          <div className="auth-field-group">
+            <label className="auth-label" htmlFor="password">
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              value={passwordValue}
+              onChange={e => setPasswordValue(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
           </div>
 

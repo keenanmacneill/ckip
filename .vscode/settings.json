@@ -11,5 +11,6 @@
       "username": "postgres",
       "password": "docker"
     }
-  ]
+  ],
+  "cSpell.words": ["CKIP", "OCONUS", "PSYOP"]
 }

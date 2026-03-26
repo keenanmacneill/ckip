@@ -4,19 +4,33 @@ const jwt = require('jsonwebtoken');
 
 const SALT_ROUNDS = 10;
 
+exports.getMe = async (req, res) => {
+  try {
+    const token = req.cookies.token;
+    if (!token) return res.status(401).json({ message: 'Not authenticated.' });
+
+    const decoded = jwt.verify(token, process.env.JWT);
+    const user = await db('users').where({ id: decoded.id }).first();
+    if (!user) return res.status(401).json({ message: 'User not found.' });
+
+    res.status(200).json({ id: user.id, email: user.email });
+  } catch (err) {
+    res.status(401).json({ message: 'Invalid token.' });
+  }
+};
+
 exports.getCurrentUser = async (req, res) => {
   try {
-    console.log(req.cookies);
-    const { email } = req.cookies.user;
+    const decoded = jwt.verify(req.cookies.token, process.env.JWT);
+    const { email } = decoded;
 
     const reports = await db('users')
       .join('reports', 'users.id', 'submitted_by')
       .select('title', 'summary', 'mgrs', 'created_at')
       .where('users.email', email);
 
-    res.status(201).json({ email, reports });
+    res.status(200).json({ email, reports });
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: 'Internal server error.' });
   }
 };
@@ -89,7 +103,6 @@ exports.login = async (req, res) => {
 
     return res.status(200).json({ message: `Welcome back, ${email}` });
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: 'Internal server error.' });
   }
 };

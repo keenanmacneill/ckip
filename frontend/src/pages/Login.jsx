@@ -1,11 +1,28 @@
+import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
+import AppContext from '../context/AppContext';
 import '../style/Auth.css';
 
 export default function Login() {
+  const [emailValue, setEmailValue] = useState('');
+  const [passwordValue, setPasswordValue] = useState('');
+  const { login } = useContext(AppContext);
   const navigate = useNavigate();
 
-  const signin = () => {
-    navigate('/dashboard');
+  const signin = async e => {
+    e.preventDefault();
+    const res = await login(emailValue, passwordValue);
+    if (res.ok) {
+      navigate('/dashboard');
+    } else {
+      const data = await res.json();
+      alert(data.message);
+    }
+  };
+
+  const handleKeyDown = e => {
+    if (e.key === 'Enter') signin(e);
   };
 
   return (
@@ -26,12 +43,15 @@ export default function Login() {
         <div className="auth-form">
           <div className="auth-field-group">
             <label className="auth-label" htmlFor="email">
-              Username
+              Email
             </label>
             <input
               id="email"
               type="text"
               placeholder="john.a.smith.mil@socom.mil"
+              value={emailValue}
+              onChange={e => setEmailValue(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
           </div>
 
@@ -39,7 +59,14 @@ export default function Login() {
             <label className="auth-label" htmlFor="password">
               Password
             </label>
-            <input id="password" type="password" placeholder="••••••••" />
+            <input
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              value={passwordValue}
+              onChange={e => setPasswordValue(e.target.value)}
+              onKeyDown={handleKeyDown}
+            />
           </div>
 
           {/* TO DO: actually check email and password */}

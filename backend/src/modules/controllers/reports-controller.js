@@ -105,7 +105,6 @@ exports.createReport = async (req, res) => {
 
     res.status(200).json(`${newReport.title} has been successfully posted.`);
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: 'Internal server error.' });
   }
 };
@@ -165,7 +164,6 @@ exports.updateReport = async (req, res) => {
 
     res.status(200).json(updatedReport);
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: 'Internal server error.' });
   }
 };

@@ -81,7 +81,6 @@ exports.updateUser = async (req, res) => {
 
     res.status(200).json(`${updatedUser.email} has been successfully updated.`);
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: 'Internal server error.' });
   }
 };
