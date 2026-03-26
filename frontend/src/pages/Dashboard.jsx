@@ -20,9 +20,30 @@ export default function Dashboard() {
       </div>
       <div className="dashboard-metrics-container">
         {/* TO DO: insert metrics components here */}
+        <img
+          className="dashboard-metrics"
+          src="https://placehold.co/400x200"
+        ></img>
+        <img
+          className="dashboard-metrics"
+          src="https://placehold.co/400x200"
+        ></img>
+        <img
+          className="dashboard-metrics"
+          src="https://placehold.co/400x200"
+        ></img>
+        <img
+          className="dashboard-metrics"
+          src="https://placehold.co/400x200"
+        ></img>
       </div>
       <div className="dashboard-main-container">
-        <div className="dashboard-map">Report distribution</div>
+        <div className="dashboard-map-container">
+          <img
+            className="dashboard-map"
+            src="https://placehold.co/600x400"
+          ></img>
+        </div>
         <div className="dashboard-report-container">
           <div className="dashboard-report-title">New report</div>
           <div className="dashboard-report-body">
