@@ -13,8 +13,10 @@ export default function Signup() {
     e.preventDefault();
     const res = await register(emailValue, passwordValue);
     if (res.ok) {
+      setPasswordValue('');
       navigate('/');
     } else {
+      setPasswordValue('');
       const data = await res.json();
       alert(data.message);
     }

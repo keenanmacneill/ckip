@@ -5,12 +5,19 @@ export default function AppContextProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Check session on mount
   useEffect(() => {
     fetch('http://localhost:8080/auth/me', { credentials: 'include' })
-      .then(res => (res.ok ? res.json() : null))
+      .then(async res => {
+        if (!res.ok) {
+          throw new Error('Not authenticated');
+        }
+        return res.json();
+      })
       .then(data => {
-        if (data) setUser(data);
+        setUser(data);
+      })
+      .catch(() => {
+        setUser(null);
       })
       .finally(() => setLoading(false));
   }, []);
@@ -22,14 +29,15 @@ export default function AppContextProvider({ children }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
     });
+
     if (res.ok) {
-      // Fetch user data after login
       const me = await fetch('http://localhost:8080/auth/me', {
         credentials: 'include',
       });
       const data = await me.json();
       setUser(data);
     }
+
     return res;
   };
 

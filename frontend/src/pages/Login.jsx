@@ -14,8 +14,10 @@ export default function Login() {
     e.preventDefault();
     const res = await login(emailValue, passwordValue);
     if (res.ok) {
+      setPasswordValue('');
       navigate('/dashboard');
     } else {
+      setPasswordValue('');
       const data = await res.json();
       alert(data.message);
     }
