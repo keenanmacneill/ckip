@@ -1,4 +1,5 @@
 import Header from '../components/Header';
+import '../style/Dashboard.css';
 
 export default function Dashboard() {
   return (
