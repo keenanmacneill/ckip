@@ -1,35 +1,6 @@
 const db = require('../../db/knex');
 const bcrypt = require('bcrypt');
 
-const createUser = async user => {
-  return await db('users').insert(user).returning(['id', 'email']);
-};
-
-exports.registerUser = async (req, res) => {
-  try {
-    const { email: email, password } = req.body;
-
-    if (!email || !password) {
-      return res
-        .status(400)
-        .json({ message: 'Email and password are required.' });
-    }
-
-    const match = await db('users').select('*').where('email', email);
-
-    if (!match.length) {
-      return res.status(400).json({ message: 'Email not available.' });
-    }
-
-    const hashWord = await bcrypt.hash(password, 10);
-    const [newUser] = await createUser({ email: email, password: hashWord });
-
-    res.status(201).json(`${newUser.email} has been successfully created.`);
-  } catch (err) {
-    res.status(500).json({ message: 'Internal server error.' });
-  }
-};
-
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await db('users').select('email');
@@ -77,6 +48,35 @@ exports.getUserReports = async (req, res) => {
       .where('users.id', req.params.id);
 
     res.status(200).json(reports);
+  } catch (err) {
+    res.status(500).json({ message: 'Internal server error.' });
+  }
+};
+
+const createUser = async user => {
+  return await db('users').insert(user).returning(['id', 'email']);
+};
+
+exports.registerUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: 'Email and password are required.' });
+    }
+
+    const match = await db('users').select('*').where('email', email);
+
+    if (match) {
+      return res.status(400).json({ message: 'Email already in use.' });
+    }
+
+    const hashWord = await bcrypt.hash(password, 10);
+    const [newUser] = await createUser({ email, password: hashWord });
+
+    res.status(201).json(`${newUser.email} has been successfully created.`);
   } catch (err) {
     res.status(500).json({ message: 'Internal server error.' });
   }

@@ -3,7 +3,6 @@ const router = express.Router();
 
 const {
   getCategoryReports,
-  getCategory,
   getAllCategories,
   createCategory,
   updateCategoryReport,
@@ -12,16 +11,15 @@ const {
   deleteCategory,
 } = require('../controllers/categories-controller');
 
-// router.get('/:category/reports', getCategoryReports);
-// router.get('/:category', getCategory);
-// router.get('/', getAllCategories);
+router.get('/:category/reports', getCategoryReports);
+router.get('/', getAllCategories);
 
-// router.post('/', createCategory);
+router.post('/', createCategory);
 
-// router.patch('/:category/reports/:category', updateCategoryReport);
-// router.patch('/:category', updateCategory);
+// router.patch('/:category/reports/:id', updateCategoryReport);
+router.patch('/:category', updateCategory);
 
-// router.delete('/:category/reports/:category, deleteCategoryReport)
+// router.delete('/:category/reports/:id, deleteCategoryReport)
 // router.delete('/:category, deleteCategory)
 
 module.exports = router;

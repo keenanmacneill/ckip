@@ -107,9 +107,10 @@ exports.updateReport = async (req, res) => {
     const { id } = req.params;
     const { title, summary, mgrs, category } = req.body;
 
-    const match = await db('reports').select('id').where('id', id);
+    const [existingReport] = await db('reports').select('*').where('id', id);
+    console.log(existingReport);
 
-    if (!match.length) {
+    if (!existingReport) {
       return res.status(404).json({ message: 'Report does not exist.' });
     }
 
@@ -121,15 +122,25 @@ exports.updateReport = async (req, res) => {
       return res.status(404).json({ message: 'Category is not valid.' });
     }
 
+    if (
+      existingReport.title === title &&
+      existingReport.summary === summary &&
+      existingReport.mgrs === mgrs
+    ) {
+      return res.status(400).json({ message: 'No changes detected.' });
+    }
+
     const updatedReport = await db.transaction(async trx => {
       const [report] = await trx('reports')
+        .where('id', id)
         .update({ title, summary, mgrs })
         .returning('*');
 
-      await db('report_categories')
+      await trx('report_categories')
         .where('report_id', id)
         .update({ category_id: categoryId.id })
         .returning('*');
+
       return report;
     });
 

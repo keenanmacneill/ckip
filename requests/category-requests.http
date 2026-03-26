@@ -1,2 +1,21 @@
-### Get all reports
-GET http://localhost:8080/reports
+### Get all categories
+GET http://localhost:8080/categories
+
+### Get reports by category
+GET http://localhost:8080/categories/infrastructure/reports
+
+### Create category
+POST http://localhost:8080/categories/
+Content-Type: application/json
+
+{
+  "category": "old"
+}
+
+### Update category
+PATCH http://localhost:8080/categories/test2
+Content-Type: application/json
+
+{
+  "category": "key_leader"
+}
