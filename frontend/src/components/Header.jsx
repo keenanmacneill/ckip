@@ -16,12 +16,20 @@ export default function Header() {
   };
 
   return (
-    <div>
-      <div>CKIP / Civil Knowledge Integration Platform</div>
-      <div>
-        <button onClick={goToDashboard}>Dashboard</button>
-        <button onClick={goToReports}>Reports</button>
-        <button onClick={logout}>Logout</button>
+    <div className="header-container">
+      <div className="header-title">
+        CKIP / Civil Knowledge Integration Platform
+      </div>
+      <div className="nav-container">
+        <div className="nav-dashboard" onClick={goToDashboard}>
+          Dashboard
+        </div>
+        <div className="nav-reports" onClick={goToReports}>
+          Reports
+        </div>
+        <div className="nav-logout" onClick={logout}>
+          Logout
+        </div>
       </div>
     </div>
   );

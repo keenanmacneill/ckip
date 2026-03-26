@@ -1,0 +1,21 @@
+.login-container {
+  justify-self: center;
+  align-self: center;
+  display: flex;
+  flex-flow: column;
+  width: 25rem;
+  border: 1px solid black;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  gap: 1rem;
+}
+
+.login-signin-title {
+  font-size: 2rem;
+}
+
+.login-email,
+.login-password,
+.login-signin-button {
+  height: 2rem;
+}

@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
+import '../style/Signup.css';
+
 export default function Signup() {
   const navigate = useNavigate();
 
@@ -8,13 +10,19 @@ export default function Signup() {
   };
 
   return (
-    <div>
-      <div>Welcome to the Civil Knowledge Integration Platform</div>
-      <div>Enter your email and a password to sign up.</div>
-      <input type="text" placeholder="Email"></input>
-      <input type="password" placeholder="Password"></input>
+    <div className="signup-container">
+      <div className="signup-title">CKIP // Signup</div>
+      <div className="signup-subtitle">Request Access</div>
+      <input className="signup-email" type="text" placeholder="Email"></input>
+      <input
+        className="signup-password"
+        type="password"
+        placeholder="Password"
+      ></input>
       {/* TO DO: check valid email domain */}
-      <button onClick={signup}>Sign Up and Return to Login</button>
+      <button className="signup-button" onClick={signup}>
+        Submit Request
+      </button>
     </div>
   );
 }
