@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../middleware/auth');
 
 const {
   getReportsByCategory,
@@ -10,11 +11,11 @@ const {
   deleteReport,
 } = require('../controllers/reports-controller');
 
-router.get('/category/:category', getReportsByCategory);
-router.get('/:id', getReportId);
-router.get('/', getAllReports);
-router.post('/', createReport);
-router.patch('/:id', updateReport);
-router.delete('/:id', deleteReport);
+router.get('/category/:category', auth, getReportsByCategory);
+router.get('/:id', auth, getReportId);
+router.get('/', auth, getAllReports);
+router.post('/', auth, createReport);
+router.patch('/:id', auth, updateReport);
+router.delete('/:id', auth, deleteReport);
 
 module.exports = router;
