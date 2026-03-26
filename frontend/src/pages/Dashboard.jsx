@@ -57,8 +57,12 @@ export default function Dashboard() {
           </div>
 
           <div className="dashboard-utility-container">
-            <button className="dashboard-action-secondary">Export</button>
-            <button className="dashboard-action-primary">+ New report</button>
+            <button className="dashboard-action-secondary" disabled>
+              Export
+            </button>
+            <button className="dashboard-action-primary" disabled>
+              + New report
+            </button>
           </div>
         </div>
 
@@ -85,7 +89,7 @@ export default function Dashboard() {
               <div className="dashboard-panel-meta">MGRS: 32NKL</div>
             </div>
 
-            {/* Add a Leaflet map to the page. Plot each report as a point using its lat/lng. Then add the heatmap layer using the leaflet-heat plugin. The heatmap should reflect report density by area, not individual points. Wire it to live data so it updates when the category filter changes. Think about what data the heatmap layer actually needs and whether   can reuse what   already fetched. Also add a map-click feature. When a user clicks the map, it should populate the lat/lng fields in the submission form. The user should not have to type coordinates by hand.*/}
+            {/* Add a Leaflet map to the page. Plot each report as a point using its lat/lng. Then add the heatmap layer using the leaflet-heat plugin. The heatmap should reflect report density by area, not individual points. Wire it to live data so it updates when the category filter changes.Think about what data the heatmap layer actually needs and whether can reuse what   already fetched. Also add a map-click feature. When a user clicks the map, it should populate the lat/lng fields in the submission form. The user should not have to type coordinates by hand.*/}
             <div className="dashboard-map">
               <div className="dashboard-map-grid"></div>
               <div className="dashboard-map-terrain"></div>

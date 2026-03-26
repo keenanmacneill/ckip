@@ -6,14 +6,7 @@ exports.getAllReports = async (req, res) => {
       .join('report_categories', 'reports.id', 'report_id')
       .join('categories', 'category_id', 'categories.id')
       .join('users', 'submitted_by', 'users.id')
-      .select(
-        'category',
-        'title',
-        'summary',
-        'mgrs',
-        'created_at',
-        'email as submitted_by',
-      );
+      .select('*');
 
     res.status(200).json(reports);
   } catch (err) {
@@ -33,14 +26,7 @@ exports.getReportId = async (req, res) => {
       .join('report_categories', 'reports.id', 'report_id')
       .join('categories', 'category_id', 'categories.id')
       .join('users', 'submitted_by', 'users.id')
-      .select(
-        'category',
-        'title',
-        'summary',
-        'mgrs',
-        'created_at',
-        'users.email as submitted_by',
-      )
+      .select('*')
       .where('reports.id', req.params.id);
 
     res.status(200).json(report);
@@ -64,7 +50,7 @@ exports.getReportsByCategory = async (req, res) => {
       .join('report_categories', 'reports.id', 'report_id')
       .join('categories', 'category_id', 'categories.id')
       .join('users', 'submitted_by', 'users.id')
-      .select('title', 'summary', 'mgrs', 'created_at', 'email as submitted_by')
+      .select('*')
       .where('category', req.params.category);
 
     res.status(200).json(reports);
@@ -75,7 +61,15 @@ exports.getReportsByCategory = async (req, res) => {
 
 exports.createReport = async (req, res) => {
   try {
-    const { title, summary, mgrs, category } = req.body;
+    const {
+      title,
+      summary,
+      mgrs,
+      lat_long,
+      recommendations,
+      priority,
+      category,
+    } = req.body;
     const { id } = req.cookies.user;
 
     const [match] = await db('categories').where('category', category);
@@ -90,7 +84,15 @@ exports.createReport = async (req, res) => {
         .where('category', category);
 
       const [report] = await trx('reports')
-        .insert({ title, summary, mgrs, submitted_by: id })
+        .insert({
+          title,
+          summary,
+          mgrs,
+          lat_long,
+          recommendations,
+          priority,
+          submitted_by: id,
+        })
         .returning('*');
 
       await trx('report_categories').insert({
@@ -111,7 +113,15 @@ exports.createReport = async (req, res) => {
 exports.updateReport = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, summary, mgrs, category } = req.body;
+    const {
+      title,
+      summary,
+      mgrs,
+      lat_long,
+      recommendations,
+      priority,
+      category,
+    } = req.body;
 
     const [existingReport] = await db('reports').select('*').where('id', id);
     console.log(existingReport);
@@ -131,7 +141,10 @@ exports.updateReport = async (req, res) => {
     if (
       existingReport.title === title &&
       existingReport.summary === summary &&
-      existingReport.mgrs === mgrs
+      existingReport.mgrs === mgrs &&
+      existingReport.lat_long === lat_long &&
+      existingReport.recommendations === recommendations &&
+      existingReport.priority === priority
     ) {
       return res.status(400).json({ message: 'No changes detected.' });
     }
@@ -139,7 +152,7 @@ exports.updateReport = async (req, res) => {
     const updatedReport = await db.transaction(async trx => {
       const [report] = await trx('reports')
         .where('id', id)
-        .update({ title, summary, mgrs })
+        .update({ title, summary, mgrs, lat_long, recommendations, priority })
         .returning('*');
 
       await trx('report_categories')

@@ -1,6 +1,18 @@
+import { useEffect, useState } from 'react';
+
 import Header from '../components/Header';
 
 export default function Reports() {
+  const [reports, setReports] = useState(null);
+
+  useEffect(() => {
+    const getReports = async () => {
+      const res = await fetch('http://localhost:8080/reports');
+      const reportsData = await res.json();
+      setReports(reportsData);
+    };
+    getReports();
+  }, []);
   return (
     <>
       <Header />

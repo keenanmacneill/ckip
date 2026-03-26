@@ -123,6 +123,13 @@ button:active {
   transform: translateY(1px);
 }
 
+button:disabled {
+  background-color: grey;
+  color: white;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 a {
   color: var(--link);
   text-decoration: none;
