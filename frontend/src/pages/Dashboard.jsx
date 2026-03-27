@@ -18,7 +18,7 @@ const metrics = [
   },
   {
     value: '31',
-    label: 'AOS COVERED',
+    label: 'AOs COVERED',
     note: '↑ 4 new',
     tone: 'success',
   },
@@ -143,11 +143,20 @@ export default function Dashboard() {
 
               <div className="auth-field-group">
                 <div className="auth-label">Summary</div>
-                <input
+                <textarea
                   className="report-summary"
                   type="text"
                   placeholder="Concise summary..."
-                ></input>
+                ></textarea>
+              </div>
+
+              <div className="auth-field-group">
+                <div className="auth-label">Recommendations</div>
+                <textarea
+                  className="report-recommendations"
+                  type="text"
+                  placeholder="Concise recommendations..."
+                ></textarea>
               </div>
 
               <div className="auth-field-group">
@@ -165,15 +174,6 @@ export default function Dashboard() {
                   className="report-lat-long"
                   type="text"
                   placeholder="Latitude, longitude"
-                ></input>
-              </div>
-
-              <div className="auth-field-group">
-                <div className="auth-label">Recommendations</div>
-                <input
-                  className="report-recommendations"
-                  type="text"
-                  placeholder="Concise recommendations..."
                 ></input>
               </div>
 
