@@ -209,6 +209,6 @@ export default function handleExportPdf(reports) {
   doc.save(
     reports.length === 1
       ? `report-${reports[0].id}.pdf`
-      : `selected-reports.pdf`,
+      : `selected-reports-${reports.length}.pdf`,
   );
 }
