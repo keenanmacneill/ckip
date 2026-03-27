@@ -317,7 +317,15 @@
 }
 
 @media (max-width: 1100px) {
-  .reports-header,
+  .reports-header {
+    grid-template-columns:
+      minmax(5rem, 0.8fr)
+      minmax(5rem, 0.8fr)
+      minmax(12rem, 2fr)
+      minmax(7rem, 1fr)
+      minmax(9rem, 1fr)
+      minmax(7rem, 0.8fr);
+  }
   .report-row {
     grid-template-columns:
       minmax(5rem, 0.8fr)
@@ -329,8 +337,10 @@
 
   .filters-bar > :nth-child(5),
   .filters-bar > :nth-child(6),
-  .reports-header > :nth-child(4),
-  .reports-header > :nth-child(6),
+  /* .reports-header > :nth-child(4), */
+  .reports-header > :nth-child(5),
+  .reports-header > :nth-child(7),
+  /* .report-row > :nth-child(3), */
   .report-row > :nth-child(4),
   .report-row > :nth-child(6) {
     display: none;
