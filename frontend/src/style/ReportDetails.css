@@ -117,6 +117,78 @@
   text-transform: uppercase;
 }
 
+.report-details-category {
+  background: rgba(148, 163, 184, 0.1);
+  border-color: rgba(148, 163, 184, 0.24);
+  color: #cbd5e1;
+}
+
+.report-details-category.category-key_leader {
+  color: #f97316;
+  background: rgba(249, 115, 22, 0.12);
+  border-color: rgba(249, 115, 22, 0.28);
+}
+
+.report-details-category.category-infrastructure {
+  color: #22d3b6;
+  background: rgba(34, 211, 182, 0.1);
+  border-color: rgba(34, 211, 182, 0.24);
+}
+
+.report-details-category.category-population {
+  color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.24);
+}
+
+.report-details-category.category-governance {
+  color: #8b5cf6;
+  background: rgba(139, 92, 246, 0.12);
+  border-color: rgba(139, 92, 246, 0.24);
+}
+
+.report-details-category.category-economy {
+  color: #ffb020;
+  background: rgba(255, 176, 32, 0.12);
+  border-color: rgba(255, 176, 32, 0.28);
+}
+
+.report-details-category.category-culture {
+  color: #ec4899;
+  background: rgba(236, 72, 153, 0.12);
+  border-color: rgba(236, 72, 153, 0.28);
+}
+
+.report-details-category.category-religion {
+  color: #a855f7;
+  background: rgba(168, 85, 247, 0.12);
+  border-color: rgba(168, 85, 247, 0.28);
+}
+
+.report-details-category.category-security {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.24);
+}
+
+.report-details-category.category-public_health {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.28);
+}
+
+.report-details-category.category-education {
+  color: #6366f1;
+  background: rgba(99, 102, 241, 0.12);
+  border-color: rgba(99, 102, 241, 0.28);
+}
+
+.report-details-category.category-information {
+  color: #14b8a6;
+  background: rgba(20, 184, 166, 0.12);
+  border-color: rgba(20, 184, 166, 0.28);
+}
+
 .review-timeline-title {
   margin-bottom: 14px;
 }

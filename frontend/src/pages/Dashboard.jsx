@@ -4,33 +4,32 @@ import AppContext from '../context/AppContext';
 import '../style/Dashboard.css';
 
 export default function Dashboard() {
-  const { cap, categories } = useContext(AppContext);
+  const { cap, categories, reports } = useContext(AppContext);
 
+  const sortedCategories = [...(categories || [])].sort((a, b) =>
+    a.category.localeCompare(b.category, undefined, { sensitivity: 'base' }),
+  );
   const handleSubmit = () => {};
 
   const metrics = [
     {
-      value: '247',
-      label: 'TOTAL REPORTS',
-      note: '↑ 18 this week',
+      value: '31',
+      label: 'AOs COVERED',
       tone: 'default',
+    },
+    {
+      value: reports.length,
+      label: 'TOTAL REPORTS',
+      tone: 'success',
     },
     {
       value: '14',
       label: 'PENDING REVIEW',
-      note: '3 past SLA',
       tone: 'warning',
     },
     {
-      value: '31',
-      label: 'AOs COVERED',
-      note: '↑ 4 new',
-      tone: 'success',
-    },
-    {
-      value: '2',
+      value: reports.filter(r => r.priority === 'critical').length,
       label: 'PRIORITY ALERTS',
-      note: 'Requires action',
       tone: 'danger',
     },
   ];
@@ -46,7 +45,7 @@ export default function Dashboard() {
     { x: '91%', y: '51%', tone: 'danger' },
   ];
 
-  if (!categories) return null;
+  if (!categories.length || !reports.length) return null;
 
   return (
     <>
@@ -56,11 +55,7 @@ export default function Dashboard() {
         <div className="page-header-container">
           <div className="page-title-container">
             <div className="page-header-title">Dashboard</div>
-            <div className="page-header-subtitle">TG Pineland</div>
-          </div>
-
-          <div className="page-utility-container">
-            <button className="page-action-primary">Export</button>
+            <div className="page-header-subtitle">SOTF Pineland</div>
           </div>
         </div>
 
@@ -186,7 +181,7 @@ export default function Dashboard() {
                   <option value="select_category" disabled>
                     Select a category
                   </option>
-                  {categories.map(c => (
+                  {sortedCategories.map(c => (
                     <option value={c.category}>
                       {c.category
                         .split('_')

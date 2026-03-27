@@ -8,9 +8,19 @@ export default function Report({ report }) {
   const { setReportDetails, selectedReports, setSelectedReports } =
     useContext(AppContext);
 
-  const { id, title, mgrs, created_at, priority, submitted_by, category } =
+  const { id, title, mgrs, created_at, priority, submitted_by, categories } =
     report;
-  const categories = Array.isArray(category) ? category : [category];
+
+  const reportCategories = Array.isArray(categories)
+    ? categories
+    : categories
+      ? [categories]
+      : [];
+
+  const sortedCategories = [...reportCategories].sort((a, b) =>
+    String(a).localeCompare(String(b), undefined, { sensitivity: 'base' }),
+  );
+
   const priorityClass = priority?.toLowerCase().replace(/\s+/g, '_');
 
   const handleClick = () => {
@@ -52,13 +62,16 @@ export default function Report({ report }) {
         <div className="report-cell report-mgrs">{mgrs}</div>
 
         <div className="report-cell report-categories">
-          {categories.map(cat => {
+          {sortedCategories.map((cat, index) => {
             const slug = cat
               ?.toLowerCase()
               .replace(/\s+/g, '_')
               .replace(/_/g, '_');
             return (
-              <span key={cat} className={`category-badge category-${slug}`}>
+              <span
+                key={`${cat}-${index}`}
+                className={`category-badge category-${slug || 'unknown'}`}
+              >
                 {String(cat).replace(/_/g, ' ').toUpperCase()}
               </span>
             );

@@ -4,12 +4,12 @@ import AppContext from './AppContext';
 export default function AppContextProvider({ children }) {
   const cap = word => word.charAt(0).toUpperCase() + word.slice(1);
 
-  const [categories, setCategories] = useState(null);
-  const [reportDetails, setReportDetails] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [reportDetails, setReportDetails] = useState([]);
   const [selectedReports, setSelectedReports] = useState([]);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [reports, setReports] = useState(null);
+  const [reports, setReports] = useState([]);
 
   useEffect(() => {
     fetch('http://localhost:8080/auth/me', { credentials: 'include' })

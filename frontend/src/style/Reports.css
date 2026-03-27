@@ -90,7 +90,7 @@
     minmax(6rem, 0.5fr) /*id*/
     minmax(14rem, 2fr) /*title*/
     minmax(10rem, 0.75fr) /*mgrs*/
-    minmax(10rem, 1fr) /*category*/
+    minmax(10rem, 1.2fr) /*category*/
     minmax(7.5rem, 0.75fr) /*priority*/
     minmax(10rem, 1.5fr) /*submitted by*/
     minmax(5rem, 0.8fr); /*date*/
@@ -116,7 +116,8 @@
 }
 
 .report-checkbox {
-  scale: 50%;
+  width: 1rem;
+  justify-self: center;
 }
 
 .reports-header {
@@ -255,6 +256,12 @@
   color: #14b8a6;
   background: rgba(20, 184, 166, 0.12);
   border-color: rgba(20, 184, 166, 0.28);
+}
+
+.category-unknown {
+  color: #cbd5e1;
+  background: rgba(148, 163, 184, 0.1);
+  border-color: rgba(148, 163, 184, 0.24);
 }
 
 /* priority colors */

@@ -11,6 +11,10 @@ export default function Reports() {
   const { reports, categories, cap, selectedReports, setSelectedReports } =
     useContext(AppContext);
 
+  const sortedCategories = [...(categories || [])].sort((a, b) =>
+    a.category.localeCompare(b.category, undefined, { sensitivity: 'base' }),
+  );
+
   const handleNewReport = () => {
     navigate('/dashboard');
   };
@@ -77,8 +81,8 @@ export default function Reports() {
 
           <select className="filter-select" defaultValue="all_categories">
             <option value="all_categories">All categories</option>
-            {categories.map(c => (
-              <option value="c.category">
+            {sortedCategories.map(c => (
+              <option key={c.category} value={c.category}>
                 {c.category
                   .split('_')
                   .map(word => cap(word))
@@ -120,7 +124,7 @@ export default function Reports() {
           </div>
 
           {reports.map(report => (
-            <Report report={report} />
+            <Report key={report.id} report={report} />
           ))}
         </div>
       </main>

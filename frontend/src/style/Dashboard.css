@@ -7,6 +7,7 @@
 
 .dashboard-metric-card {
   padding: 1rem 1rem 0.95rem;
+  justify-items: center;
 }
 
 .dashboard-metric-value {

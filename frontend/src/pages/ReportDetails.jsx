@@ -28,12 +28,18 @@ export default function ReportDetails() {
     created_at,
     priority,
     submitted_by,
-    category,
+    categories,
     summary,
     recommendations,
     lat_long,
     classification,
   } = reportDetails;
+
+  const reportCategories = Array.isArray(categories)
+    ? categories
+    : categories
+      ? [categories]
+      : [];
 
   const reviewTimeline = [
     {
@@ -216,17 +222,20 @@ export default function ReportDetails() {
               <div className="report-details-divider" />
 
               <div className="report-details-side-section">
-                <div className="report-details-label">Category</div>
+                <div className="report-details-label">Categories</div>
                 <div className="report-details-tag-row">
-                  <span
-                    className={`report-details-tag report-details-category category-${String(
-                      category,
-                    )
-                      .toLowerCase()
-                      .replace(/\s+/g, '_')}`}
-                  >
-                    {String(category).replace(/_/g, ' ')}
-                  </span>
+                  {reportCategories.map((category, index) => (
+                    <span
+                      key={`${category}-${index}`}
+                      className={`report-details-tag report-details-category category-${String(
+                        category,
+                      )
+                        .toLowerCase()
+                        .replace(/\s+/g, '_')}`}
+                    >
+                      {String(category).replace(/_/g, ' ')}
+                    </span>
+                  ))}
                 </div>
               </div>
             </section>

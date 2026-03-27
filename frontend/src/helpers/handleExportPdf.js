@@ -32,6 +32,21 @@ export default function handleExportPdf(reports) {
     y += lines.length * 7;
   };
 
+  const formatCategories = categories => {
+    if (!Array.isArray(categories) || categories.length === 0) {
+      return 'N/A';
+    }
+
+    return categories
+      .map(category =>
+        String(category)
+          .split('_')
+          .map(word => cap(word))
+          .join(' '),
+      )
+      .join(', ');
+  };
+
   const addSection = (label, value) => {
     ensureSpace(14);
     doc.setFont(undefined, 'bold');
@@ -178,13 +193,7 @@ export default function handleExportPdf(reports) {
     addField('Title', report.title);
     addField('Report ID', String(report.id));
     addField('Priority', report.priority ? cap(report.priority) : 'N/A');
-    addField(
-      'Category',
-      report.category
-        ?.split('_')
-        .map(word => cap(word))
-        .join(' ') || 'N/A',
-    );
+    addField('Categories', formatCategories(report.categories));
     addField('MGRS', report.mgrs);
     addField('Latitude / Longitude', report.lat_long);
     addField('Submitted By', report.submitted_by);
