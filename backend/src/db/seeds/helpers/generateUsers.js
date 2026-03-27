@@ -11,6 +11,7 @@ exports.generateUsers = async (num = 1) => {
     array.push({
       email: faker.internet.email(),
       password: hashWord,
+      role: 'user',
     });
   }
   return array;

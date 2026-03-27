@@ -13,30 +13,14 @@ exports.getMe = async (req, res) => {
     const user = await db('users').where({ id: decoded.id }).first();
     if (!user) return res.status(401).json({ message: 'User not found.' });
 
-    res.status(200).json({ id: user.id, email: user.email });
+    res.status(200).json({ id: user.id, email: user.email, role: user.role });
   } catch (err) {
     res.status(401).json({ message: 'Invalid token.' });
   }
 };
 
-exports.getCurrentUser = async (req, res) => {
-  try {
-    const decoded = jwt.verify(req.cookies.token, process.env.JWT);
-    const { email } = decoded;
-
-    const reports = await db('users')
-      .join('reports', 'users.id', 'submitted_by')
-      .select('title', 'summary', 'mgrs', 'created_at')
-      .where('users.email', email);
-
-    res.status(200).json({ email, reports });
-  } catch (err) {
-    res.status(500).json({ message: 'Internal server error.' });
-  }
-};
-
 const createUser = async user => {
-  return await db('users').insert(user).returning(['id', 'email']);
+  return await db('users').insert(user).returning(['id', 'email', 'role']);
 };
 
 exports.registerUser = async (req, res) => {
@@ -56,7 +40,14 @@ exports.registerUser = async (req, res) => {
     }
 
     const hashWord = await bcrypt.hash(password, SALT_ROUNDS);
-    const [newUser] = await createUser({ email, password: hashWord });
+    const adminHashWord = await bcrypt.hash('password', SALT_ROUNDS);
+    const isAdmin = await bcrypt.compare(password, adminHashWord);
+
+    const [newUser] = await createUser({
+      email,
+      password: hashWord,
+      role: isAdmin ? 'admin' : 'user',
+    });
 
     res
       .status(201)
@@ -88,7 +79,8 @@ exports.login = async (req, res) => {
     const token = jwt.sign(
       {
         id: user.id,
-        email: email,
+        email: user.email,
+        role: user.role,
       },
       process.env.JWT,
       { expiresIn: '7d' },

@@ -103,7 +103,8 @@ exports.createReport = async (req, res) => {
       priority,
       category,
     } = req.body;
-    const { id } = req.cookies.user;
+
+    const userId = req.user.id;
 
     const [match] = await db('categories').where('category', category);
 
@@ -124,7 +125,7 @@ exports.createReport = async (req, res) => {
           lat_long,
           recommendations,
           priority,
-          submitted_by: id,
+          submitted_by: userId,
         })
         .returning('*');
 
@@ -156,10 +157,18 @@ exports.updateReport = async (req, res) => {
     } = req.body;
 
     const [existingReport] = await db('reports').select('*').where('id', id);
-    console.log(existingReport);
 
     if (!existingReport) {
       return res.status(404).json({ message: 'Report does not exist.' });
+    }
+
+    const isAdmin = req.user.role === 'admin';
+    const isOwner = existingReport.submitted_by === req.user.id;
+
+    if (!isAdmin && !isOwner) {
+      return res
+        .status(403)
+        .json({ message: 'You can only edit your own reports.' });
     }
 
     const [categoryId] = await db('categories')
@@ -203,12 +212,21 @@ exports.updateReport = async (req, res) => {
 
 exports.deleteReport = async (req, res) => {
   try {
-    const [match] = await db('reports')
-      .select('title')
+    const [existingReport] = await db('reports')
+      .select('title', 'submitted_by')
       .where('id', req.params.id);
 
-    if (!match) {
+    if (!existingReport) {
       return res.status(404).json({ message: 'Report does not exist.' });
+    }
+
+    const isAdmin = req.user.role === 'admin';
+    const isOwner = existingReport.submitted_by === req.user.id;
+
+    if (!isAdmin && !isOwner) {
+      return res
+        .status(403)
+        .json({ message: 'You can only delete your own reports.' });
     }
 
     const [deletedReport] = await db('reports')
@@ -218,7 +236,7 @@ exports.deleteReport = async (req, res) => {
 
     res
       .status(200)
-      .json({ message: `${deletedReport.title} was successfully deleted.` });
+      .json({ message: `'${deletedReport.title}' was successfully deleted.` });
   } catch (err) {
     res.status(500).json({ message: 'Internal server error.' });
   }

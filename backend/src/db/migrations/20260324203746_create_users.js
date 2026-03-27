@@ -3,6 +3,7 @@ exports.up = function (knex) {
     table.increments('id');
     table.string('email').unique().notNullable();
     table.string('password').notNullable();
+    table.string('role').notNullable();
   });
 };
 

@@ -4,13 +4,13 @@ const auth = require('../middleware/auth');
 const router = express.Router();
 
 const {
-  getCurrentUser,
+  getMe,
   registerUser,
   login,
   logout,
 } = require('../controllers/auth-controller');
 
-router.get('/me', auth, getCurrentUser);
+router.get('/me', auth, getMe);
 router.post('/register', registerUser);
 router.post('/login', login);
 router.post('/logout', auth, logout);
