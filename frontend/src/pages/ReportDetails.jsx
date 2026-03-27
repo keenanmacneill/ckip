@@ -1,9 +1,11 @@
+import L from 'leaflet';
 import 'leaflet.heat';
 import 'leaflet/dist/leaflet.css';
-import { useContext, useEffect } from 'react';
+import * as mgrsLib from 'mgrs';
+import { useContext, useEffect, useMemo } from 'react';
+import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
-import '../components/ReportMap';
 import AppContext from '../context/AppContext';
 import handleExportPdf from '../helpers/handleExportPdf';
 import '../style/ReportDetails.css';
@@ -63,6 +65,62 @@ export default function ReportDetails() {
     },
   ];
 
+  function parseLatLong(value) {
+    if (!value || typeof value !== 'string') return null;
+
+    const [a, b] = value.split(',').map(v => Number.parseFloat(v.trim()));
+    if (!Number.isFinite(a) || !Number.isFinite(b)) return null;
+
+    // auto-detect if order came as "lon,lat"
+    if (Math.abs(a) <= 90 && Math.abs(b) <= 180) return [a, b];
+    if (Math.abs(a) <= 180 && Math.abs(b) <= 90) return [b, a];
+    return null;
+  }
+
+  function parseMgrs(value) {
+    if (!value || typeof value !== 'string') return null;
+    try {
+      const [lon, lat] = mgrsLib.toPoint(value.trim());
+      if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
+      return [lat, lon];
+    } catch {
+      return null;
+    }
+  }
+
+  function HeatLayer({ points }) {
+    const map = useMap();
+
+    useEffect(() => {
+      if (!points?.length) return undefined;
+      const layer = L.heatLayer(points, {
+        radius: 25,
+        blur: 15,
+        maxZoom: 11,
+        minOpacity: 0.45,
+      }).addTo(map);
+
+      return () => map.removeLayer(layer);
+    }, [map, points]);
+
+    return null;
+  }
+
+  const coordinate = useMemo(
+    () => parseLatLong(lat_long) ?? parseMgrs(mgrs),
+    [lat_long, mgrs],
+  );
+
+  const heatPoints = useMemo(() => {
+    if (!coordinate) return [];
+    const [lat, lon] = coordinate;
+    return [
+      [lat, lon, 1.0],
+      [lat + 0.01, lon + 0.01, 0.55],
+      [lat - 0.01, lon - 0.015, 0.5],
+    ];
+  }, [coordinate]);
+
   return (
     <>
       <Header />
@@ -120,7 +178,30 @@ export default function ReportDetails() {
             </div>
 
             <div className="dashboard-map">
-              <ReportMap title={title} mgrs={mgrs} lat_long={lat_long} />
+              {coordinate ? (
+                <MapContainer
+                  center={coordinate}
+                  zoom={11}
+                  className="report-leaflet-map"
+                >
+                  <TileLayer
+                    attribution="&copy; OpenStreetMap contributors"
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  <Marker position={coordinate}>
+                    <Popup>
+                      {title}
+                      <br />
+                      {mgrs || lat_long}
+                    </Popup>
+                  </Marker>
+                  <HeatLayer points={heatPoints} />
+                </MapContainer>
+              ) : (
+                <div className="report-map-fallback">
+                  No valid coordinate provided.
+                </div>
+              )}
             </div>
           </section>
 
