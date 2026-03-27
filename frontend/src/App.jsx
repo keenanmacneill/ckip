@@ -1,6 +1,4 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import './style/App.css';
-
 import ProtectedRoute from './components/ProtectedRoute';
 import AppContextProvider from './context/AppContextProvider';
 import Dashboard from './pages/Dashboard';
@@ -9,6 +7,7 @@ import NotFound from './pages/NotFound';
 import ReportDetails from './pages/ReportDetails';
 import Reports from './pages/Reports';
 import Signup from './pages/Signup';
+import './style/App.css';
 
 export default function App() {
   return (
