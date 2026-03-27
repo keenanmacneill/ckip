@@ -1,6 +1,9 @@
+import 'leaflet.heat';
+import 'leaflet/dist/leaflet.css';
 import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
+import '../components/ReportMap';
 import AppContext from '../context/AppContext';
 import handleExportPdf from '../helpers/handleExportPdf';
 import '../style/ReportDetails.css';
@@ -60,17 +63,6 @@ export default function ReportDetails() {
     },
   ];
 
-  const mapPoints = [
-    { x: '14%', y: '61%', tone: 'info' },
-    { x: '24%', y: '36%', tone: 'danger' },
-    { x: '33%', y: '58%', tone: 'info' },
-    { x: '47%', y: '26%', tone: 'warning' },
-    { x: '54%', y: '61%', tone: 'warning' },
-    { x: '64%', y: '43%', tone: 'success' },
-    { x: '79%', y: '30%', tone: 'success' },
-    { x: '91%', y: '51%', tone: 'danger' },
-  ];
-
   return (
     <>
       <Header />
@@ -122,49 +114,13 @@ export default function ReportDetails() {
           <section className="dashboard-map-container card">
             <div className="dashboard-panel-header">
               <div className="dashboard-panel-title">Report location</div>
-              <div className="dashboard-panel-meta">MGRS: 32NKL</div>
+              <div className="dashboard-panel-meta">
+                MGRS: {mgrs} // LAT-LONG: {lat_long}
+              </div>
             </div>
 
             <div className="dashboard-map">
-              <div className="dashboard-map-grid"></div>
-              <div className="dashboard-map-terrain"></div>
-
-              {mapPoints.map((point, index) => (
-                <span
-                  key={index}
-                  className={`dashboard-map-point dashboard-map-point-${point.tone}`}
-                  style={{ left: point.x, top: point.y }}
-                ></span>
-              ))}
-
-              <div className="dashboard-map-label dashboard-map-label-left">
-                32NKL
-              </div>
-              <div className="dashboard-map-label dashboard-map-label-center">
-                32NKL
-              </div>
-              <div className="dashboard-map-label dashboard-map-label-right">
-                32NKL 48291 83741
-              </div>
-
-              <div className="dashboard-map-legend">
-                <div>
-                  <span className="dashboard-legend-dot dashboard-map-point-danger"></span>
-                  Critical
-                </div>
-                <div>
-                  <span className="dashboard-legend-dot dashboard-map-point-warning"></span>
-                  Attention
-                </div>
-                <div>
-                  <span className="dashboard-legend-dot dashboard-map-point-success"></span>
-                  Routine
-                </div>
-                <div>
-                  <span className="dashboard-legend-dot dashboard-map-point-info"></span>
-                  Info only
-                </div>
-              </div>
+              <ReportMap title={title} mgrs={mgrs} lat_long={lat_long} />
             </div>
           </section>
 
@@ -245,20 +201,6 @@ export default function ReportDetails() {
 
         <div className="report-bottom-layout">
           <section className="report-details-main-card">
-            <div className="report-details-section">
-              <div className="report-details-label">MGRS Coordinate</div>
-              <div className="report-details-body">{mgrs}</div>
-            </div>
-
-            <div className="report-details-divider" />
-
-            <div className="report-details-section">
-              <div className="report-details-label">Lat / Long</div>
-              <div className="report-details-body">{lat_long}</div>
-            </div>
-
-            <div className="report-details-divider" />
-
             <div className="report-details-section">
               <div className="report-details-label">Summary</div>
               <div className="report-details-body">{summary}</div>

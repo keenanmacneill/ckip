@@ -34,17 +34,6 @@ export default function Dashboard() {
     },
   ];
 
-  const mapPoints = [
-    { x: '14%', y: '61%', tone: 'info' },
-    { x: '24%', y: '36%', tone: 'danger' },
-    { x: '33%', y: '58%', tone: 'info' },
-    { x: '47%', y: '26%', tone: 'warning' },
-    { x: '54%', y: '61%', tone: 'warning' },
-    { x: '64%', y: '43%', tone: 'success' },
-    { x: '79%', y: '30%', tone: 'success' },
-    { x: '91%', y: '51%', tone: 'danger' },
-  ];
-
   if (!categories.length || !reports.length) return null;
 
   return (
@@ -76,50 +65,9 @@ export default function Dashboard() {
           <section className="dashboard-map-container card">
             <div className="dashboard-panel-header">
               <div className="dashboard-panel-title">Report distribution</div>
-              <div className="dashboard-panel-meta">MGRS: 32NKL</div>
             </div>
 
-            <div className="dashboard-map">
-              <div className="dashboard-map-grid"></div>
-              <div className="dashboard-map-terrain"></div>
-
-              {mapPoints.map((point, index) => (
-                <span
-                  key={index}
-                  className={`dashboard-map-point dashboard-map-point-${point.tone}`}
-                  style={{ left: point.x, top: point.y }}
-                ></span>
-              ))}
-
-              <div className="dashboard-map-label dashboard-map-label-left">
-                32NKL
-              </div>
-              <div className="dashboard-map-label dashboard-map-label-center">
-                32NKL
-              </div>
-              <div className="dashboard-map-label dashboard-map-label-right">
-                32NKL 48291 83741
-              </div>
-
-              <div className="dashboard-map-legend">
-                <div>
-                  <span className="dashboard-legend-dot dashboard-map-point-danger"></span>
-                  Critical
-                </div>
-                <div>
-                  <span className="dashboard-legend-dot dashboard-map-point-warning"></span>
-                  Attention
-                </div>
-                <div>
-                  <span className="dashboard-legend-dot dashboard-map-point-success"></span>
-                  Routine
-                </div>
-                <div>
-                  <span className="dashboard-legend-dot dashboard-map-point-info"></span>
-                  Info only
-                </div>
-              </div>
-            </div>
+            <div className="dashboard-map"></div>
           </section>
           <div className="dashboard-report-container card">
             <div className="dashboard-panel-header">
