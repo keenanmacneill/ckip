@@ -6,10 +6,19 @@ import handleExportPdf from '../helpers/handleExportPdf';
 import '../style/Reports.css';
 
 export default function Reports() {
-  const { reports, categories, cap, selectedReports } = useContext(AppContext);
+  const { reports, categories, cap, selectedReports, setSelectedReports } =
+    useContext(AppContext);
 
   const handleExportSelected = () => {
     handleExportPdf(selectedReports);
+  };
+
+  const handleClearSelected = () => {
+    setSelectedReports([]);
+  };
+
+  const handleSelectAll = () => {
+    setSelectedReports([...reports]);
   };
 
   if (!reports || !categories) return null;
@@ -26,6 +35,20 @@ export default function Reports() {
           </div>
 
           <div className="page-utility-container">
+            <button
+              className="page-action-secondary"
+              onClick={handleSelectAll}
+              disabled={selectedReports.length === reports.length}
+            >
+              Select all
+            </button>
+            <button
+              className="page-action-secondary"
+              onClick={handleClearSelected}
+              disabled={selectedReports.length === 0}
+            >
+              Clear selected
+            </button>
             <button
               className="page-action-secondary"
               onClick={handleExportSelected}

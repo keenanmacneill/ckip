@@ -64,6 +64,10 @@
   justify-items: center;
 }
 
+.report-body {
+  display: flex;
+}
+
 .reports-header,
 .report-row {
   display: grid;
@@ -98,7 +102,7 @@
 }
 
 .report-checkbox {
-  scale: 25%;
+  scale: 50%;
 }
 
 .reports-header {

@@ -33,49 +33,50 @@ export default function Report({ report }) {
   if (!report) return 'Loading...';
 
   return (
-    <div className="report-row" onClick={handleClick}>
+    <div className="report-body">
       <input
         className="report-checkbox"
         type="checkbox"
         checked={selectedReports.some(r => r.id === report.id)}
         onChange={() => handleToggleReport(report)}
       />
+      <div className="report-row" onClick={handleClick}>
+        <div className="report-cell report-id">
+          {String(id).startsWith('RPT-')
+            ? id
+            : `RPT-${String(id).padStart(4, '0')}`}
+        </div>
 
-      <div className="report-cell report-id">
-        {String(id).startsWith('RPT-')
-          ? id
-          : `RPT-${String(id).padStart(4, '0')}`}
-      </div>
+        <div className="report-cell report-title">{title}</div>
 
-      <div className="report-cell report-title">{title}</div>
+        <div className="report-cell report-mgrs">{mgrs}</div>
 
-      <div className="report-cell report-mgrs">{mgrs}</div>
+        <div className="report-cell report-categories">
+          {categories.map(cat => {
+            const slug = cat
+              ?.toLowerCase()
+              .replace(/\s+/g, '_')
+              .replace(/_/g, '_');
+            return (
+              <span key={cat} className={`category-badge category-${slug}`}>
+                {String(cat).replace(/_/g, ' ').toUpperCase()}
+              </span>
+            );
+          })}
+        </div>
 
-      <div className="report-cell report-categories">
-        {categories.map(cat => {
-          const slug = cat
-            ?.toLowerCase()
-            .replace(/\s+/g, '_')
-            .replace(/_/g, '_');
-          return (
-            <span key={cat} className={`category-badge category-${slug}`}>
-              {String(cat).replace(/_/g, ' ').toUpperCase()}
-            </span>
-          );
-        })}
-      </div>
+        <div className="report-cell">
+          <span className={`priority-pill priority-${priorityClass}`}>
+            <span className="priority-dot" />
+            {priority.toUpperCase()}
+          </span>
+        </div>
 
-      <div className="report-cell">
-        <span className={`priority-pill priority-${priorityClass}`}>
-          <span className="priority-dot" />
-          {priority.toUpperCase()}
-        </span>
-      </div>
+        <div className="report-cell report-submitted-by">{submitted_by}</div>
 
-      <div className="report-cell report-submitted-by">{submitted_by}</div>
-
-      <div className="report-cell report-date">
-        {new Date(created_at).toLocaleDateString('en-CA')}
+        <div className="report-cell report-date">
+          {new Date(created_at).toLocaleDateString('en-CA')}
+        </div>
       </div>
     </div>
   );
