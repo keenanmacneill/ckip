@@ -6,10 +6,20 @@ exports.getAllReports = async (req, res) => {
       .join('report_categories', 'reports.id', 'report_id')
       .join('categories', 'category_id', 'categories.id')
       .join('users', 'submitted_by', 'users.id')
-      .select('*');
+      .select(
+        'reports.id',
+        'reports.title',
+        'reports.mgrs',
+        'reports.lat_long',
+        'categories.category',
+        'reports.priority',
+        'users.email as submitted_by',
+        'reports.created_at',
+      );
 
     res.status(200).json(reports);
   } catch (err) {
+    console.log(err);
     res.status(500).json({ message: 'Internal server error.' });
   }
 };
@@ -26,7 +36,18 @@ exports.getReportId = async (req, res) => {
       .join('report_categories', 'reports.id', 'report_id')
       .join('categories', 'category_id', 'categories.id')
       .join('users', 'submitted_by', 'users.id')
-      .select('*')
+      .select(
+        'reports.id',
+        'reports.title',
+        'reports.mgrs',
+        'reports.lat_long',
+        'categories.category',
+        'reports.priority',
+        'reports.summary',
+        'reports.recommendations',
+        'users.email as submitted_by',
+        'reports.created_at',
+      )
       .where('reports.id', req.params.id);
 
     res.status(200).json(report);
@@ -50,7 +71,16 @@ exports.getReportsByCategory = async (req, res) => {
       .join('report_categories', 'reports.id', 'report_id')
       .join('categories', 'category_id', 'categories.id')
       .join('users', 'submitted_by', 'users.id')
-      .select('*')
+      .select(
+        'reports.id',
+        'reports.title',
+        'reports.mgrs',
+        'reports.lat_long',
+        'categories.category',
+        'reports.priority',
+        'users.email as submitted_by',
+        'reports.created_at',
+      )
       .where('category', req.params.category);
 
     res.status(200).json(reports);

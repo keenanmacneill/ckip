@@ -10,7 +10,12 @@ export default function Header() {
   return (
     <div className="header">
       <div className="header-inner">
-        <div className="header-title">
+        <div
+          className="header-title"
+          onClick={() => {
+            navigate('/dashboard');
+          }}
+        >
           CKIP<span>/ Civil Knowledge Integration Platform</span>
         </div>
 

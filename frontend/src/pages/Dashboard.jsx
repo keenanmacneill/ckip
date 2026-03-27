@@ -83,9 +83,7 @@ export default function Dashboard() {
         <div className="dashboard-main-container">
           <section className="dashboard-map-container card">
             <div className="dashboard-panel-header">
-              <div className="dashboard-panel-title">
-                Report distribution — operational area
-              </div>
+              <div className="dashboard-panel-title">Report distribution</div>
               <div className="dashboard-panel-meta">MGRS: 32NKL</div>
             </div>
 
