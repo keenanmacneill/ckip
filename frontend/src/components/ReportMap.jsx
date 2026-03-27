@@ -5,7 +5,7 @@ import 'leaflet.heat';
 import 'leaflet/dist/leaflet.css';
 import * as mgrsLib from 'mgrs';
 import { useEffect, useMemo } from 'react';
-import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
+import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet';
 import '../style/ReportMap.css';
 
 function parseLatLong(value) {
@@ -61,11 +61,7 @@ export default function ReportMap({ title, mgrs, lat_long }) {
 
     const [lat, lon] = coordinate;
 
-    return [
-      [lat, lon, 1.0],
-      [lat + 0.01, lon + 0.01, 0.55],
-      [lat - 0.01, lon - 0.015, 0.5],
-    ];
+    return [[lat, lon, 1.0]];
   }, [coordinate]);
 
   if (!coordinate) {
@@ -77,17 +73,11 @@ export default function ReportMap({ title, mgrs, lat_long }) {
   return (
     <MapContainer center={coordinate} zoom={11} className="report-leaflet-map">
       <TileLayer
-        attribution="&copy; OpenStreetMap contributors"
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution="Esri (ArcGIS)"
+        url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
       />
 
-      <Marker position={coordinate}>
-        <Popup>
-          {title}
-          <br />
-          {mgrs || lat_long}
-        </Popup>
-      </Marker>
+      <Marker position={coordinate}></Marker>
 
       <HeatLayer points={heatPoints} />
     </MapContainer>
