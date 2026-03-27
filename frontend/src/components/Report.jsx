@@ -17,6 +17,8 @@ export default function Report({ report }) {
     navigate(`/reports/${title}`);
   };
 
+  if (!report) return 'Loading...';
+
   return (
     <div className="report-row" onClick={handleClick}>
       <div className="report-cell report-id">

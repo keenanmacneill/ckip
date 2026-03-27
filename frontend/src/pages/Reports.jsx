@@ -18,7 +18,8 @@ export default function Reports() {
     getReports();
   }, []);
 
-  if (!reports) return <h1>Loading...</h1>;
+  if (!reports) return null;
+
   return (
     <>
       <Header />

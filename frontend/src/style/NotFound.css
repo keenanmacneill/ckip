@@ -1,0 +1,74 @@
+.error-page {
+  min-height: calc(100vh - 72px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px 64px;
+  background:
+    radial-gradient(circle at top, rgba(33, 59, 117, 0.08), transparent 35%),
+    #030b18;
+}
+
+.error-page__content {
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+.error-page__eyebrow {
+  margin-bottom: 20px;
+  color: #4d6697;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.error-page__code {
+  margin-bottom: 8px;
+  color: #4f6da8;
+  font-size: 76px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.error-page__title {
+  margin-bottom: 14px;
+  color: #f3f7ff;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.error-page__message {
+  max-width: 340px;
+  margin: 0 auto 24px;
+  color: #93a8cc;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.error-page__path {
+  width: 100%;
+  margin: 0 auto 28px;
+  padding: 14px 16px;
+  border: 1px solid #243754;
+  border-radius: 8px;
+  background: rgba(15, 24, 40, 0.9);
+  color: #5872a3;
+  font-size: 13px;
+  font-family: monospace;
+  text-align: left;
+}
+
+.error-page__actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 34px;
+}
+
+.error-page__timestamp {
+  color: #4d6697;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}

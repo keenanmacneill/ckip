@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import AppContext from '../context/AppContext';
@@ -6,6 +6,19 @@ import '../style/ReportDetails.css';
 
 export default function ReportDetails() {
   const { reportDetails } = useContext(AppContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!reportDetails) {
+      navigate('/404');
+    }
+  }, [reportDetails, navigate]);
+
+  if (!reportDetails) return 'Loading...';
+
+  const handleBack = () => {
+    navigate('/reports');
+  };
 
   const {
     id,
@@ -20,12 +33,6 @@ export default function ReportDetails() {
     lat_long,
     classification,
   } = reportDetails;
-
-  const navigate = useNavigate();
-
-  const handleBack = () => {
-    navigate('/reports');
-  };
 
   const reviewTimeline = [
     {
