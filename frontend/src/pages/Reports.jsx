@@ -1,24 +1,18 @@
-import { useEffect, useState } from 'react';
-
+import { useContext } from 'react';
 import Header from '../components/Header';
 import Report from '../components/Report';
+import AppContext from '../context/AppContext';
+import handleExportPdf from '../helpers/handleExportPdf';
 import '../style/Reports.css';
 
 export default function Reports() {
-  const [reports, setReports] = useState(null);
+  const { reports, categories, cap, selectedReports } = useContext(AppContext);
 
-  useEffect(() => {
-    const getReports = async () => {
-      const res = await fetch('http://localhost:8080/reports', {
-        credentials: 'include',
-      });
-      const reportsData = await res.json();
-      setReports(reportsData);
-    };
-    getReports();
-  }, []);
+  const handleExportSelected = () => {
+    handleExportPdf(selectedReports);
+  };
 
-  if (!reports) return null;
+  if (!reports || !categories) return null;
 
   return (
     <>
@@ -28,15 +22,18 @@ export default function Reports() {
         <div className="page-header-container">
           <div className="page-title-container">
             <div className="page-header-title">All reports</div>
-            <div className="page-header-subtitle">
-              {reports.length} reports — last sync 4 min ago
-            </div>
+            <div className="page-header-subtitle">{reports.length} reports</div>
           </div>
 
           <div className="page-utility-container">
-            <button className="page-action-primary" disabled>
-              + New report
+            <button
+              className="page-action-secondary"
+              onClick={handleExportSelected}
+              disabled={selectedReports.length === 0}
+            >
+              Export selected ({selectedReports.length})
             </button>
+            <button className="page-action-primary">+ New report</button>
           </div>
         </div>
 
@@ -45,33 +42,21 @@ export default function Reports() {
             className="filter-input"
             type="search"
             placeholder="Search by title, MGRS, or submitter..."
-            disabled
           />
 
-          <select
-            className="filter-select"
-            defaultValue="all_categories"
-            disabled
-          >
+          <select className="filter-select" defaultValue="all_categories">
             <option value="all_categories">All categories</option>
-            <option value="culture">Culture</option>
-            <option value="economy">Economy</option>
-            <option value="education">Education</option>
-            <option value="governance">Governance</option>
-            <option value="infrastructure">Infrastructure</option>
-            <option value="information">Information</option>
-            <option value="key_leader">Key Leader</option>
-            <option value="population">Population</option>
-            <option value="public_health">Public Health</option>
-            <option value="religion">Religion</option>
-            <option value="security">Security</option>
+            {categories.map(c => (
+              <option value="c.category">
+                {c.category
+                  .split('_')
+                  .map(word => cap(word))
+                  .join(' ')}
+              </option>
+            ))}
           </select>
 
-          <select
-            className="filter-select"
-            defaultValue="all_priorities"
-            disabled
-          >
+          <select className="filter-select" defaultValue="all_priorities">
             <option value="all_priorities">All priorities</option>
             <option value="attention">Attention</option>
             <option value="critical">Critical</option>
@@ -79,7 +64,7 @@ export default function Reports() {
             <option value="routine">Routine</option>
           </select>
 
-          <select className="filter-select" defaultValue="all_dates" disabled>
+          <select className="filter-select" defaultValue="all_dates">
             <option value="all_dates">All dates</option>
             <option value="last_7_days">Last 7 days</option>
             <option value="last_30_days">Last 30 days</option>
@@ -87,16 +72,13 @@ export default function Reports() {
             <option value="last_90_days">Last 90 days</option>
           </select>
 
-          <button className="filter-button" disabled>
-            Date
-          </button>
-          <button className="filter-button" disabled>
-            Priority
-          </button>
+          <button className="filter-button">Date</button>
+          <button className="filter-button">Priority</button>
         </div>
 
         <div className="reports-table">
           <div className="reports-header">
+            <div>EXPORT</div>
             <div>ID</div>
             <div>TITLE</div>
             <div>MGRS</div>

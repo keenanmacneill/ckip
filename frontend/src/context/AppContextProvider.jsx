@@ -2,9 +2,37 @@ import { useEffect, useState } from 'react';
 import AppContext from './AppContext';
 
 export default function AppContextProvider({ children }) {
+  const [reportDetails, setReportDetails] = useState(null);
+  const [selectedReports, setSelectedReports] = useState([]);
+
+  const [reports, setReports] = useState(null);
+
+  useEffect(() => {
+    const getReports = async () => {
+      const res = await fetch('http://localhost:8080/reports', {
+        credentials: 'include',
+      });
+      const reportsData = await res.json();
+      setReports(reportsData);
+    };
+    getReports();
+  }, []);
+
+  const [categories, setCategories] = useState();
+
+  useEffect(() => {
+    const getCategories = async () => {
+      const res = await fetch('http://localhost:8080/categories', {
+        credentials: 'include',
+      });
+      const data = await res.json();
+      setCategories(data);
+    };
+    getCategories();
+  }, []);
+
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [reportDetails, setReportDetails] = useState(null);
 
   useEffect(() => {
     fetch('http://localhost:8080/auth/me', { credentials: 'include' })
@@ -60,6 +88,8 @@ export default function AppContextProvider({ children }) {
     return res;
   };
 
+  const cap = word => word.charAt(0).toUpperCase() + word.slice(1);
+
   return (
     <AppContext.Provider
       value={{
@@ -70,6 +100,11 @@ export default function AppContextProvider({ children }) {
         loading,
         reportDetails,
         setReportDetails,
+        categories,
+        cap,
+        reports,
+        selectedReports,
+        setSelectedReports,
       }}
     >
       {children}

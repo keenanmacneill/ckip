@@ -5,7 +5,8 @@ import '../style/Reports.css';
 
 export default function Report({ report }) {
   const navigate = useNavigate();
-  const { setReportDetails } = useContext(AppContext);
+  const { setReportDetails, selectedReports, setSelectedReports } =
+    useContext(AppContext);
 
   const { id, title, mgrs, created_at, priority, submitted_by, category } =
     report;
@@ -17,10 +18,29 @@ export default function Report({ report }) {
     navigate(`/reports/${title}`);
   };
 
+  const handleToggleReport = report => {
+    setSelectedReports(current => {
+      const exists = current.some(r => r.id === report.id);
+
+      if (exists) {
+        return current.filter(r => r.id !== report.id);
+      }
+
+      return [...current, report];
+    });
+  };
+
   if (!report) return 'Loading...';
 
   return (
     <div className="report-row" onClick={handleClick}>
+      <input
+        className="report-checkbox"
+        type="checkbox"
+        checked={selectedReports.some(r => r.id === report.id)}
+        onChange={() => handleToggleReport(report)}
+      />
+
       <div className="report-cell report-id">
         {String(id).startsWith('RPT-')
           ? id
@@ -48,7 +68,7 @@ export default function Report({ report }) {
       <div className="report-cell">
         <span className={`priority-pill priority-${priorityClass}`}>
           <span className="priority-dot" />
-          {priority}
+          {priority.toUpperCase()}
         </span>
       </div>
 

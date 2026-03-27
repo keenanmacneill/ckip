@@ -1,4 +1,6 @@
+import { useContext } from 'react';
 import Header from '../components/Header';
+import AppContext from '../context/AppContext';
 import '../style/Dashboard.css';
 
 const metrics = [
@@ -40,7 +42,11 @@ const mapPoints = [
 ];
 
 export default function Dashboard() {
+  const { cap, categories } = useContext(AppContext);
+
   const handleSubmit = () => {};
+
+  if (!categories) return null;
 
   return (
     <>
@@ -50,18 +56,11 @@ export default function Dashboard() {
         <div className="page-header-container">
           <div className="page-title-container">
             <div className="page-header-title">Dashboard</div>
-            <div className="page-header-subtitle">
-              TG Pineland — last sync 4 min ago
-            </div>
+            <div className="page-header-subtitle">TG Pineland</div>
           </div>
 
           <div className="page-utility-container">
-            <button className="page-action-secondary" disabled>
-              Export
-            </button>
-            <button className="page-action-primary" disabled>
-              + New report
-            </button>
+            <button className="page-action-primary">Export</button>
           </div>
         </div>
 
@@ -139,7 +138,6 @@ export default function Dashboard() {
                   className="report-title"
                   type="text"
                   placeholder="Brief descriptive title..."
-                  disabled
                 ></input>
               </div>
 
@@ -149,7 +147,6 @@ export default function Dashboard() {
                   className="report-summary"
                   type="text"
                   placeholder="Concise summary..."
-                  disabled
                 ></input>
               </div>
 
@@ -159,7 +156,6 @@ export default function Dashboard() {
                   className="report-mgrs"
                   type="text"
                   placeholder="MGRS"
-                  disabled
                 ></input>
               </div>
 
@@ -169,7 +165,6 @@ export default function Dashboard() {
                   className="report-lat-long"
                   type="text"
                   placeholder="Latitude, longitude"
-                  disabled
                 ></input>
               </div>
 
@@ -179,27 +174,48 @@ export default function Dashboard() {
                   className="report-recommendations"
                   type="text"
                   placeholder="Concise recommendations..."
-                  disabled
                 ></input>
               </div>
 
               <div className="auth-field-group">
                 <div className="auth-label">Category</div>
-                <select className="report-category" disabled></select>
+                <select
+                  className="report-category clickable"
+                  defaultValue={'select_category'}
+                >
+                  <option value="select_category" disabled>
+                    Select a category
+                  </option>
+                  {categories.map(c => (
+                    <option value="c.category">
+                      {c.category
+                        .split('_')
+                        .map(word => cap(word))
+                        .join(' ')}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="auth-field-group">
                 <div className="auth-label">Priority</div>
-                <select className="report-priority" disabled></select>
+                <select
+                  className="report-priority clickable"
+                  defaultValue={'select_priority'}
+                >
+                  <option value="select_priority" disabled>
+                    Select a priority
+                  </option>
+                  <option value="attention">Attention</option>
+                  <option value="critical">Critical</option>
+                  <option value="info_only">Info Only</option>
+                  <option value="routine">Routine</option>
+                </select>
               </div>
             </div>
 
             <div className="dashboard-report-footer">
-              <button
-                className="report-submit-button"
-                onClick={handleSubmit}
-                disabled
-              >
+              <button className="report-submit-button" onClick={handleSubmit}>
                 Submit report
               </button>
             </div>

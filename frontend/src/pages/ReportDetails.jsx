@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import AppContext from '../context/AppContext';
+import handleExportPdf from '../helpers/handleExportPdf';
 import '../style/ReportDetails.css';
 
 export default function ReportDetails() {
@@ -14,11 +15,11 @@ export default function ReportDetails() {
     }
   }, [reportDetails, navigate]);
 
-  if (!reportDetails) return 'Loading...';
-
   const handleBack = () => {
     navigate('/reports');
   };
+
+  if (!reportDetails) return null;
 
   const {
     id,
@@ -48,8 +49,7 @@ export default function ReportDetails() {
       status: 'complete',
     },
     {
-      title: '35 series review',
-      time: '2025-03-22 15:42Z',
+      title: 'S2 review',
       status: 'pending',
     },
   ];
@@ -68,7 +68,13 @@ export default function ReportDetails() {
               ← Back to reports
             </div>
 
-            <div className="classification">{classification}</div>
+            <div
+              className={`classification classification-${String(classification)
+                .toLowerCase()
+                .replace(/\s+/g, '-')}`}
+            >
+              {classification}
+            </div>
 
             <div className="page-header-title">{title}</div>
 
@@ -86,11 +92,11 @@ export default function ReportDetails() {
           </div>
 
           <div className="page-utility-container">
-            <button className="page-action-secondary" disabled>
-              Edit
-            </button>
-            <button className="page-action-secondary" disabled>
-              Export PDF
+            <button
+              className="page-action-primary"
+              onClick={() => handleExportPdf([reportDetails])}
+            >
+              Export
             </button>
           </div>
         </div>

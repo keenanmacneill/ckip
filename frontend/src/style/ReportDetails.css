@@ -2,14 +2,29 @@
   width: fit-content;
   padding: 8px 12px;
   margin: 1rem 0;
-  border: 1px solid rgba(239, 68, 68, 0.35);
   border-radius: 8px;
-  background: rgba(127, 29, 29, 0.18);
-  color: #ff6b6b;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.classification-confidential {
+  background: rgba(234, 179, 8, 0.12);
+  color: #facc15;
+  border: 1px solid rgba(234, 179, 8, 0.35);
+}
+
+.classification-secret {
+  background: rgba(249, 115, 22, 0.12);
+  color: #fb923c;
+  border: 1px solid rgba(249, 115, 22, 0.35);
+}
+
+.classification-top-secret {
+  background: rgba(220, 38, 38, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(220, 38, 38, 0.4);
 }
 
 .report-details-layout {
@@ -100,18 +115,6 @@
   font-weight: 600;
   letter-spacing: 0.03em;
   text-transform: uppercase;
-}
-
-.report-details-priority {
-  color: #ffb020;
-  background: rgba(255, 176, 32, 0.1);
-  border-color: rgba(255, 176, 32, 0.28);
-}
-
-.report-details-category {
-  color: #57a6ff;
-  background: rgba(87, 166, 255, 0.1);
-  border-color: rgba(87, 166, 255, 0.24);
 }
 
 .review-timeline-title {
