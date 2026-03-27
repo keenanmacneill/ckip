@@ -15,7 +15,6 @@ module.exports = (req, res, next) => {
     req.user = decoded; // attach user
 
     if (req.user.role !== 'admin') {
-      console.log(req.user);
       return res.status(403).json({ message: 'Admin access only.' });
     }
 

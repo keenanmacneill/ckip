@@ -38,7 +38,6 @@ exports.getAllReports = async (req, res) => {
 
     res.status(200).json(reports);
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: 'Internal server error.' });
   }
 };
@@ -84,7 +83,6 @@ exports.getReportId = async (req, res) => {
 
     res.status(200).json(report);
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: 'Internal server error.' });
   }
 };
@@ -179,7 +177,7 @@ exports.createReport = async (req, res) => {
       return report;
     });
 
-    res.status(200).json(`${newReport.title} has been successfully posted.`);
+    res.status(201).json(`${newReport.title} has been successfully posted.`);
   } catch (err) {
     res.status(500).json({ message: 'Internal server error.' });
   }

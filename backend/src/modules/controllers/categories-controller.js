@@ -57,7 +57,6 @@ exports.updateCategory = async (req, res) => {
         category: newCategory,
       })
       .returning('*');
-    console.log(updatedCategory);
 
     res
       .status(200)
