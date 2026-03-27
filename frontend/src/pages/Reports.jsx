@@ -24,29 +24,42 @@ export default function Reports() {
     <>
       <Header />
 
-      <div className="reports-table">
-        <div className="reports-header">
-          <div>ID</div>
-          <div>TITLE</div>
-          <div>MGRS</div>
-          <div>CATEGORIES</div>
-          <div>PRIORITY</div>
-          <div>SUBMITTED BY</div>
-          <div>DATE</div>
+      <main className="reports-page">
+        <div className="reports-header-container">
+          <div className="reports-title-container">
+            <div className="reports-header-title">All reports</div>
+            <div className="reports-header-subtitle">
+              {reports.length} reports — last sync 4 min ago
+            </div>
+          </div>
+
+          <div className="reports-utility-container">
+            <button className="reports-action-primary" disabled>
+              + New report
+            </button>
+          </div>
         </div>
 
-        {reports.map(report => (
-          <Report report={report} />
-        ))}
-      </div>
+        <div className="reports-table">
+          <div className="reports-header">
+            <div>ID</div>
+            <div>TITLE</div>
+            <div>MGRS</div>
+            <div>CATEGORIES</div>
+            <div>PRIORITY</div>
+            <div>SUBMITTED BY</div>
+            <div>DATE</div>
+          </div>
 
-      {reports.map(r => (
-        <Report report={r} />
-      ))}
+          {reports.map(report => (
+            <Report report={report} />
+          ))}
+        </div>
+
+        {reports.map(r => (
+          <Report report={r} />
+        ))}
+      </main>
     </>
   );
 }
-
-// Add a category filter dropdown that uses `?category=x`. Decide whether to filter client-side or re-fetch from the server.
-
-// Build the `/reports/:id` detail view. Display all fields and assigned categories.

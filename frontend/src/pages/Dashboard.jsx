@@ -51,7 +51,6 @@ export default function Dashboard() {
           <div className="dashboard-title-container">
             <div className="dashboard-header-title">Dashboard</div>
             <div className="dashboard-header-subtitle">
-              {/* TO DO: sync refresh with last refresh */}
               TG Pineland — last sync 4 min ago
             </div>
           </div>
@@ -67,7 +66,6 @@ export default function Dashboard() {
         </div>
 
         <div className="dashboard-metrics-container">
-          {/* TO DO: insert metrics components here: total reports, pending review, AOs covered, priority alerts */}
           {metrics.map(metric => (
             <div
               key={metric.label}
@@ -182,16 +180,12 @@ export default function Dashboard() {
 
               <div className="auth-field-group">
                 <div className="auth-label">Category</div>
-                <select className="report-category">
-                  {/* TO DO: generate options from categories table, multi-select */}
-                </select>
+                <select className="report-category"></select>
               </div>
 
               <div className="auth-field-group">
                 <div className="auth-label">Priority</div>
-                <select className="report-priority">
-                  {/* TO DO: generate options from priority table */}
-                </select>
+                <select className="report-priority"></select>
               </div>
             </div>
 

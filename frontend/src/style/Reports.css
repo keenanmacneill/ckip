@@ -1,3 +1,44 @@
+.reports-page {
+  margin: 0 auto;
+  padding: 1.25rem;
+}
+
+.reports-header-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.reports-title-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.reports-header-title {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: #f5f8ff;
+}
+
+.reports-header-subtitle {
+  margin-top: 0.35rem;
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.reports-utility-container {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.reports-action-primary {
+  min-width: 112px;
+  padding: 0 1rem;
+}
+
 .reports-table {
   width: 100%;
   overflow-x: auto;
@@ -11,13 +52,13 @@
 .report-row {
   display: grid;
   grid-template-columns:
-    minmax(6rem, 0.8fr)
-    minmax(14rem, 2fr)
-    minmax(8rem, 1fr)
-    minmax(8rem, 1fr)
-    minmax(10rem, 1.2fr)
-    minmax(10rem, 1.2fr)
-    minmax(7rem, 0.8fr);
+    minmax(6rem, 0.5fr) /*id*/
+    minmax(14rem, 2fr) /*title*/
+    minmax(10rem, 0.75fr) /*mgrs*/
+    minmax(10rem, 1fr) /*category*/
+    minmax(7.5rem, 0.75fr) /*priority*/
+    minmax(10rem, 1.5fr) /*submitted by*/
+    minmax(5rem, 0.8fr); /*date*/
   align-items: center;
   width: 100%;
 }
@@ -217,7 +258,7 @@
   white-space: nowrap;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .reports-header,
   .report-row {
     grid-template-columns:
