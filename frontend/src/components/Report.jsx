@@ -33,7 +33,7 @@ export default function Report({ report }) {
   if (!report) return 'Loading...';
 
   return (
-    <div className="report-body">
+    <div className="report-row-container">
       <input
         className="report-checkbox"
         type="checkbox"
