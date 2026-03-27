@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AppContext from '../context/AppContext';
 import '../style/Auth.css';
@@ -6,25 +6,27 @@ import '../style/Auth.css';
 export default function Login() {
   const [emailValue, setEmailValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
-  const { login } = useContext(AppContext);
+  const { login, user } = useContext(AppContext);
   const navigate = useNavigate();
 
   const signin = async e => {
     e.preventDefault();
     const res = await login(emailValue, passwordValue);
-    if (res.ok) {
-      setPasswordValue('');
-      navigate('/dashboard');
-    } else {
-      setPasswordValue('');
+    setPasswordValue('');
+
+    if (!res.ok) {
       const data = await res.json();
       alert(data.message);
+      return;
     }
+    navigate('/dashboard');
   };
 
-  const handleKeyDown = e => {
-    if (e.key === 'Enter') signin(e);
-  };
+  useEffect(() => {
+    if (user) {
+      navigate('/dashboard');
+    }
+  }, [navigate, user]);
 
   return (
     <div className="auth-page">
@@ -41,7 +43,7 @@ export default function Login() {
         <h1 className="auth-title">Sign in</h1>
         <p className="auth-subtitle">Civil Knowledge Integration Platform</p>
 
-        <div className="auth-form">
+        <form onSubmit={signin} className="auth-form">
           <div className="auth-field-group">
             <label className="auth-label" htmlFor="email">
               Email
@@ -52,7 +54,6 @@ export default function Login() {
               placeholder="john.a.smith.mil@socom.mil"
               value={emailValue}
               onChange={e => setEmailValue(e.target.value)}
-              onKeyDown={handleKeyDown}
             />
           </div>
 
@@ -66,14 +67,13 @@ export default function Login() {
               placeholder="••••••••"
               value={passwordValue}
               onChange={e => setPasswordValue(e.target.value)}
-              onKeyDown={handleKeyDown}
             />
           </div>
 
-          <button className="auth-button" onClick={signin}>
+          <button className="auth-button" type="submit">
             Authenticate
           </button>
-        </div>
+        </form>
 
         <div className="auth-footer">
           No account? <Link to="/signup">Request access</Link>

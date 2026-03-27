@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AppContext from '../context/AppContext';
 import '../style/Auth.css';
@@ -6,7 +6,7 @@ import '../style/Auth.css';
 export default function Signup() {
   const [emailValue, setEmailValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
-  const { register } = useContext(AppContext);
+  const { register, user } = useContext(AppContext);
   const navigate = useNavigate();
 
   const signup = async e => {
@@ -25,6 +25,12 @@ export default function Signup() {
   const handleKeyDown = e => {
     if (e.key === 'Enter') signup(e);
   };
+
+  useEffect(() => {
+    if (user) {
+      navigate('/dashboard');
+    }
+  }, [navigate, user]);
 
   return (
     <div className="auth-page">

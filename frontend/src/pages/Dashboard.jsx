@@ -3,48 +3,48 @@ import Header from '../components/Header';
 import AppContext from '../context/AppContext';
 import '../style/Dashboard.css';
 
-const metrics = [
-  {
-    value: '247',
-    label: 'TOTAL REPORTS',
-    note: '↑ 18 this week',
-    tone: 'default',
-  },
-  {
-    value: '14',
-    label: 'PENDING REVIEW',
-    note: '3 past SLA',
-    tone: 'warning',
-  },
-  {
-    value: '31',
-    label: 'AOs COVERED',
-    note: '↑ 4 new',
-    tone: 'success',
-  },
-  {
-    value: '2',
-    label: 'PRIORITY ALERTS',
-    note: 'Requires action',
-    tone: 'danger',
-  },
-];
-
-const mapPoints = [
-  { x: '14%', y: '61%', tone: 'info' },
-  { x: '24%', y: '36%', tone: 'danger' },
-  { x: '33%', y: '58%', tone: 'info' },
-  { x: '47%', y: '26%', tone: 'warning' },
-  { x: '54%', y: '61%', tone: 'warning' },
-  { x: '64%', y: '43%', tone: 'success' },
-  { x: '79%', y: '30%', tone: 'success' },
-  { x: '91%', y: '51%', tone: 'danger' },
-];
-
 export default function Dashboard() {
   const { cap, categories } = useContext(AppContext);
 
   const handleSubmit = () => {};
+
+  const metrics = [
+    {
+      value: '247',
+      label: 'TOTAL REPORTS',
+      note: '↑ 18 this week',
+      tone: 'default',
+    },
+    {
+      value: '14',
+      label: 'PENDING REVIEW',
+      note: '3 past SLA',
+      tone: 'warning',
+    },
+    {
+      value: '31',
+      label: 'AOs COVERED',
+      note: '↑ 4 new',
+      tone: 'success',
+    },
+    {
+      value: '2',
+      label: 'PRIORITY ALERTS',
+      note: 'Requires action',
+      tone: 'danger',
+    },
+  ];
+
+  const mapPoints = [
+    { x: '14%', y: '61%', tone: 'info' },
+    { x: '24%', y: '36%', tone: 'danger' },
+    { x: '33%', y: '58%', tone: 'info' },
+    { x: '47%', y: '26%', tone: 'warning' },
+    { x: '54%', y: '61%', tone: 'warning' },
+    { x: '64%', y: '43%', tone: 'success' },
+    { x: '79%', y: '30%', tone: 'success' },
+    { x: '91%', y: '51%', tone: 'danger' },
+  ];
 
   if (!categories) return null;
 
@@ -187,7 +187,7 @@ export default function Dashboard() {
                     Select a category
                   </option>
                   {categories.map(c => (
-                    <option value="c.category">
+                    <option value={c.category}>
                       {c.category
                         .split('_')
                         .map(word => cap(word))

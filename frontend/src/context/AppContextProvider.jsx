@@ -2,37 +2,14 @@ import { useEffect, useState } from 'react';
 import AppContext from './AppContext';
 
 export default function AppContextProvider({ children }) {
+  const cap = word => word.charAt(0).toUpperCase() + word.slice(1);
+
+  const [categories, setCategories] = useState(null);
   const [reportDetails, setReportDetails] = useState(null);
   const [selectedReports, setSelectedReports] = useState([]);
-
-  const [reports, setReports] = useState(null);
-
-  useEffect(() => {
-    const getReports = async () => {
-      const res = await fetch('http://localhost:8080/reports', {
-        credentials: 'include',
-      });
-      const reportsData = await res.json();
-      setReports(reportsData);
-    };
-    getReports();
-  }, []);
-
-  const [categories, setCategories] = useState();
-
-  useEffect(() => {
-    const getCategories = async () => {
-      const res = await fetch('http://localhost:8080/categories', {
-        credentials: 'include',
-      });
-      const data = await res.json();
-      setCategories(data);
-    };
-    getCategories();
-  }, []);
-
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [reports, setReports] = useState(null);
 
   useEffect(() => {
     fetch('http://localhost:8080/auth/me', { credentials: 'include' })
@@ -50,6 +27,16 @@ export default function AppContextProvider({ children }) {
       })
       .finally(() => setLoading(false));
   }, []);
+
+  const register = async (email, password) => {
+    const res = await fetch('http://localhost:8080/auth/register', {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+    return res;
+  };
 
   const login = async (email, password) => {
     const res = await fetch('http://localhost:8080/auth/login', {
@@ -76,19 +63,51 @@ export default function AppContextProvider({ children }) {
       credentials: 'include',
     });
     setUser(null);
+    setCategories([]);
+    setReports([]);
+    setReportDetails(null);
+    setSelectedReports([]);
   };
 
-  const register = async (email, password) => {
-    const res = await fetch('http://localhost:8080/auth/register', {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
-    return res;
-  };
+  useEffect(() => {
+    if (loading || !user) return;
 
-  const cap = word => word.charAt(0).toUpperCase() + word.slice(1);
+    const getCategories = async () => {
+      const res = await fetch('http://localhost:8080/categories', {
+        credentials: 'include',
+      });
+
+      if (!res.ok) {
+        setCategories([]);
+        return;
+      }
+
+      const data = await res.json();
+      setCategories(Array.isArray(data) ? data : []);
+    };
+
+    getCategories();
+  }, [loading, user]);
+
+  useEffect(() => {
+    if (loading || !user) return;
+
+    const getReports = async () => {
+      const res = await fetch('http://localhost:8080/reports', {
+        credentials: 'include',
+      });
+
+      if (!res.ok) {
+        setReports([]);
+        return;
+      }
+
+      const data = await res.json();
+      setReports(Array.isArray(data) ? data : []);
+    };
+
+    getReports();
+  }, [loading, user]);
 
   return (
     <AppContext.Provider
