@@ -84,6 +84,7 @@
   align-items: center;
   width: 100%;
 }
+
 .report-row {
   display: grid;
   grid-template-columns:

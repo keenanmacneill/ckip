@@ -25,6 +25,7 @@ export default function Report({ report }) {
 
   const handleClick = () => {
     setReportDetails(report);
+    localStorage.setItem('reportDetails', JSON.stringify(report));
     navigate(`/reports/${title}`);
   };
 

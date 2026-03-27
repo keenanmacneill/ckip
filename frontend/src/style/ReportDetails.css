@@ -1,3 +1,10 @@
+.dashboard-map-container {
+  overflow: hidden;
+  height: 100%;
+}
+
+/* dashboard css ^ */
+
 .classification {
   width: fit-content;
   padding: 8px 12px;
@@ -27,10 +34,15 @@
   border: 1px solid rgba(220, 38, 38, 0.4);
 }
 
-.report-details-layout {
+.report-top-layout {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(280px, 340px);
   gap: 22px;
+  margin-top: 20px;
+  align-items: start;
+}
+
+.report-bottom-layout {
   margin-top: 20px;
   align-items: start;
 }
@@ -243,7 +255,7 @@
 }
 
 @media (max-width: 980px) {
-  .report-details-layout {
+  .report-top-layout {
     grid-template-columns: 1fr;
   }
 }

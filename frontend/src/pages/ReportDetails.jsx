@@ -118,81 +118,53 @@ export default function ReportDetails() {
           </div>
         </div>
 
-        <section className="dashboard-map-container card">
-          <div className="dashboard-panel-header">
-            <div className="dashboard-panel-title">Report location</div>
-            <div className="dashboard-panel-meta">MGRS: 32NKL</div>
-          </div>
-
-          <div className="dashboard-map">
-            <div className="dashboard-map-grid"></div>
-            <div className="dashboard-map-terrain"></div>
-
-            {mapPoints.map((point, index) => (
-              <span
-                key={index}
-                className={`dashboard-map-point dashboard-map-point-${point.tone}`}
-                style={{ left: point.x, top: point.y }}
-              ></span>
-            ))}
-
-            <div className="dashboard-map-label dashboard-map-label-left">
-              32NKL
-            </div>
-            <div className="dashboard-map-label dashboard-map-label-center">
-              32NKL
-            </div>
-            <div className="dashboard-map-label dashboard-map-label-right">
-              32NKL 48291 83741
+        <div className="report-top-layout">
+          <section className="dashboard-map-container card">
+            <div className="dashboard-panel-header">
+              <div className="dashboard-panel-title">Report location</div>
+              <div className="dashboard-panel-meta">MGRS: 32NKL</div>
             </div>
 
-            <div className="dashboard-map-legend">
-              <div>
-                <span className="dashboard-legend-dot dashboard-map-point-danger"></span>
-                Critical
+            <div className="dashboard-map">
+              <div className="dashboard-map-grid"></div>
+              <div className="dashboard-map-terrain"></div>
+
+              {mapPoints.map((point, index) => (
+                <span
+                  key={index}
+                  className={`dashboard-map-point dashboard-map-point-${point.tone}`}
+                  style={{ left: point.x, top: point.y }}
+                ></span>
+              ))}
+
+              <div className="dashboard-map-label dashboard-map-label-left">
+                32NKL
               </div>
-              <div>
-                <span className="dashboard-legend-dot dashboard-map-point-warning"></span>
-                Attention
+              <div className="dashboard-map-label dashboard-map-label-center">
+                32NKL
               </div>
-              <div>
-                <span className="dashboard-legend-dot dashboard-map-point-success"></span>
-                Routine
+              <div className="dashboard-map-label dashboard-map-label-right">
+                32NKL 48291 83741
               </div>
-              <div>
-                <span className="dashboard-legend-dot dashboard-map-point-info"></span>
-                Info only
+
+              <div className="dashboard-map-legend">
+                <div>
+                  <span className="dashboard-legend-dot dashboard-map-point-danger"></span>
+                  Critical
+                </div>
+                <div>
+                  <span className="dashboard-legend-dot dashboard-map-point-warning"></span>
+                  Attention
+                </div>
+                <div>
+                  <span className="dashboard-legend-dot dashboard-map-point-success"></span>
+                  Routine
+                </div>
+                <div>
+                  <span className="dashboard-legend-dot dashboard-map-point-info"></span>
+                  Info only
+                </div>
               </div>
-            </div>
-          </div>
-        </section>
-
-        <div className="report-details-layout">
-          <section className="report-details-main-card">
-            <div className="report-details-section">
-              <div className="report-details-label">MGRS Coordinate</div>
-              <div className="report-details-body">{mgrs}</div>
-            </div>
-
-            <div className="report-details-divider" />
-
-            <div className="report-details-section">
-              <div className="report-details-label">Lat / Long</div>
-              <div className="report-details-body">{lat_long}</div>
-            </div>
-
-            <div className="report-details-divider" />
-
-            <div className="report-details-section">
-              <div className="report-details-label">Summary</div>
-              <div className="report-details-body">{summary}</div>
-            </div>
-
-            <div className="report-details-divider" />
-
-            <div className="report-details-section">
-              <div className="report-details-label">Recommendations</div>
-              <div className="report-details-body">{recommendations}</div>
             </div>
           </section>
 
@@ -239,7 +211,6 @@ export default function ReportDetails() {
                 </div>
               </div>
             </section>
-
             <section className="report-details-side-card">
               <div className="report-details-label review-timeline-title">
                 Review Timeline
@@ -270,6 +241,36 @@ export default function ReportDetails() {
               </div>
             </section>
           </aside>
+        </div>
+
+        <div className="report-bottom-layout">
+          <section className="report-details-main-card">
+            <div className="report-details-section">
+              <div className="report-details-label">MGRS Coordinate</div>
+              <div className="report-details-body">{mgrs}</div>
+            </div>
+
+            <div className="report-details-divider" />
+
+            <div className="report-details-section">
+              <div className="report-details-label">Lat / Long</div>
+              <div className="report-details-body">{lat_long}</div>
+            </div>
+
+            <div className="report-details-divider" />
+
+            <div className="report-details-section">
+              <div className="report-details-label">Summary</div>
+              <div className="report-details-body">{summary}</div>
+            </div>
+
+            <div className="report-details-divider" />
+
+            <div className="report-details-section">
+              <div className="report-details-label">Recommendations</div>
+              <div className="report-details-body">{recommendations}</div>
+            </div>
+          </section>
         </div>
       </main>
     </>
