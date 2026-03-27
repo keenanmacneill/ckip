@@ -5,19 +5,31 @@ exports.getAllReports = async (req, res) => {
   try {
     const reports = await applyQueryFilters(
       db('reports')
-        .join('report_categories', 'reports.id', 'report_id')
-        .join('categories', 'category_id', 'categories.id')
-        .join('users', 'submitted_by', 'users.id')
+        .join('report_categories', 'reports.id', 'report_categories.report_id')
+        .join('categories', 'report_categories.category_id', 'categories.id')
+        .join('users', 'reports.submitted_by', 'users.id')
         .select(
           'reports.id',
           'reports.title',
           'reports.mgrs',
           'reports.lat_long',
-          'categories.category',
           'reports.priority',
           'reports.summary',
           'reports.recommendations',
           'users.email as submitted_by',
+          'reports.created_at',
+          'reports.classification',
+        )
+        .select(db.raw('ARRAY_AGG(categories.category) as categories'))
+        .groupBy(
+          'reports.id',
+          'reports.title',
+          'reports.mgrs',
+          'reports.lat_long',
+          'reports.priority',
+          'reports.summary',
+          'reports.recommendations',
+          'users.email',
           'reports.created_at',
           'reports.classification',
         ),
@@ -40,15 +52,14 @@ exports.getReportId = async (req, res) => {
     }
 
     const [report] = await db('reports')
-      .join('report_categories', 'reports.id', 'report_id')
-      .join('categories', 'category_id', 'categories.id')
-      .join('users', 'submitted_by', 'users.id')
+      .join('report_categories', 'reports.id', 'report_categories.report_id')
+      .join('categories', 'report_categories.category_id', 'categories.id')
+      .join('users', 'reports.submitted_by', 'users.id')
       .select(
         'reports.id',
         'reports.title',
         'reports.mgrs',
         'reports.lat_long',
-        'categories.category',
         'reports.priority',
         'reports.summary',
         'reports.recommendations',
@@ -56,10 +67,24 @@ exports.getReportId = async (req, res) => {
         'reports.created_at',
         'reports.classification',
       )
+      .select(db.raw('ARRAY_AGG(categories.category) as categories'))
+      .groupBy(
+        'reports.id',
+        'reports.title',
+        'reports.mgrs',
+        'reports.lat_long',
+        'reports.priority',
+        'reports.summary',
+        'reports.recommendations',
+        'users.email',
+        'reports.created_at',
+        'reports.classification',
+      )
       .where('reports.id', req.params.id);
 
     res.status(200).json(report);
   } catch (err) {
+    console.log(err);
     res.status(500).json({ message: 'Internal server error.' });
   }
 };
@@ -76,18 +101,30 @@ exports.getReportsByCategory = async (req, res) => {
     }
 
     const reports = await db('reports')
-      .join('report_categories', 'reports.id', 'report_id')
-      .join('categories', 'category_id', 'categories.id')
-      .join('users', 'submitted_by', 'users.id')
+      .join('report_categories', 'reports.id', 'report_categories.report_id')
+      .join('categories', 'report_categories.category_id', 'categories.id')
+      .join('users', 'reports.submitted_by', 'users.id')
       .select(
         'reports.id',
         'reports.title',
         'reports.mgrs',
         'reports.lat_long',
-        'categories.category',
         'reports.priority',
         'users.email as submitted_by',
         'reports.created_at',
+      )
+      .select(db.raw('ARRAY_AGG(categories.category) as categories'))
+      .groupBy(
+        'reports.id',
+        'reports.title',
+        'reports.mgrs',
+        'reports.lat_long',
+        'reports.priority',
+        'reports.summary',
+        'reports.recommendations',
+        'users.email',
+        'reports.created_at',
+        'reports.classification',
       )
       .where('category', req.params.category);
 

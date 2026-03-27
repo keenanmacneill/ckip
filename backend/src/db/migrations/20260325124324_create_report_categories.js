@@ -15,6 +15,9 @@ exports.up = function (knex) {
       .references('id')
       .inTable('categories')
       .onDelete('CASCADE');
+
+    // enforce uniqueness
+    table.unique(['report_id', 'category_id']);
   });
 };
 

@@ -1,11 +1,11 @@
 ### Get all reports
-GET http://localhost:8080/reports?sort_by=created_at&order=asc
+GET http://localhost:8080/reports?category=religion
 
 ### Get report
 GET http://localhost:8080/reports/2
 
 ### Get reports by category
-GET http://localhost:8080/reports/category/key_leader
+GET http://localhost:8080/reports/category/religion
 
 ### Create report
 POST http://localhost:8080/reports/

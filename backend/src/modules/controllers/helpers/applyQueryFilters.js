@@ -61,7 +61,7 @@ exports.applyQueryFilters = (query, filters) => {
   }
 
   // CLASSIFICATION
-  if (classification) {
+  if (classification && classification !== 'all_classifications') {
     query.where('reports.classification', classification);
   }
 
