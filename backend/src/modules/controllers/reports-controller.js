@@ -17,6 +17,7 @@ exports.getAllReports = async (req, res) => {
         'reports.recommendations',
         'users.email as submitted_by',
         'reports.created_at',
+        'reports.classification',
       );
 
     res.status(200).json(reports);
@@ -48,6 +49,7 @@ exports.getReportId = async (req, res) => {
         'reports.recommendations',
         'users.email as submitted_by',
         'reports.created_at',
+        'reports.classification',
       )
       .where('reports.id', req.params.id);
 

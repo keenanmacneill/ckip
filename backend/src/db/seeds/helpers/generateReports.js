@@ -19,6 +19,11 @@ exports.generateReports = async (num = 1) => {
         'attention',
         'critical',
       ]),
+      classification: faker.helpers.arrayElement([
+        'secret',
+        'top secret',
+        'confidential',
+      ]),
       submitted_by: generateInt(1, 100),
     });
   }

@@ -133,6 +133,10 @@ button:disabled {
   opacity: 0.6;
 }
 
+.clickable:hover {
+  cursor: pointer;
+}
+
 a {
   color: var(--link);
   text-decoration: none;

@@ -11,7 +11,7 @@ export default function Header() {
     <div className="header">
       <div className="header-inner">
         <div
-          className="header-title"
+          className="header-title clickable"
           onClick={() => {
             navigate('/dashboard');
           }}
