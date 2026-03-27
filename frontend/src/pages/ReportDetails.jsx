@@ -1,4 +1,6 @@
 import L from 'leaflet';
+window.L = L;
+
 import 'leaflet.heat';
 import 'leaflet/dist/leaflet.css';
 import * as mgrsLib from 'mgrs';
