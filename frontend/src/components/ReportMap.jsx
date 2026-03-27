@@ -50,7 +50,7 @@ function HeatLayer({ points }) {
   return null;
 }
 
-export default function ReportMap({ title, mgrs, lat_long }) {
+export default function ReportMap({ mgrs, lat_long }) {
   const coordinate = useMemo(
     () => parseLatLong(lat_long) ?? parseMgrs(mgrs),
     [lat_long, mgrs],
