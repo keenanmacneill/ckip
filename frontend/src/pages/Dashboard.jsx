@@ -46,20 +46,20 @@ export default function Dashboard() {
     <>
       <Header />
 
-      <main className="dashboard-page">
-        <div className="dashboard-header-container">
-          <div className="dashboard-title-container">
-            <div className="dashboard-header-title">Dashboard</div>
-            <div className="dashboard-header-subtitle">
+      <main className="page">
+        <div className="page-header-container">
+          <div className="page-title-container">
+            <div className="page-header-title">Dashboard</div>
+            <div className="page-header-subtitle">
               TG Pineland — last sync 4 min ago
             </div>
           </div>
 
-          <div className="dashboard-utility-container">
-            <button className="dashboard-action-secondary" disabled>
+          <div className="page-utility-container">
+            <button className="page-action-secondary" disabled>
               Export
             </button>
-            <button className="dashboard-action-primary" disabled>
+            <button className="page-action-primary" disabled>
               + New report
             </button>
           </div>
@@ -139,6 +139,7 @@ export default function Dashboard() {
                   className="report-title"
                   type="text"
                   placeholder="Brief descriptive title..."
+                  disabled
                 ></input>
               </div>
 
@@ -148,6 +149,7 @@ export default function Dashboard() {
                   className="report-summary"
                   type="text"
                   placeholder="Concise summary..."
+                  disabled
                 ></input>
               </div>
 
@@ -157,6 +159,7 @@ export default function Dashboard() {
                   className="report-mgrs"
                   type="text"
                   placeholder="MGRS"
+                  disabled
                 ></input>
               </div>
 
@@ -166,6 +169,7 @@ export default function Dashboard() {
                   className="report-lat-long"
                   type="text"
                   placeholder="Latitude, longitude"
+                  disabled
                 ></input>
               </div>
 
@@ -175,22 +179,27 @@ export default function Dashboard() {
                   className="report-recommendations"
                   type="text"
                   placeholder="Concise recommendations..."
+                  disabled
                 ></input>
               </div>
 
               <div className="auth-field-group">
                 <div className="auth-label">Category</div>
-                <select className="report-category"></select>
+                <select className="report-category" disabled></select>
               </div>
 
               <div className="auth-field-group">
                 <div className="auth-label">Priority</div>
-                <select className="report-priority"></select>
+                <select className="report-priority" disabled></select>
               </div>
             </div>
 
             <div className="dashboard-report-footer">
-              <button className="report-submit-button" onClick={handleSubmit}>
+              <button
+                className="report-submit-button"
+                onClick={handleSubmit}
+                disabled
+              >
                 Submit report
               </button>
             </div>

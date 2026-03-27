@@ -1,15 +1,24 @@
+import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import AppContext from '../context/AppContext';
 import '../style/Reports.css';
 
 export default function Report({ report }) {
+  const navigate = useNavigate();
+  const { setReportDetails } = useContext(AppContext);
+
   const { id, title, mgrs, created_at, priority, submitted_by, category } =
     report;
-
   const categories = Array.isArray(category) ? category : [category];
-
   const priorityClass = priority?.toLowerCase().replace(/\s+/g, '_');
 
+  const handleClick = () => {
+    setReportDetails(report);
+    navigate(`/reports/${title}`);
+  };
+
   return (
-    <div className="report-row">
+    <div className="report-row" onClick={handleClick}>
       <div className="report-cell report-id">
         {String(id).startsWith('RPT-')
           ? id

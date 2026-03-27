@@ -4,6 +4,7 @@ import AppContext from './AppContext';
 export default function AppContextProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [reportDetails, setReportDetails] = useState(null);
 
   useEffect(() => {
     fetch('http://localhost:8080/auth/me', { credentials: 'include' })
@@ -60,7 +61,17 @@ export default function AppContextProvider({ children }) {
   };
 
   return (
-    <AppContext.Provider value={{ user, login, logout, register, loading }}>
+    <AppContext.Provider
+      value={{
+        user,
+        login,
+        logout,
+        register,
+        loading,
+        reportDetails,
+        setReportDetails,
+      }}
+    >
       {children}
     </AppContext.Provider>
   );

@@ -13,6 +13,8 @@ exports.getAllReports = async (req, res) => {
         'reports.lat_long',
         'categories.category',
         'reports.priority',
+        'reports.summary',
+        'reports.recommendations',
         'users.email as submitted_by',
         'reports.created_at',
       );

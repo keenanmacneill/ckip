@@ -34,7 +34,7 @@ export default function App() {
             }
           />
           <Route
-            path="/reports/:id"
+            path="/reports/:title"
             element={
               <ProtectedRoute>
                 <ReportDetails />

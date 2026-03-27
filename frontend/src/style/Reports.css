@@ -1,42 +1,54 @@
-.reports-page {
-  margin: 0 auto;
-  padding: 1.25rem;
-}
-
-.reports-header-container {
+.filters-bar {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
 }
 
-.reports-title-container {
-  display: flex;
-  flex-direction: column;
+.filter-input {
+  flex: 1;
+  min-width: 260px;
+  padding: 10px 12px;
+  background: #111827;
+  border: 1px solid #2a3954;
+  border-radius: 6px;
+  color: #e5e7eb;
+  font-size: 14px;
 }
 
-.reports-header-title {
-  font-size: 2rem;
-  font-weight: 700;
-  line-height: 1.1;
-  color: #f5f8ff;
+.filter-input::placeholder {
+  color: #6b7280;
 }
 
-.reports-header-subtitle {
-  margin-top: 0.35rem;
-  color: var(--text-secondary);
-  font-size: 1rem;
+.filter-select {
+  padding: 10px 12px;
+  background: #111827;
+  border: 1px solid #2a3954;
+  border-radius: 6px;
+  color: #e5e7eb;
+  font-size: 14px;
+  cursor: pointer;
+  width: max-content;
 }
 
-.reports-utility-container {
-  display: flex;
-  gap: 0.75rem;
+.filter-button {
+  padding: 10px 14px;
+  background: #111827;
+  border: 1px solid #2a3954;
+  border-radius: 6px;
+  color: #cbd5f5;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.15s ease;
 }
 
-.reports-action-primary {
-  min-width: 112px;
-  padding: 0 1rem;
+.filter-button:hover {
+  background: #1e293b;
+}
+
+.filter-button.active {
+  border-color: #3b82f6;
+  color: #3b82f6;
 }
 
 .reports-table {
@@ -61,6 +73,23 @@
     minmax(5rem, 0.8fr); /*date*/
   align-items: center;
   width: 100%;
+}
+
+.report-row {
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.report-row:hover {
+  cursor: pointer;
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.report-row:active {
+  transform: translateY(2px) scale(1.01);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 1);
 }
 
 .reports-header {
@@ -269,6 +298,8 @@
       minmax(7rem, 0.8fr);
   }
 
+  .filters-bar > :nth-child(5),
+  .filters-bar > :nth-child(6),
   .reports-header > :nth-child(4),
   .reports-header > :nth-child(6),
   .report-row > :nth-child(4),
