@@ -1,5 +1,5 @@
 ### Get all reports
-GET http://localhost:8080/reports
+GET http://localhost:8080/reports?sort_by=created_at&order=asc
 
 ### Get report
 GET http://localhost:8080/reports/2

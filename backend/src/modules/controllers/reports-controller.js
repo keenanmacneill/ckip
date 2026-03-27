@@ -1,27 +1,32 @@
 const db = require('../../db/knex');
+const { applyQueryFilters } = require('./helpers/applyQueryFilters');
 
 exports.getAllReports = async (req, res) => {
   try {
-    const reports = await db('reports')
-      .join('report_categories', 'reports.id', 'report_id')
-      .join('categories', 'category_id', 'categories.id')
-      .join('users', 'submitted_by', 'users.id')
-      .select(
-        'reports.id',
-        'reports.title',
-        'reports.mgrs',
-        'reports.lat_long',
-        'categories.category',
-        'reports.priority',
-        'reports.summary',
-        'reports.recommendations',
-        'users.email as submitted_by',
-        'reports.created_at',
-        'reports.classification',
-      );
+    const reports = await applyQueryFilters(
+      db('reports')
+        .join('report_categories', 'reports.id', 'report_id')
+        .join('categories', 'category_id', 'categories.id')
+        .join('users', 'submitted_by', 'users.id')
+        .select(
+          'reports.id',
+          'reports.title',
+          'reports.mgrs',
+          'reports.lat_long',
+          'categories.category',
+          'reports.priority',
+          'reports.summary',
+          'reports.recommendations',
+          'users.email as submitted_by',
+          'reports.created_at',
+          'reports.classification',
+        ),
+      req.query,
+    );
 
     res.status(200).json(reports);
   } catch (err) {
+    console.log(err);
     res.status(500).json({ message: 'Internal server error.' });
   }
 };
