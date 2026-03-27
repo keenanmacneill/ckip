@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Report from '../components/Report';
 import AppContext from '../context/AppContext';
@@ -6,8 +7,13 @@ import handleExportPdf from '../helpers/handleExportPdf';
 import '../style/Reports.css';
 
 export default function Reports() {
+  const navigate = useNavigate();
   const { reports, categories, cap, selectedReports, setSelectedReports } =
     useContext(AppContext);
+
+  const handleNewReport = () => {
+    navigate('/dashboard');
+  };
 
   const handleExportSelected = () => {
     handleExportPdf(selectedReports);
@@ -56,7 +62,9 @@ export default function Reports() {
             >
               Export selected ({selectedReports.length})
             </button>
-            <button className="page-action-primary">+ New report</button>
+            <button className="page-action-primary" onClick={handleNewReport}>
+              + New report
+            </button>
           </div>
         </div>
 
