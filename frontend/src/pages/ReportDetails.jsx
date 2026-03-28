@@ -118,7 +118,13 @@ export default function ReportDetails() {
             </div>
 
             <div className="dashboard-map">
-              <ReportMap title={title} mgrs={mgrs} lat_long={lat_long} />
+              <ReportMap
+                title={title}
+                mgrs={mgrs}
+                lat_long={lat_long}
+                priority={priority}
+                classification={classification}
+              />
             </div>
           </section>
 

@@ -42,15 +42,46 @@ function HeatLayer({ points }) {
       blur: 15,
       maxZoom: 11,
       minOpacity: 0.45,
-    }).addTo(map);
+    });
+    // .addTo(map);
 
-    return () => map.removeLayer(layer);
+    return () => {
+      map.removeLayer(layer);
+    };
   }, [map, points]);
 
   return null;
 }
 
-export default function ReportMap({ mgrs, lat_long }) {
+function toClassName(value) {
+  return String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, '-');
+}
+
+function createReportMarkerIcon(priority, classification) {
+  const priorityClass = `marker-${toClassName(priority)}`;
+  const classificationClass = `marker-classification-${toClassName(
+    classification,
+  )}`;
+
+  return L.divIcon({
+    className: 'custom-marker',
+    html: `
+      <div class="marker-dot ${priorityClass} ${classificationClass}"></div>
+    `,
+    iconSize: [18, 18],
+    iconAnchor: [9, 9],
+  });
+}
+
+export default function ReportMap({
+  mgrs,
+  lat_long,
+  priority,
+  classification,
+}) {
   const coordinate = useMemo(
     () => parseLatLong(lat_long) ?? parseMgrs(mgrs),
     [lat_long, mgrs],
@@ -64,6 +95,10 @@ export default function ReportMap({ mgrs, lat_long }) {
     return [[lat, lon, 1.0]];
   }, [coordinate]);
 
+  const markerIcon = useMemo(() => {
+    return createReportMarkerIcon(priority, classification);
+  }, [priority, classification]);
+
   if (!coordinate) {
     return (
       <div className="report-map-fallback">No valid coordinate provided.</div>
@@ -73,11 +108,11 @@ export default function ReportMap({ mgrs, lat_long }) {
   return (
     <MapContainer center={coordinate} zoom={11} className="report-leaflet-map">
       <TileLayer
-        attribution="Esri (ArcGIS)"
+        attribution="Esri"
         url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
       />
 
-      <Marker position={coordinate}></Marker>
+      <Marker position={coordinate} icon={markerIcon} />
 
       <HeatLayer points={heatPoints} />
     </MapContainer>
