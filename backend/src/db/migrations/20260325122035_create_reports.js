@@ -7,7 +7,7 @@ exports.up = function (knex) {
     table.string('lat_long').notNullable();
     table.string('created_at').defaultTo(knex.fn.now());
     table.text('recommendations').notNullable();
-    table.string('priority').notNullable().defaultTo('info only');
+    table.string('priority').notNullable().defaultTo('routine');
     table.string('classification').notNullable().defaultTo('confidential');
 
     table.integer('submitted_by').notNullable().unsigned();

@@ -13,6 +13,10 @@
   --text-secondary: #93a8d5;
   --text-muted: #8ea0c5;
 
+  --priority-critical: #ff5252;
+  --priority-attention: #ffb020;
+  --priority-routine: #1fce8d;
+
   --accent: #4e8cff;
   --accent-dark: #3f7deb;
   --link: #4f8dff;

@@ -3,11 +3,11 @@ import AppContext from './AppContext';
 
 export default function AppContextProvider({ children }) {
   const cap = word => word.charAt(0).toUpperCase() + word.slice(1);
+  const [reports, setReports] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedReports, setSelectedReports] = useState([]);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [reports, setReports] = useState([]);
 
   const [reportDetails, setReportDetails] = useState(() => {
     const saved = localStorage.getItem('reportDetails');
@@ -92,27 +92,6 @@ export default function AppContextProvider({ children }) {
     getCategories();
   }, [loading, user]);
 
-  useEffect(() => {
-    if (loading || !user) return;
-
-    const getReports = async () => {
-      const res = await fetch('http://localhost:8080/reports', {
-        credentials: 'include',
-      });
-
-      if (!res.ok) {
-        setReports([]);
-        return;
-      }
-
-      const data = await res.json();
-      const parsedReports = Array.isArray(data?.data) ? data.data : [];
-      setReports(parsedReports);
-    };
-
-    getReports();
-  }, [loading, user]);
-
   return (
     <AppContext.Provider
       value={{
@@ -125,9 +104,10 @@ export default function AppContextProvider({ children }) {
         setReportDetails,
         categories,
         cap,
-        reports,
         selectedReports,
         setSelectedReports,
+        reports,
+        setReports,
       }}
     >
       {children}

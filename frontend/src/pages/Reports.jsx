@@ -16,7 +16,7 @@ import '../style/Reports.css';
 
 const PAGE_SIZE = 25;
 const SEARCH_DEBOUNCE_MS = 500;
-const PRIORITY_OPTIONS = ['attention', 'critical', 'info_only', 'routine'];
+const PRIORITY_OPTIONS = ['attention', 'critical', 'routine'];
 const DATE_RANGE_OPTIONS = [
   { value: 'all_dates', label: 'All dates' },
   { value: 'last_7_days', label: 'Last 7 days' },

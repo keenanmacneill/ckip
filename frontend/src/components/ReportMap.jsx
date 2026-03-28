@@ -108,8 +108,8 @@ export default function ReportMap({
   return (
     <MapContainer center={coordinate} zoom={11} className="report-leaflet-map">
       <TileLayer
-        attribution="Esri"
-        url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
 
       <Marker position={coordinate} icon={markerIcon} />

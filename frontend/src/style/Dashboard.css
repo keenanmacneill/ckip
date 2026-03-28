@@ -74,6 +74,10 @@
   color: var(--text-primary);
 }
 
+.dashboard-panel-mgrs-hint {
+  color: var(--text-secondary);
+}
+
 .dashboard-panel-meta {
   font-size: 0.72rem;
   text-transform: uppercase;
@@ -95,134 +99,47 @@
     auto;
 }
 
-.dashboard-map-grid {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(rgba(88, 110, 154, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(88, 110, 154, 0.08) 1px, transparent 1px);
-  background-size: 112px 112px;
-  pointer-events: none;
-}
-
-.dashboard-map-terrain {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 58%;
-  background:
-    linear-gradient(to top, rgba(44, 67, 105, 0.35), rgba(44, 67, 105, 0.16)),
-    linear-gradient(
-      to right,
-      rgba(76, 114, 184, 0.08),
-      rgba(76, 114, 184, 0.02)
-    );
-  clip-path: polygon(
-    0% 58%,
-    8% 52%,
-    18% 48%,
-    27% 53%,
-    39% 52%,
-    53% 42%,
-    66% 40%,
-    79% 44%,
-    92% 44%,
-    100% 41%,
-    100% 100%,
-    0% 100%
-  );
-}
-
-.dashboard-map-point {
-  position: absolute;
-  width: 0.95rem;
-  height: 0.95rem;
-  border-radius: 999px;
-  transform: translate(-50%, -50%);
-}
-
-.dashboard-map-point-danger {
-  background: #ff5252;
-  box-shadow: 0 0 0 10px rgba(255, 82, 82, 0.16);
-}
-
-.dashboard-map-point-warning {
-  background: #ffb020;
-  box-shadow: 0 0 0 10px rgba(255, 176, 32, 0.16);
-}
-
-.dashboard-map-point-success {
-  background: #1fce8d;
-  box-shadow: 0 0 0 10px rgba(31, 206, 141, 0.16);
-}
-
-.dashboard-map-point-info {
-  background: #4e8cff;
-  box-shadow: 0 0 0 10px rgba(78, 140, 255, 0.16);
-}
-
-.dashboard-map-label {
-  position: absolute;
-  font-size: 0.72rem;
-  color: rgba(147, 168, 213, 0.22);
-  text-transform: uppercase;
-}
-
-.dashboard-map-label-left {
-  top: 34%;
-  left: 34%;
-}
-
-.dashboard-map-label-center {
-  top: 35%;
-  left: 67%;
-}
-
-.dashboard-map-label-right {
-  right: 0.9rem;
-  bottom: 0.85rem;
-}
-
-.dashboard-map-legend {
+/* position legend bottom-left over the map */
+.dashboard-map-legend-bottom-left {
   position: absolute;
   left: 0.9rem;
   bottom: 0.9rem;
-  display: grid;
-  gap: 0.35rem;
+  z-index: 500;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  background: rgba(18, 26, 42, 0.92);
+  border: 1px solid rgba(147, 168, 213, 0.18);
+  backdrop-filter: blur(6px);
+}
+
+/* align legend rows */
+.dashboard-map-legend-bottom-left div {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
   font-size: 0.82rem;
   color: var(--text-secondary);
 }
 
-.dashboard-map-legend div {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-}
-
+/* base legend dot */
 .dashboard-legend-dot {
-  width: 0.5rem;
-  height: 0.5rem;
+  width: 0.55rem;
+  height: 0.55rem;
   border-radius: 999px;
   display: inline-block;
 }
 
-.dashboard-report-container {
-  overflow: hidden;
+/* match marker colors exactly */
+.dashboard-legend-critical {
+  background: #ff5252;
 }
 
-.dashboard-panel-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.95rem 1rem;
-  border-bottom: 1px solid var(--border-primary);
+.dashboard-legend-attention {
+  background: #ffb020;
 }
 
-.dashboard-panel-title {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text-primary);
+.dashboard-legend-routine {
+  background: #1fce8d;
 }
 
 .dashboard-report-body {
@@ -277,6 +194,168 @@
 .report-priority:focus {
   border-color: var(--border-focus);
   box-shadow: 0 0 0 3px rgba(77, 127, 255, 0.15);
+}
+
+/* give the leaflet map a stable rendered height */
+.dashboard-leaflet-map-wrap {
+  height: 62rem;
+}
+
+/* force leaflet map container to fill the card */
+.dashboard-leaflet-map {
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+/* prevent default leaflet divIcon box styling */
+.dashboard-report-marker-icon-wrapper {
+  background: transparent;
+  border: none;
+}
+
+/* base custom marker shell */
+.dashboard-report-marker {
+  position: relative;
+  width: 34px;
+  height: 42px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+/* visible marker pin */
+.dashboard-report-marker-core {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.92);
+  box-shadow:
+    0 0 0 6px rgba(0, 0, 0, 0.18),
+    0 8px 18px rgba(0, 0, 0, 0.35);
+  position: relative;
+}
+
+/* pointer tail for the custom marker */
+.dashboard-report-marker-core::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 12px;
+  width: 10px;
+  height: 10px;
+  transform: translateX(-50%) rotate(45deg);
+  border-right: 2px solid rgba(255, 255, 255, 0.92);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.92);
+  background: inherit;
+  z-index: -1;
+}
+
+/* priority-based marker colors */
+.dashboard-report-marker-attention .dashboard-report-marker-core {
+  background: #ffb020;
+}
+
+.dashboard-report-marker-critical .dashboard-report-marker-core {
+  background: #ff5252;
+}
+
+.dashboard-report-marker-routine .dashboard-report-marker-core {
+  background: #1fce8d;
+}
+
+/* popup inner content layout */
+.dashboard-popup-content {
+  display: grid;
+  gap: 0.55rem;
+  min-width: 14rem;
+  color: var(--text-primary);
+}
+
+/* popup title styling */
+.dashboard-popup-title {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* popup info rows */
+.dashboard-popup-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* popup field labels */
+.dashboard-popup-label {
+  color: #98abd3;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.72rem;
+}
+
+/* popup button sizing */
+.dashboard-popup-button {
+  width: 100%;
+  margin-top: 0.2rem;
+}
+
+/* theme the leaflet popup background to match the dashboard */
+.leaflet-popup-content-wrapper {
+  background: linear-gradient(180deg, #1b2438 0%, #121a2a 100%);
+  color: var(--text-primary);
+  border: 1px solid rgba(147, 168, 213, 0.18);
+  border-radius: 14px;
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.35);
+}
+
+/* theme the leaflet popup tip */
+.leaflet-popup-tip {
+  background: #121a2a;
+  border: 1px solid rgba(147, 168, 213, 0.18);
+}
+
+/* tighten default leaflet popup margins */
+.leaflet-popup-content {
+  margin: 0.9rem;
+}
+
+/* style popup close button for dark theme */
+.leaflet-container a.leaflet-popup-close-button {
+  color: #dfe8ff;
+}
+
+.leaflet-container a.leaflet-popup-close-button:hover {
+  color: #ffffff;
+}
+
+/* make popup chrome match theme on dark map */
+.leaflet-popup-tip-container {
+  margin-top: -1px;
+}
+
+.marker-pulse .dashboard-report-marker-core {
+  animation: markerPulse 1.8s ease-out infinite;
+}
+
+@keyframes markerPulse {
+  0% {
+    box-shadow:
+      0 0 0 0 rgba(255, 82, 82, 0.45),
+      0 8px 18px rgba(0, 0, 0, 0.35);
+  }
+  70% {
+    box-shadow:
+      0 0 0 14px rgba(255, 82, 82, 0),
+      0 8px 18px rgba(0, 0, 0, 0.35);
+  }
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(255, 82, 82, 0),
+      0 8px 18px rgba(0, 0, 0, 0.35);
+  }
 }
 
 @media (max-width: 900px) {

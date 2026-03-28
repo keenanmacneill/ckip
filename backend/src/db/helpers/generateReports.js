@@ -17,7 +17,6 @@ exports.generateReports = async (num = 1) => {
       lat_long: `${generateMGRS()[1]}, ${generateMGRS()[2]}`,
       created_at: faker.date.between({ from: '2000-01-01', to: Date.now() }),
       priority: faker.helpers.arrayElement([
-        'info_only',
         'routine',
         'attention',
         'critical',
