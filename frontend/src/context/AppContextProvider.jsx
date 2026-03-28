@@ -3,16 +3,16 @@ import AppContext from './AppContext';
 
 export default function AppContextProvider({ children }) {
   const cap = word => word.charAt(0).toUpperCase() + word.slice(1);
-
   const [categories, setCategories] = useState([]);
-  const [reportDetails, setReportDetails] = useState(() => {
-    const saved = localStorage.getItem('reportDetails');
-    return saved ? JSON.parse(saved) : [];
-  });
   const [selectedReports, setSelectedReports] = useState([]);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [reports, setReports] = useState([]);
+
+  const [reportDetails, setReportDetails] = useState(() => {
+    const saved = localStorage.getItem('reportDetails');
+    return saved ? JSON.parse(saved) : [];
+  });
 
   useEffect(() => {
     fetch('http://localhost:8080/auth/me', { credentials: 'include' })

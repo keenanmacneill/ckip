@@ -53,7 +53,7 @@
 
 .reports-table {
   width: 100%;
-  overflow-x: auto;
+  overflow-x: hidden;
   overflow-y: hidden;
   border: 1px solid #2a3954;
   border-radius: 10px;
@@ -343,7 +343,7 @@
       minmax(7rem, 0.8fr);
   }
 
-  .filters-bar > :nth-child(5),
+  .filters-bar > :nth-child(4),
   .filters-bar > :nth-child(6),
   /* .reports-header > :nth-child(4), */
   .reports-header > :nth-child(5),

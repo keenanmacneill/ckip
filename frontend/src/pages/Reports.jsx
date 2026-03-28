@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { StringParam, useQueryParam } from 'use-query-params';
 import Header from '../components/Header';
 import Report from '../components/Report';
 import AppContext from '../context/AppContext';
@@ -7,13 +8,24 @@ import handleExportPdf from '../helpers/handleExportPdf';
 import '../style/Reports.css';
 
 export default function Reports() {
-  const navigate = useNavigate();
   const { reports, categories, cap, selectedReports, setSelectedReports } =
     useContext(AppContext);
+
+  const UseQueryParam = () => {
+    const [sort, setSort] = useQueryParam('sort', StringParam);
+    const [category, setCategory] = useQueryParam('category', StringParam);
+    const [priority, setPriority] = useQueryParam('priority', StringParam);
+  };
+
+  const handleSort = () => {
+    sort === 'asc' ? setSort('desc') : setSort('asc');
+  };
 
   const sortedCategories = [...(categories || [])].sort((a, b) =>
     a.category.localeCompare(b.category, undefined, { sensitivity: 'base' }),
   );
+
+  const navigate = useNavigate();
 
   const handleNewReport = () => {
     navigate('/dashboard');
