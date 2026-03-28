@@ -7,17 +7,63 @@ import '../style/Dashboard.css';
 export default function Dashboard() {
   const { cap, categories, reports } = useContext(AppContext);
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [reportTitle, setReportTitle] = useState('');
+  const [reportSummary, setReportSummary] = useState('');
+  const [reportRecommendations, setReportRecommendations] = useState('');
+  const [reportMGRS, setReportMGRS] = useState('');
+  const [reportLatLong, setReportLatLong] = useState('');
+  const [reportPriority, setReportPriority] = useState('');
 
   const sortedCategories = [...(categories || [])].sort((a, b) =>
     a.category.localeCompare(b.category, undefined, { sensitivity: 'base' }),
   );
-  const handleSubmit = () => {};
+  const handleSubmit = async () => {
+    try {
+      const res = await fetch('http://localhost:8080/reports', {
+        credentials: 'include',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify({
+          title: reportTitle,
+          categories: selectedCategories,
+          summary: reportSummary,
+          recommendations: reportRecommendations,
+          mgrs: reportMGRS,
+          lat_long: reportLatLong,
+          priority: reportPriority,
+        }),
+      });
+
+      const message = await res.json();
+      window.alert(message.message);
+
+      setSelectedCategories([]);
+      setReportTitle('');
+      setReportSummary('');
+      setReportRecommendations('');
+      setReportMGRS('');
+      setReportLatLong('');
+      setReportPriority('');
+    } catch (err) {
+      window.alert(err.message);
+
+      setSelectedCategories([]);
+      setReportTitle('');
+      setReportSummary('');
+      setReportRecommendations('');
+      setReportMGRS('');
+      setReportLatLong('');
+      setReportPriority('');
+    }
+  };
 
   const metrics = [
     {
       value: reports.length,
       label: 'TOTAL REPORTS',
-      tone: 'success',
+      tone: 'successMessage',
     },
     {
       value: reports.filter(r => r.priority === 'attention').length,
@@ -78,6 +124,10 @@ export default function Dashboard() {
                   className="report-title"
                   type="text"
                   placeholder="Brief descriptive title..."
+                  value={reportTitle}
+                  onChange={e => {
+                    setReportTitle(e.target.value);
+                  }}
                 ></input>
               </div>
 
@@ -87,6 +137,10 @@ export default function Dashboard() {
                   className="report-summary"
                   type="text"
                   placeholder="Concise summary..."
+                  value={reportSummary}
+                  onChange={e => {
+                    setReportSummary(e.target.value);
+                  }}
                 ></textarea>
               </div>
 
@@ -96,6 +150,10 @@ export default function Dashboard() {
                   className="report-recommendations"
                   type="text"
                   placeholder="Concise recommendations..."
+                  value={reportRecommendations}
+                  onChange={e => {
+                    setReportRecommendations(e.target.value);
+                  }}
                 ></textarea>
               </div>
 
@@ -105,6 +163,10 @@ export default function Dashboard() {
                   className="report-mgrs"
                   type="text"
                   placeholder="MGRS"
+                  value={reportMGRS}
+                  onChange={e => {
+                    setReportMGRS(e.target.value);
+                  }}
                 ></input>
               </div>
 
@@ -114,6 +176,10 @@ export default function Dashboard() {
                   className="report-lat-long"
                   type="text"
                   placeholder="Latitude, longitude"
+                  value={reportLatLong}
+                  onChange={e => {
+                    setReportLatLong(e.target.value);
+                  }}
                 ></input>
               </div>
 
@@ -121,10 +187,14 @@ export default function Dashboard() {
                 <div className="auth-label">Priority</div>
                 <select
                   className="report-priority clickable"
-                  defaultValue={'select_priority'}
+                  defaultValue=""
+                  value={reportPriority}
+                  onChange={e => {
+                    setReportPriority(e.target.value);
+                  }}
                 >
-                  <option value="select_priority" disabled>
-                    Select a priority
+                  <option value="" disabled>
+                    Select
                   </option>
                   <option value="attention">Attention</option>
                   <option value="critical">Critical</option>

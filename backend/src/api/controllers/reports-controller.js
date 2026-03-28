@@ -157,22 +157,41 @@ exports.createReport = async (req, res) => {
       lat_long,
       recommendations,
       priority,
-      category,
+      categories = [],
     } = req.body;
+
+    if (
+      !title ||
+      !summary ||
+      !mgrs ||
+      !lat_long ||
+      !recommendations ||
+      !priority ||
+      !categories
+    )
+      return res.status(401).json({ message: 'All fields are required.' });
 
     const userId = req.user.id;
 
-    const [match] = await db('categories').where('category', category);
+    const cleanedCategories = [...new Set(categories.filter(Boolean))];
 
-    if (!match) {
-      return res.status(404).json({ message: 'Category is not valid.' });
+    if (!cleanedCategories.length) {
+      return res
+        .status(400)
+        .json({ message: 'At least one category is required.' });
+    }
+
+    const matchedCategories = await db('categories')
+      .select('id', 'category')
+      .whereIn('category', cleanedCategories);
+
+    if (matchedCategories.length !== cleanedCategories.length) {
+      return res
+        .status(404)
+        .json({ message: 'One or more categories are not valid.' });
     }
 
     const newReport = await db.transaction(async trx => {
-      const [categoryId] = await trx('categories')
-        .select('id')
-        .where('category', category);
-
       const [report] = await trx('reports')
         .insert({
           title,
@@ -185,15 +204,19 @@ exports.createReport = async (req, res) => {
         })
         .returning('*');
 
-      await trx('report_categories').insert({
-        report_id: report.id,
-        category_id: categoryId.id,
-      });
+      await trx('report_categories').insert(
+        matchedCategories.map(category => ({
+          report_id: report.id,
+          category_id: category.id,
+        })),
+      );
 
       return report;
     });
 
-    res.status(201).json(`${newReport.title} has been successfully posted.`);
+    res
+      .status(201)
+      .json({ message: `${newReport.title} has been successfully posted.` });
   } catch (err) {
     res.status(500).json({ message: 'Internal server error.' });
   }
@@ -209,7 +232,7 @@ exports.updateReport = async (req, res) => {
       lat_long,
       recommendations,
       priority,
-      category,
+      categories = [],
     } = req.body;
 
     const [existingReport] = await db('reports').select('*').where('id', id);
@@ -227,35 +250,71 @@ exports.updateReport = async (req, res) => {
         .json({ message: 'You can only edit your own reports.' });
     }
 
-    const [categoryId] = await db('categories')
-      .where('category', category)
-      .select('id');
+    const cleanedCategories = [...new Set(categories.filter(Boolean))];
 
-    if (!categoryId) {
-      return res.status(404).json({ message: 'Category is not valid.' });
+    if (!cleanedCategories.length) {
+      return res
+        .status(400)
+        .json({ message: 'At least one category is required.' });
     }
 
-    if (
+    const matchedCategories = await db('categories')
+      .select('id', 'category')
+      .whereIn('category', cleanedCategories);
+
+    if (matchedCategories.length !== cleanedCategories.length) {
+      return res
+        .status(404)
+        .json({ message: 'One or more categories are not valid.' });
+    }
+
+    const existingCategoryRows = await db('report_categories')
+      .join('categories', 'report_categories.category_id', 'categories.id')
+      .where('report_categories.report_id', id)
+      .select('categories.category');
+
+    const existingCategories = existingCategoryRows
+      .map(row => row.category)
+      .sort();
+
+    const nextCategories = [...cleanedCategories].sort();
+
+    const noReportChanges =
       existingReport.title === title &&
       existingReport.summary === summary &&
       existingReport.mgrs === mgrs &&
       existingReport.lat_long === lat_long &&
       existingReport.recommendations === recommendations &&
-      existingReport.priority === priority
-    ) {
+      existingReport.priority === priority;
+
+    const noCategoryChanges =
+      JSON.stringify(existingCategories) === JSON.stringify(nextCategories);
+
+    if (noReportChanges && noCategoryChanges) {
       return res.status(400).json({ message: 'No changes detected.' });
     }
 
     const updatedReport = await db.transaction(async trx => {
       const [report] = await trx('reports')
         .where('id', id)
-        .update({ title, summary, mgrs, lat_long, recommendations, priority })
+        .update({
+          title,
+          summary,
+          mgrs,
+          lat_long,
+          recommendations,
+          priority,
+        })
         .returning('*');
 
-      await trx('report_categories')
-        .where('report_id', id)
-        .update({ category_id: categoryId.id })
-        .returning('*');
+      await trx('report_categories').where('report_id', id).del();
+
+      await trx('report_categories').insert(
+        matchedCategories.map(category => ({
+          report_id: Number(id),
+          category_id: category.id,
+        })),
+      );
 
       return report;
     });
