@@ -5,7 +5,7 @@ import '../style/Header.css';
 
 export default function Header() {
   const navigate = useNavigate();
-  const { logout } = useContext(AppContext);
+  const { logout, user, cap } = useContext(AppContext);
 
   return (
     <div className="header">
@@ -31,6 +31,7 @@ export default function Header() {
           >
             Logout
           </button>
+          <div className={`user-role ${user.role}`}>{cap(user.role)}</div>
         </div>
       </div>
     </div>

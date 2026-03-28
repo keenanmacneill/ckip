@@ -98,6 +98,7 @@ export default function Reports() {
             <option value="info_only">Info Only</option>
             <option value="routine">Routine</option>
           </select>
+          <button className="filter-button">Priority</button>
 
           <select className="filter-select" defaultValue="all_dates">
             <option value="all_dates">All dates</option>
@@ -108,7 +109,6 @@ export default function Reports() {
           </select>
 
           <button className="filter-button">Date</button>
-          <button className="filter-button">Priority</button>
         </div>
 
         <div className="reports-table">

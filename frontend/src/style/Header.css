@@ -54,3 +54,29 @@
 .header-logout:hover {
   background: rgba(255, 122, 122, 0.08);
 }
+
+.user-role {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  color: #6f84ab;
+  background: rgba(111, 132, 171, 0.12);
+  border: 1px solid rgba(111, 132, 171, 0.28);
+
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+/* Optional: role-based color variants */
+.user-role.admin {
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.12);
+  border-color: rgba(255, 107, 107, 0.28);
+}
+
+.user-role.user {
+  color: #57a6ff;
+  background: rgba(87, 166, 255, 0.12);
+  border-color: rgba(87, 166, 255, 0.28);
+}
