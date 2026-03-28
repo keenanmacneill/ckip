@@ -50,7 +50,7 @@
 
 .dashboard-main-container {
   display: grid;
-  grid-template-columns: minmax(0, 4fr) minmax(320px, 1fr);
+  grid-template-columns: minmax(0, 4fr) minmax(20rem, 1fr);
   gap: 0.85rem;
 }
 
@@ -65,7 +65,7 @@
   justify-content: space-between;
   gap: 1rem;
   padding: 0.95rem 1rem;
-  border-bottom: 1px solid var(--border-primary);
+  border-bottom: 0.0625rem solid var(--border-primary);
 }
 
 .dashboard-panel-title {
@@ -90,12 +90,12 @@
   height: 90%;
   overflow: hidden;
   background:
-    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.045) 0.0625rem, transparent 0.0625rem),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 0.0625rem, transparent 0.0625rem),
     linear-gradient(180deg, #1b2438 0%, #121a2a 100%);
   background-size:
-    40px 40px,
-    40px 40px,
+    2.5rem 2.5rem,
+    2.5rem 2.5rem,
     auto;
 }
 
@@ -106,10 +106,10 @@
   bottom: 0.9rem;
   z-index: 500;
   padding: 0.6rem 0.75rem;
-  border-radius: 10px;
+  border-radius: 0.625rem;
   background: rgba(18, 26, 42, 0.92);
-  border: 1px solid rgba(147, 168, 213, 0.18);
-  backdrop-filter: blur(6px);
+  border: 0.0625rem solid rgba(147, 168, 213, 0.18);
+  backdrop-filter: blur(0.375rem);
 }
 
 /* align legend rows */
@@ -125,7 +125,7 @@
 .dashboard-legend-dot {
   width: 0.55rem;
   height: 0.55rem;
-  border-radius: 999px;
+  border-radius: 62.4375rem;
   display: inline-block;
 }
 
@@ -179,7 +179,7 @@
 .report-priority {
   height: 3rem;
   padding: 0 0.95rem;
-  border: 1px solid var(--border-input);
+  border: 0.0625rem solid var(--border-input);
   border-radius: var(--radius-sm);
   background: var(--bg-input);
   color: var(--text-primary);
@@ -193,7 +193,7 @@
 .report-category:focus,
 .report-priority:focus {
   border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px rgba(77, 127, 255, 0.15);
+  box-shadow: 0 0 0 0.1875rem rgba(77, 127, 255, 0.15);
 }
 
 /* give the leaflet map a stable rendered height */
@@ -217,8 +217,8 @@
 /* base custom marker shell */
 .dashboard-report-marker {
   position: relative;
-  width: 34px;
-  height: 42px;
+  width: 2.125rem;
+  height: 2.625rem;
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -226,13 +226,13 @@
 
 /* visible marker pin */
 .dashboard-report-marker-core {
-  width: 18px;
-  height: 18px;
-  border-radius: 999px;
-  border: 2px solid rgba(255, 255, 255, 0.92);
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 62.4375rem;
+  border: 0.125rem solid rgba(255, 255, 255, 0.92);
   box-shadow:
-    0 0 0 6px rgba(0, 0, 0, 0.18),
-    0 8px 18px rgba(0, 0, 0, 0.35);
+    0 0 0 0.375rem rgba(0, 0, 0, 0.18),
+    0 0.5rem 1.125rem rgba(0, 0, 0, 0.35);
   position: relative;
 }
 
@@ -241,12 +241,12 @@
   content: '';
   position: absolute;
   left: 50%;
-  top: 12px;
-  width: 10px;
-  height: 10px;
+  top: 0.75rem;
+  width: 0.625rem;
+  height: 0.625rem;
   transform: translateX(-50%) rotate(45deg);
-  border-right: 2px solid rgba(255, 255, 255, 0.92);
-  border-bottom: 2px solid rgba(255, 255, 255, 0.92);
+  border-right: 0.125rem solid rgba(255, 255, 255, 0.92);
+  border-bottom: 0.125rem solid rgba(255, 255, 255, 0.92);
   background: inherit;
   z-index: -1;
 }
@@ -306,15 +306,15 @@
 .leaflet-popup-content-wrapper {
   background: linear-gradient(180deg, #1b2438 0%, #121a2a 100%);
   color: var(--text-primary);
-  border: 1px solid rgba(147, 168, 213, 0.18);
-  border-radius: 14px;
-  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.35);
+  border: 0.0625rem solid rgba(147, 168, 213, 0.18);
+  border-radius: 0.875rem;
+  box-shadow: 0 1.125rem 2.25rem rgba(0, 0, 0, 0.35);
 }
 
 /* theme the leaflet popup tip */
 .leaflet-popup-tip {
   background: #121a2a;
-  border: 1px solid rgba(147, 168, 213, 0.18);
+  border: 0.0625rem solid rgba(147, 168, 213, 0.18);
 }
 
 /* tighten default leaflet popup margins */
@@ -333,7 +333,7 @@
 
 /* make popup chrome match theme on dark map */
 .leaflet-popup-tip-container {
-  margin-top: -1px;
+  margin-top: -0.0625rem;
 }
 
 .marker-pulse .dashboard-report-marker-core {
@@ -344,21 +344,21 @@
   0% {
     box-shadow:
       0 0 0 0 rgba(255, 82, 82, 0.45),
-      0 8px 18px rgba(0, 0, 0, 0.35);
+      0 0.5rem 1.125rem rgba(0, 0, 0, 0.35);
   }
   70% {
     box-shadow:
-      0 0 0 14px rgba(255, 82, 82, 0),
-      0 8px 18px rgba(0, 0, 0, 0.35);
+      0 0 0 0.875rem rgba(255, 82, 82, 0),
+      0 0.5rem 1.125rem rgba(0, 0, 0, 0.35);
   }
   100% {
     box-shadow:
       0 0 0 0 rgba(255, 82, 82, 0),
-      0 8px 18px rgba(0, 0, 0, 0.35);
+      0 0.5rem 1.125rem rgba(0, 0, 0, 0.35);
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 56.25rem) {
   .dashboard-metrics-container {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -372,7 +372,7 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
   .dashboard-header-container {
     flex-direction: column;
     align-items: stretch;
