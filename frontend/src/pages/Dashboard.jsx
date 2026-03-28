@@ -1,10 +1,12 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import Header from '../components/Header';
+import ReportCategories from '../components/ReportCategories';
 import AppContext from '../context/AppContext';
 import '../style/Dashboard.css';
 
 export default function Dashboard() {
   const { cap, categories, reports } = useContext(AppContext);
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
   const sortedCategories = [...(categories || [])].sort((a, b) =>
     a.category.localeCompare(b.category, undefined, { sensitivity: 'base' }),
@@ -28,8 +30,6 @@ export default function Dashboard() {
       tone: 'danger',
     },
   ];
-
-  const handleSortDate = () => {};
 
   if (!categories.length || !reports.length) return null;
 
@@ -118,26 +118,6 @@ export default function Dashboard() {
               </div>
 
               <div className="auth-field-group">
-                <div className="auth-label">Category</div>
-                <select
-                  className="report-category clickable"
-                  defaultValue={'select_category'}
-                >
-                  <option value="select_category" disabled>
-                    Select a category
-                  </option>
-                  {sortedCategories.map(c => (
-                    <option value={c.category}>
-                      {c.category
-                        .split('_')
-                        .map(word => cap(word))
-                        .join(' ')}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="auth-field-group">
                 <div className="auth-label">Priority</div>
                 <select
                   className="report-priority clickable"
@@ -151,6 +131,21 @@ export default function Dashboard() {
                   <option value="info_only">Info Only</option>
                   <option value="routine">Routine</option>
                 </select>
+              </div>
+
+              <div className="auth-field-group">
+                <ReportCategories
+                  label="Categories"
+                  selectedValues={selectedCategories}
+                  onChange={values => setSelectedCategories(values)}
+                  options={sortedCategories.map(category => ({
+                    value: category.category,
+                    label: category.category
+                      .split('_')
+                      .map(word => cap(word))
+                      .join(' '),
+                  }))}
+                />
               </div>
             </div>
 
