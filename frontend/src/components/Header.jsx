@@ -21,7 +21,15 @@ export default function Header() {
 
         <div className="header-nav">
           <button onClick={() => navigate('/dashboard')}>Dashboard</button>
-          <button onClick={() => navigate('/reports')}>Reports</button>
+          <button
+            onClick={() =>
+              navigate(
+                '/reports?limit=25&offset=0&sort_by=created_at&order=desc',
+              )
+            }
+          >
+            Reports
+          </button>
           <button
             className="header-logout"
             onClick={async () => {

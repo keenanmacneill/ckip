@@ -1,5 +1,5 @@
 const db = require('../../db/knex');
-const { applyQueryFilters } = require('./helpers/applyQueryFilters');
+const { applyQueryFilters } = require('../helpers/applyQueryFilters');
 
 exports.getAllReports = async (req, res) => {
   try {

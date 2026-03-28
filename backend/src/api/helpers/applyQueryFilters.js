@@ -1,11 +1,34 @@
+const parseMultiValue = value => {
+  if (!value) return [];
+
+  if (Array.isArray(value)) {
+    return value.flatMap(item =>
+      String(item)
+        .split(',')
+        .map(item => item.trim())
+        .filter(Boolean),
+    );
+  }
+
+  return String(value)
+    .split(',')
+    .map(item => item.trim())
+    .filter(Boolean);
+};
+
 exports.applyQueryFilters = (query, filters) => {
   const {
     category,
+    categories,
     priority,
+    priorities,
     id,
     title,
     mgrs,
     submitted_by,
+    created_at,
+    date_range,
+    q,
     before,
     after,
     classification,
@@ -27,13 +50,21 @@ exports.applyQueryFilters = (query, filters) => {
   const allowedOrder = ['asc', 'desc'];
 
   // CATEGORY
-  if (category && category !== 'all_categories') {
-    query.where('categories.category', category);
+  const selectedCategories = parseMultiValue(categories || category).filter(
+    value => value !== 'all_categories',
+  );
+
+  if (selectedCategories.length) {
+    query.whereIn('categories.category', selectedCategories);
   }
 
   // PRIORITY
-  if (priority && priority !== 'all_priorities') {
-    query.where('reports.priority', priority);
+  const selectedPriorities = parseMultiValue(priorities || priority).filter(
+    value => value !== 'all_priorities',
+  );
+
+  if (selectedPriorities.length) {
+    query.whereIn('reports.priority', selectedPriorities);
   }
 
   // ID
@@ -56,13 +87,39 @@ exports.applyQueryFilters = (query, filters) => {
     query.whereILike('users.email', `%${submitted_by}%`);
   }
 
-  // CREATED DATE
+  // PLAIN QUERY TEXT
+  if (q) {
+    query.where(text => {
+      text
+        .whereILike('reports.title', `%${q}%`)
+        .orWhereILike('reports.mgrs', `%${q}%`)
+        .orWhereILike('users.email', `%${q}%`);
+    });
+  }
+
+  // DATES
   if (after) {
     query.where('reports.created_at', '>', after);
   }
 
   if (before) {
     query.where('reports.created_at', '<', before);
+  }
+
+  const dateRangeDays = {
+    last_7_days: 7,
+    last_30_days: 30,
+    last_60_days: 60,
+    last_90_days: 90,
+  };
+
+  if (date_range && date_range !== 'all_dates' && dateRangeDays[date_range]) {
+    const days = dateRangeDays[date_range];
+
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - days);
+
+    query.where('reports.created_at', '>=', cutoff);
   }
 
   // CLASSIFICATION

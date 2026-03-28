@@ -17,10 +17,10 @@ app.get('/', (req, res) => {
   res.status(200).json({ message: 'Working' });
 });
 
-const userRoutes = require('./modules/routes/user-routes');
-const reportRoutes = require('./modules/routes/report-routes');
-const categoryRoutes = require('./modules/routes/category-routes');
-const authRoutes = require('./modules/routes/auth-routes');
+const userRoutes = require('./api/routes/user-routes');
+const reportRoutes = require('./api/routes/report-routes');
+const categoryRoutes = require('./api/routes/category-routes');
+const authRoutes = require('./api/routes/auth-routes');
 
 app.use('/users', userRoutes);
 app.use('/reports', reportRoutes);

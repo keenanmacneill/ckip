@@ -324,6 +324,14 @@
   white-space: nowrap;
 }
 
+.reports-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 14px;
+}
+
 @media (max-width: 1100px) {
   .reports-header {
     grid-template-columns:

@@ -13,17 +13,12 @@ export default function Dashboard() {
 
   const metrics = [
     {
-      value: '31',
-      label: 'AOs COVERED',
-      tone: 'default',
-    },
-    {
       value: reports.length,
       label: 'TOTAL REPORTS',
       tone: 'success',
     },
     {
-      value: '14',
+      value: reports.filter(r => r.priority === 'attention').length,
       label: 'PENDING REVIEW',
       tone: 'warning',
     },
@@ -33,6 +28,8 @@ export default function Dashboard() {
       tone: 'danger',
     },
   ];
+
+  const handleSortDate = () => {};
 
   if (!categories.length || !reports.length) return null;
 
