@@ -120,8 +120,11 @@ export default function Dashboard() {
           <div className="dashboard-popup-content">
             <div className="dashboard-popup-title">{report.title}</div>
             <div className="dashboard-popup-row">
-              <span className="dashboard-popup-label">MGRS</span>
-              <span>{report.mgrs || 'N/A'}</span>
+              <span className="dashboard-popup-label">Classification</span>
+              <span>
+                {report.classification.replace(/_/g, ' ').toUpperCase() ||
+                  'N/A'}
+              </span>
             </div>
             <div className="dashboard-popup-row">
               <span className="dashboard-popup-label">Priority</span>
@@ -130,12 +133,14 @@ export default function Dashboard() {
               </span>
             </div>
             <div className="dashboard-popup-row">
-              <span className="dashboard-popup-label">Classification</span>
-              <span>
-                {report.classification.replace(/_/g, ' ').toUpperCase() ||
-                  'N/A'}
-              </span>
+              <span className="dashboard-popup-label">MGRS</span>
+              <span>{report.mgrs || 'N/A'}</span>
             </div>
+            <div className="dashboard-popup-row">
+              <span className="dashboard-popup-label">LAT, LONG</span>
+              <span>{report.lat_long || 'N/A'}</span>
+            </div>
+
             <button
               type="button"
               className="page-action-secondary dashboard-popup-button"
