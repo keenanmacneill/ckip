@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { StringParam, useQueryParam } from 'use-query-params';
 import Header from '../components/Header';
 import Report from '../components/Report';
 import AppContext from '../context/AppContext';
@@ -10,16 +9,6 @@ import '../style/Reports.css';
 export default function Reports() {
   const { reports, categories, cap, selectedReports, setSelectedReports } =
     useContext(AppContext);
-
-  const UseQueryParam = () => {
-    const [sort, setSort] = useQueryParam('sort', StringParam);
-    const [category, setCategory] = useQueryParam('category', StringParam);
-    const [priority, setPriority] = useQueryParam('priority', StringParam);
-  };
-
-  const handleSort = () => {
-    sort === 'asc' ? setSort('desc') : setSort('asc');
-  };
 
   const sortedCategories = [...(categories || [])].sort((a, b) =>
     a.category.localeCompare(b.category, undefined, { sensitivity: 'base' }),
@@ -110,7 +99,6 @@ export default function Reports() {
             <option value="info_only">Info Only</option>
             <option value="routine">Routine</option>
           </select>
-          <button className="filter-button">Priority</button>
 
           <select className="filter-select" defaultValue="all_dates">
             <option value="all_dates">All dates</option>

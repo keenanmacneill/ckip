@@ -12,7 +12,7 @@ module.exports = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT);
 
-    req.user = decoded; // attach user
+    req.user = decoded; // assign user obj {id, email, role}
 
     if (req.user.role !== 'admin') {
       return res.status(403).json({ message: 'Admin access only.' });

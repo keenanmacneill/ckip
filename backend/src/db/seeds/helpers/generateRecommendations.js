@@ -20,8 +20,8 @@ const focuses = [
 
 exports.generateRecommendations = () => {
   const used = new Set();
-  const recommendations = [];
   const numRecommendations = generateInt(3, 5);
+  const recommendations = [];
 
   while (used.size < numRecommendations) {
     const index = generateInt(0, actions.length - 1);

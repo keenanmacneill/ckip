@@ -6,7 +6,8 @@ exports.applyQueryFilters = (query, filters) => {
     title,
     mgrs,
     submitted_by,
-    created_at,
+    before,
+    after,
     classification,
     limit,
     offset,
@@ -56,8 +57,12 @@ exports.applyQueryFilters = (query, filters) => {
   }
 
   // CREATED DATE
-  if (created_at) {
-    query.whereRaw('DATE(reports.created_at) = ?', [created_at]);
+  if (after) {
+    query.where('reports.created_at', '>', after);
+  }
+
+  if (before) {
+    query.where('reports.created_at', '<', before);
   }
 
   // CLASSIFICATION
