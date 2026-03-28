@@ -106,7 +106,8 @@ export default function AppContextProvider({ children }) {
       }
 
       const data = await res.json();
-      setReports(Array.isArray(data) ? data : []);
+      const parsedReports = Array.isArray(data?.data) ? data.data : [];
+      setReports(parsedReports);
     };
 
     getReports();

@@ -82,7 +82,7 @@ export default function Report({ report }) {
         <div className="report-cell">
           <span className={`priority-pill priority-${priorityClass}`}>
             <span className="priority-dot" />
-            {priority.toUpperCase()}
+            {priority.replace(/_/g, ' ').toUpperCase()}
           </span>
         </div>
 

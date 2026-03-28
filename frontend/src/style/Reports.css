@@ -1,8 +1,18 @@
-.filters-bar {
+.reports-bar-bottom {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 1rem;
+  justify-content: space-between;
+}
+
+.reports-date {
+  display: flex;
+  gap: 1rem;
+  align-items: end;
+  padding: 0.5rem 0;
+}
+
+.filters-bar {
+  flex-wrap: wrap;
+  align-items: flex-start;
 }
 
 .filter-input {
@@ -46,10 +56,49 @@
   background: #1e293b;
 }
 
-.filter-button.active {
-  border-color: #3b82f6;
-  color: #3b82f6;
+.filter-pill-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 280px;
+  padding: 0.5rem 0;
 }
+
+.filter-pill-group-label {
+  color: #94a3b8;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.filter-pill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filter-pill {
+  padding: 8px 12px;
+  background: #111827;
+  border: 1px solid #2a3954;
+  border-radius: 999px;
+  color: #dbe4f7;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.filter-pill:hover {
+  background: #1e293b;
+}
+
+.filter-pill.active {
+  color: #bfdbfe;
+  background: rgba(59, 130, 246, 0.2);
+  border-color: #2563eb;
+}
+
+/* Table layout */
 
 .reports-table {
   width: 100%;

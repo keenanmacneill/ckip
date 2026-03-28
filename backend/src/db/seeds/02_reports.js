@@ -1,4 +1,4 @@
-const { generateReports } = require('./helpers/generateReports');
+const { generateReports } = require('../helpers/generateReports');
 
 exports.seed = async function (knex) {
   // Deletes ALL existing entries

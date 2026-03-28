@@ -1,5 +1,13 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import FilterPillsGroup from '../components/FilterPillsGroup';
 import Header from '../components/Header';
 import Report from '../components/Report';
 import AppContext from '../context/AppContext';
@@ -7,6 +15,7 @@ import handleExportPdf from '../helpers/handleExportPdf';
 import '../style/Reports.css';
 
 const PAGE_SIZE = 25;
+const SEARCH_DEBOUNCE_MS = 500;
 const PRIORITY_OPTIONS = ['attention', 'critical', 'info_only', 'routine'];
 const DATE_RANGE_OPTIONS = [
   { value: 'all_dates', label: 'All dates' },
@@ -23,6 +32,7 @@ export default function Reports() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [totalReports, setTotalReports] = useState(0);
 
   const navigate = useNavigate();
 
@@ -106,112 +116,139 @@ export default function Reports() {
     };
   }, [searchParams]); // recompute only when URL params change
 
-  // Fetches reports based on current query params and persists state to localStorage
-  useEffect(() => {
-    const params = new URLSearchParams(searchParams); // clone current URL params for safe mutation
-    params.set('limit', String(PAGE_SIZE)); // enforce consistent page size
+  // normalizes query updates
+  const updateQuery = useCallback(
+    updates => {
+      // Create a mutable copy of current query params
+      const next = new URLSearchParams(searchParams);
 
-    if (!params.get('offset')) params.set('offset', '0'); // ensure pagination starts at 0 if missing
+      // Apply incoming updates (add, update, or remove params)
+      Object.entries(updates).forEach(([key, value]) => {
+        // Remove param if value is empty, null, undefined, or empty array
+        if (
+          value === null ||
+          value === undefined ||
+          value === '' ||
+          (Array.isArray(value) && !value.length)
+        ) {
+          next.delete(key);
+        } else {
+          // Set param value
+          // Arrays are converted to comma-separated strings
+          next.set(key, Array.isArray(value) ? value.join(',') : String(value));
+        }
+      });
+
+      // Reset pagination if filters/search change
+      // Prevents landing on invalid pages after filtering
+      if (
+        'q' in updates ||
+        'categories' in updates ||
+        'priorities' in updates ||
+        'date_range' in updates
+      ) {
+        next.set('offset', '0');
+      }
+
+      // Enforce default sorting if missing
+      if (!next.get('sort_by')) next.set('sort_by', 'created_at');
+
+      // Enforce default order if missing (fix syntax bug)
+      if (!next.get('order')) next.set('order', 'desc');
+
+      // Always enforce page size (prevents user tampering)
+      next.set('limit', String(PAGE_SIZE));
+
+      // Ensure offset exists (pagination baseline)
+      if (!next.get('offset')) next.set('offset', '0');
+
+      // Commit updated query params to URL + trigger re-render/fetch
+      setSearchParams(next);
+
+      // Return updated params (useful for debugging or chaining)
+      return next;
+    },
+    [searchParams, setSearchParams],
+  );
+
+  const [searchInput, setSearchInput] = useState(query.q);
+  const searchDebounceTimeout = useRef(null);
+
+  const handleSearchChange = e => {
+    const nextValue = e.target.value; // get current input value from the event
+
+    setSearchInput(nextValue); // update local state immediately for UI responsiveness
+
+    if (searchDebounceTimeout.current) {
+      clearTimeout(searchDebounceTimeout.current); // clear any existing debounce timer
+    }
+
+    searchDebounceTimeout.current = setTimeout(() => {
+      if (nextValue != query.q) {
+        updateQuery({ q: nextValue }); // update query params only if value actually changed
+      }
+    }, SEARCH_DEBOUNCE_MS); // delay execution to avoid excessive updates
+  };
+
+  useEffect(() => {
+    return () => {
+      if (searchDebounceTimeout.current) {
+        clearTimeout(searchDebounceTimeout.current); // clear pending debounce timer on unmount to prevent memory leaks
+      }
+    };
+  }, []); // run once on mount, cleanup runs on unmount
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams); // clone current URL query params
+    params.set('limit', String(PAGE_SIZE)); // enforce page size
+    if (!params.get('offset')) params.set('offset', '0'); // ensure pagination offset exists
 
     const getReports = async () => {
-      setLoading(true); // start loading state before API call
+      setLoading(true); // start loading state
 
       const res = await fetch(
-        `http://localhost:8080/reports?${params.toString()}`, // send query params to backend
-        { credentials: 'include' },
+        `http://localhost:8080/reports?${params.toString()}`, // request with query string
+        {
+          credentials: 'include', // include cookies (auth/session)
+        },
       );
 
       if (!res.ok) {
-        setReports([]);
-        setSelectedReports([]);
-        setLoading(false);
+        setReports([]); // reset reports on failure
+        setTotalReports(0); // reset total count
+        setSelectedReports([]); // clear selected reports
+        setLoading(false); // stop loading
         return;
       }
 
-      const data = await res.json(); // parse JSON response
-      const parsedReports = Array.isArray(data) ? data : []; // guard against invalid response shape
+      const data = await res.json(); // parse response JSON
+      const parsedReports = Array.isArray(data?.data) ? data.data : []; // ensure reports is an array
+      const parsedTotal = Number.isFinite(data?.total) ? data.total : 0; // ensure total is a valid number
 
-      setReports(parsedReports); // update reports state with fetched data
+      setReports(parsedReports); // update reports state
+      setTotalReports(parsedTotal); // update total count
 
       setSelectedReports(current =>
         current.filter(
-          selected => parsedReports.some(r => r.id === selected.id), // keep only selected reports that still exist
+          selected => parsedReports.some(report => report.id === selected.id), // keep only selected reports that still exist in new data
         ),
       );
 
-      setLoading(false); // stop loading after successful update
+      setLoading(false); // stop loading after success
     };
 
     localStorage.setItem('reportsViewState', params.toString()); // persist current query state
-    getReports(); // trigger API fetch
-  }, [searchParams, setSelectedReports]); // rerun when query params change
-
-  // normalizes query updates
-  const updateQuery = updates => {
-    // Create a mutable copy of current query params
-    const next = new URLSearchParams(searchParams);
-
-    // Apply incoming updates (add, update, or remove params)
-    Object.entries(updates).forEach(([key, value]) => {
-      // Remove param if value is empty, null, undefined, or empty array
-      if (
-        value === null ||
-        value === undefined ||
-        value === '' ||
-        (Array.isArray(value) && !value.length)
-      ) {
-        next.delete(key);
-      } else {
-        // Set param value
-        // Arrays are converted to comma-separated strings
-        next.set(key, Array.isArray(value) ? value.join(',') : String(value));
-      }
-    });
-
-    // Reset pagination if filters/search change
-    // Prevents landing on invalid pages after filtering
-    if (
-      'q' in updates ||
-      'categories' in updates ||
-      'priorities' in updates ||
-      'date_range' in updates
-    ) {
-      next.set('offset', '0');
-    }
-
-    // Enforce default sorting if missing
-    if (!next.get('sort_by')) next.set('sort_by', 'created_at');
-
-    // Enforce default order if missing (fix syntax bug)
-    if (!next.get('order')) next.set('order', 'desc');
-
-    // Always enforce page size (prevents user tampering)
-    next.set('limit', String(PAGE_SIZE));
-
-    // Ensure offset exists (pagination baseline)
-    if (!next.get('offset')) next.set('offset', '0');
-
-    // Commit updated query params to URL + trigger re-render/fetch
-    setSearchParams(next);
-
-    // Return updated params (useful for debugging or chaining)
-    return next;
-  };
+    getReports(); // trigger data fetch
+  }, [searchParams, setSelectedReports]); // re-run when query params change
 
   const handleSort = () => {
     updateQuery({ order: query.order === 'asc' ? 'desc' : 'asc' });
   };
 
-  const handleMultiSelect = (event, key) => {
-    const values = Array.from(
-      event.target.selectedOptions,
-      option => option.value,
-    );
-
-    updateQuery({ [key]: values });
-  };
-
   const pageNumber = Math.floor(query.offset / PAGE_SIZE + 1);
+  const totalPages = Math.max(Math.ceil(totalReports / PAGE_SIZE), 1);
+  const hasNextPage = query.offset + PAGE_SIZE < totalReports;
+
   if (!categories) return null;
 
   return (
@@ -223,7 +260,7 @@ export default function Reports() {
           <div className="page-title-container">
             <div className="page-header-title">All reports</div>
             <div className="page-header-subtitle">
-              {loading ? 'Loading reports...' : `${reports.length} reports`}
+              {loading ? 'Loading reports...' : `${totalReports} total reports`}
             </div>
           </div>
 
@@ -261,61 +298,61 @@ export default function Reports() {
           <input
             className="filter-input"
             type="search"
-            value={query.q}
-            onChange={event => updateQuery({ q: event.target.value })}
+            value={searchInput}
+            onChange={handleSearchChange}
             placeholder="Search by title, MGRS, or submitter..."
           />
 
-          <select
-            className="filter-select filter-select-multi"
-            value={query.selectedCategories}
-            onChange={e => handleMultiSelect(e, 'categories')}
-            defaultValue="all_categories"
-            multiple
-          >
-            <option value="all_categories">All categories</option>
-            {sortedCategories.map(c => (
-              <option key={c.category} value={c.category}>
-                {c.category
+          <FilterPillsGroup
+            label="Categories"
+            allValue="all_categories"
+            allLabel="All categories"
+            selectedValues={query.selectedCategories}
+            onChange={values => updateQuery({ categories: values })}
+            options={sortedCategories.map(category => ({
+              value: category.category,
+              label: category.category
+                .split('_')
+                .map(word => cap(word))
+                .join(' '),
+            }))}
+          />
+          <div className="reports-bar-bottom">
+            <FilterPillsGroup
+              label="Priorities"
+              allValue="all_priorities"
+              allLabel="All priorities"
+              selectedValues={query.selectedPriorities}
+              onChange={values => updateQuery({ priorities: values })}
+              options={PRIORITY_OPTIONS.map(priority => ({
+                value: priority,
+                label: priority
                   .split('_')
                   .map(word => cap(word))
-                  .join(' ')}
-              </option>
-            ))}
-          </select>
+                  .join(' '),
+              }))}
+            />
 
-          <select
-            className="filter-select filter-select-multi"
-            value={query.selectedPriorities}
-            onChange={event => handleMultiSelect(event, 'priorities')}
-            multiple
-          >
-            <option value="all_priorities">All priorities</option>
-            {PRIORITY_OPTIONS.map(priority => (
-              <option key={priority} value={priority}>
-                {priority
-                  .split('_')
-                  .map(word => cap(word))
-                  .join(' ')}
-              </option>
-            ))}
-          </select>
+            <div className="reports-date">
+              <select
+                className="filter-select"
+                value={query.dateRange}
+                onChange={event =>
+                  updateQuery({ date_range: event.target.value })
+                }
+              >
+                {DATE_RANGE_OPTIONS.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
 
-          <select
-            className="filter-select"
-            value={query.dateRange}
-            onChange={event => updateQuery({ date_range: event.target.value })}
-          >
-            {DATE_RANGE_OPTIONS.map(option => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-
-          <button className="filter-button" onClick={handleSort}>
-            Date {query.order === 'asc' ? '↑' : '↓'}
-          </button>
+              <button className="filter-button" onClick={handleSort}>
+                Date {query.order === 'asc' ? '↑' : '↓'}
+              </button>
+            </div>
+          </div>
         </div>
 
         <div className="reports-table">
@@ -337,6 +374,14 @@ export default function Reports() {
         <div className="reports-pagination">
           <button
             className="page-action-secondary"
+            onClick={() => updateQuery({ offset: 0 })}
+            disabled={query.offset === 0}
+          >
+            First
+          </button>
+
+          <button
+            className="page-action-secondary"
             onClick={() =>
               updateQuery({ offset: Math.max(query.offset - PAGE_SIZE, 0) })
             }
@@ -345,16 +390,16 @@ export default function Reports() {
             Previous
           </button>
 
-          <span>Page {pageNumber}</span>
+          <span>
+            Page {pageNumber} of {totalPages}
+          </span>
 
           <button
             className="page-action-secondary"
-            onClick={() =>
-              updateQuery({ offset: Math.max(query.offset + PAGE_SIZE) })
-            }
-            disabled={loading || reports.length < PAGE_SIZE}
+            onClick={() => updateQuery({ offset: query.offset + PAGE_SIZE })}
+            disabled={loading || !hasNextPage}
           >
-            Previous
+            Next
           </button>
         </div>
       </main>

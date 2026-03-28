@@ -1,6 +1,6 @@
 const {
   generateReportCategories,
-} = require('./helpers/generateReportCategories');
+} = require('../helpers/generateReportCategories');
 
 exports.seed = async function (knex) {
   // Deletes ALL existing entries

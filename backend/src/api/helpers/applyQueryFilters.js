@@ -16,7 +16,7 @@ const parseMultiValue = value => {
     .filter(Boolean);
 };
 
-exports.applyQueryFilters = (query, filters) => {
+exports.applyQueryFilters = (query, filters, options = {}) => {
   const {
     category,
     categories,
@@ -26,7 +26,6 @@ exports.applyQueryFilters = (query, filters) => {
     title,
     mgrs,
     submitted_by,
-    created_at,
     date_range,
     q,
     before,
@@ -37,6 +36,8 @@ exports.applyQueryFilters = (query, filters) => {
     sort_by,
     order,
   } = filters;
+
+  const { includeSort = true, includePagination = true } = options;
 
   const allowedSortFields = [
     'id',
@@ -117,6 +118,7 @@ exports.applyQueryFilters = (query, filters) => {
     const days = dateRangeDays[date_range];
 
     const cutoff = new Date();
+
     cutoff.setDate(cutoff.getDate() - days);
 
     query.where('reports.created_at', '>=', cutoff);
@@ -128,23 +130,27 @@ exports.applyQueryFilters = (query, filters) => {
   }
 
   // SORT
-  if (sort_by && allowedSortFields.includes(sort_by)) {
-    const safeOrder = allowedOrder.includes(order) ? order : 'desc';
-    query.orderBy(`reports.${sort_by}`, safeOrder);
-  } else {
-    query.orderBy('reports.created_at', 'desc');
+  if (includeSort) {
+    if (sort_by && allowedSortFields.includes(sort_by)) {
+      const safeOrder = allowedOrder.includes(order) ? order : 'desc';
+      query.orderBy(`reports.${sort_by}`, safeOrder);
+    } else {
+      query.orderBy('reports.created_at', 'desc');
+    }
   }
 
   // LIMIT
-  const parsedLimit = parseInt(limit, 10);
-  if (!isNaN(parsedLimit) && parsedLimit > 0 && parsedLimit <= 100) {
-    query.limit(parsedLimit);
-  }
+  if (includePagination) {
+    const parsedLimit = parseInt(limit, 10);
+    if (!isNaN(parsedLimit) && parsedLimit > 0 && parsedLimit <= 100) {
+      query.limit(parsedLimit);
+    }
 
-  // OFFSET
-  const parsedOffset = parseInt(offset, 10);
-  if (!isNaN(parsedOffset) && parsedOffset >= 0) {
-    query.offset(parsedOffset);
+    // OFFSET
+    const parsedOffset = parseInt(offset, 10);
+    if (!isNaN(parsedOffset) && parsedOffset >= 0) {
+      query.offset(parsedOffset);
+    }
   }
 
   return query;

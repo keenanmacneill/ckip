@@ -93,7 +93,7 @@ export default function ReportDetails() {
                   .toLowerCase()
                   .replace(/\s+/g, '-')}`}
               >
-                {priority}
+                {priority.replace(/_/g, ' ').toUpperCase()}
               </span>
             </div>
           </div>

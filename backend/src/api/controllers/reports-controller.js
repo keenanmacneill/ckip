@@ -3,11 +3,14 @@ const { applyQueryFilters } = require('../helpers/applyQueryFilters');
 
 exports.getAllReports = async (req, res) => {
   try {
+    const baseQuery = db('reports')
+      .join('report_categories', 'reports.id', 'report_categories.report_id')
+      .join('categories', 'report_categories.category_id', 'categories.id')
+      .join('users', 'reports.submitted_by', 'users.id');
+
     const reports = await applyQueryFilters(
-      db('reports')
-        .join('report_categories', 'reports.id', 'report_categories.report_id')
-        .join('categories', 'report_categories.category_id', 'categories.id')
-        .join('users', 'reports.submitted_by', 'users.id')
+      baseQuery
+        .clone()
         .select(
           'reports.id',
           'reports.title',
@@ -36,7 +39,19 @@ exports.getAllReports = async (req, res) => {
       req.query,
     );
 
-    res.status(200).json(reports);
+    const [countResult] = await applyQueryFilters(
+      baseQuery.clone().countDistinct('reports.id as total'),
+      req.query,
+      {
+        includeSort: false,
+        includePagination: false,
+      },
+    );
+
+    res.status(200).json({
+      data: reports,
+      total: Number(countResult?.total || 0),
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: 'Internal server error.' });
