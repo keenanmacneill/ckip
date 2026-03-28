@@ -215,7 +215,11 @@ export default function ReportDetails() {
 
             <div className="report-details-section">
               <div className="report-details-label">Recommendations</div>
-              <div className="report-details-body">{recommendations}</div>
+              <div className="report-details-body">
+                {recommendations.split('\n').map(r => (
+                  <div>{r}</div>
+                ))}
+              </div>
             </div>
           </section>
         </div>
