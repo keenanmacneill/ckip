@@ -2,8 +2,6 @@ require('dotenv').config({
   path: `.env.${process.env.NODE_ENV || 'development'}`,
 });
 
-//test
-
 module.exports = {
   development: {
     client: 'pg',
