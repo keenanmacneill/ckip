@@ -12,5 +12,24 @@
       "password": "docker"
     }
   ],
-  "cSpell.words": ["CKIP", "latlng", "OCONUS", "PSYOP"]
+  "cSpell.words": [
+    "AFSOC",
+    "CKIP",
+    "JSOC",
+    "latlng",
+    "MARSOC",
+    "NSWC",
+    "OCONUS",
+    "PSYOP",
+    "SOCAFRICA",
+    "SOCCENT",
+    "SOCEUR",
+    "SOCKOR",
+    "SOCNORTH",
+    "SOCPAC",
+    "SOCSOUTH",
+    "TSOCs",
+    "USASOC",
+    "USSOCOM"
+  ]
 }
