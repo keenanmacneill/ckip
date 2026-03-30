@@ -1,11 +1,8 @@
-const db = require('../../db/knex');
-const bcrypt = require('bcrypt');
-
-const SALT_ROUNDS = 10;
+const usersService = require('../services/users-service');
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await db('users').select('email');
+    const users = await usersService.getAllUsers();
 
     res.status(200).json(users);
   } catch (err) {
@@ -13,97 +10,63 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-exports.getUser = async (req, res) => {
+exports.getUserEmail = async (req, res) => {
   try {
-    const user = await db('users')
-      .select('email')
-      .where('email', req.params.email)
-      .first();
-
-    if (!user) {
-      return res.status(404).json({ message: 'User does not exist.' });
-    }
+    const { email } = req.params;
+    const user = await usersService.getUserEmail(email);
 
     res.status(200).json(user);
   } catch (err) {
-    res.status(500).json({ message: 'Internal server error.' });
+    res
+      .status(err.status || 500)
+      .json({ message: err.message || 'Internal server error.' });
   }
 };
 
 exports.getUserReports = async (req, res) => {
   try {
-    const [match] = await db('users')
-      .select('email')
-      .where('email', req.params.email);
-
-    if (!match) {
-      return res.status(404).json({ message: 'User does not exist.' });
-    }
-
-    const reports = await db('users')
-      .join('reports', 'users.id', 'submitted_by')
-      .select('*')
-      .where('users.email', req.params.email);
+    const { email } = req.params;
+    const reports = await usersService.getUserReports(email);
 
     res.status(200).json(reports);
   } catch (err) {
-    res.status(500).json({ message: 'Internal server error.' });
+    console.log(err);
+    res
+      .status(err.status || 500)
+      .json({ message: err.message || 'Internal server error.' });
   }
 };
 
 exports.updateUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res
-        .status(400)
-        .json({ message: 'Email and password are required.' });
-    }
-
-    const [match] = await db('users')
-      .select('email')
-      .where('email', req.params.email);
-
-    if (!match) {
-      return res.status(404).json({ message: 'User does not exist.' });
-    }
-
-    const hashWord = await bcrypt.hash(password, SALT_ROUNDS);
-    const [updatedUser] = await db('users')
-      .where('email', req.params.email)
-      .update({
-        ...match,
-        email,
-        password: hashWord,
-      })
-      .returning('email');
+    const { email: oldEmail } = req.params;
+    const { email: newEmail, password: newPassword } = req.body;
+    const updatedUser = await usersService.updateUser(
+      oldEmail,
+      newEmail,
+      newPassword,
+    );
 
     res.status(200).json(`${updatedUser.email} has been successfully updated.`);
   } catch (err) {
-    res.status(500).json({ message: 'Internal server error.' });
+    res
+      .status(err.status || 500)
+      .json({ message: err.message || 'Internal server error.' });
   }
 };
 
 exports.deleteUser = async (req, res) => {
   try {
-    const [match] = await db('users')
-      .select('email')
-      .where('email', req.params.email);
-
-    if (!match) {
-      return res.status(404).json({ message: 'User does not exist.' });
-    }
-
-    const [deletedUser] = await db('users')
-      .where('email', req.params.email)
-      .del()
-      .returning('email');
+    const { email } = req.params;
+    const deletedUser = await usersService.deleteUser(email);
 
     res
       .status(200)
       .json({ message: `${deletedUser.email} was successfully deleted.` });
   } catch (err) {
-    res.status(500).json({ message: 'Internal server error.' });
+    console.log(err);
+    res
+      .status(err.status || 500)
+      .json({ message: err.message || 'Internal server error.' });
   }
 };

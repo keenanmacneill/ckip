@@ -5,7 +5,7 @@ const adminAuth = require('../middleware/adminAuth');
 const router = express.Router();
 
 const {
-  getUser,
+  getUserEmail,
   getAllUsers,
   getUserReports,
   updateUser,
@@ -13,7 +13,7 @@ const {
 } = require('../controllers/users-controller');
 
 router.get('/:email/reports', auth, getUserReports);
-router.get('/:email', auth, getUser);
+router.get('/:email', auth, getUserEmail);
 router.get('/', auth, getAllUsers);
 router.patch('/:email', auth, adminAuth, updateUser);
 router.delete('/:email', auth, adminAuth, deleteUser);

@@ -5,16 +5,16 @@ GET http://localhost:8080/users
 GET http://localhost:8080/users/email
 
 ### Get user's reports
-GET http://localhost:8080/users/email/reports
+GET http://localhost:8080/users/email@email/reports
 
 ### Update user
 PATCH http://localhost:8080/users/email
 Content-Type: application/json
 
 {
-  "email": "new-user1",
+  "email": "user",
   "password": "asd"
 }
 
 ### Delete user
-DELETE http://localhost:8080/users/new-user1
+DELETE http://localhost:8080/users/email
