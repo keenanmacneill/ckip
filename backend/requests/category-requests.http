@@ -6,17 +6,17 @@ POST http://localhost:8080/categories/
 Content-Type: application/json
 
 {
-  "category": "old"
+  "category": "new"
 }
 
 ### Update category
-PATCH http://localhost:8080/categories/key_leader
+PATCH http://localhost:8080/categories/old
 Content-Type: application/json
 
 {
-  "category": "test"
+  "category": "test2"
 }
 
 ### Delete category
-DELETE http://localhost:8080/categories/key_leader/
+DELETE http://localhost:8080/categories/test1/
 Content-Type: application/json
