@@ -6,7 +6,7 @@ POST http://localhost:8080/auth/register
 Content-Type: application/json
 
 {
-  "email":"email1",
+  "email":"email111",
   "password":"password1"
 }
 
@@ -15,7 +15,7 @@ POST http://localhost:8080/auth/login
 Content-Type: application/json
 
 {
-  "email":"email1",
+  "email":"email11",
   "password":"password1"
 }
 

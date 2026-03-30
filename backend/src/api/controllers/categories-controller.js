@@ -1,8 +1,8 @@
-const db = require('../../db/knex');
+const categoriesService = require('../services/categories-service');
 
 exports.getAllCategories = async (req, res) => {
   try {
-    const categories = await db('categories').select('category');
+    const categories = await categoriesService.getAllCategories();
 
     res.status(200).json(categories);
   } catch (err) {
