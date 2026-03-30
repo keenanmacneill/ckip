@@ -208,7 +208,7 @@ export default function Reports() {
       setLoading(true); // start loading state
 
       const res = await fetch(
-        `http://${API_URL}/reports?${params.toString()}`, // request with query string
+        `${API_URL}/reports?${params.toString()}`, // request with query string
         {
           credentials: 'include', // include cookies (auth/session)
         },

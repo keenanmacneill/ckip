@@ -16,7 +16,7 @@ export default function AppContextProvider({ children }) {
   });
 
   useEffect(() => {
-    fetch(`http://${API_URL}/auth/me`, { credentials: 'include' })
+    fetch(`${API_URL}/auth/me`, { credentials: 'include' })
       .then(async res => {
         if (!res.ok) {
           throw new Error('Not authenticated');
@@ -33,7 +33,7 @@ export default function AppContextProvider({ children }) {
   }, []);
 
   const register = async (email, password) => {
-    const res = await fetch(`http://${API_URL}/auth/register`, {
+    const res = await fetch(`${API_URL}/auth/register`, {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -43,7 +43,7 @@ export default function AppContextProvider({ children }) {
   };
 
   const login = async (email, password) => {
-    const res = await fetch(`http://${API_URL}/auth/login`, {
+    const res = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -51,7 +51,7 @@ export default function AppContextProvider({ children }) {
     });
 
     if (res.ok) {
-      const me = await fetch(`http://${API_URL}/auth/me`, {
+      const me = await fetch(`${API_URL}/auth/me`, {
         credentials: 'include',
       });
       const data = await me.json();
@@ -62,7 +62,7 @@ export default function AppContextProvider({ children }) {
   };
 
   const logout = async () => {
-    await fetch(`http://${API_URL}/auth/logout`, {
+    await fetch(`${API_URL}/auth/logout`, {
       method: 'POST',
       credentials: 'include',
     });
@@ -77,7 +77,7 @@ export default function AppContextProvider({ children }) {
     if (loading || !user) return;
 
     const getCategories = async () => {
-      const res = await fetch(`http://${API_URL}/categories`, {
+      const res = await fetch(`${API_URL}/categories`, {
         credentials: 'include',
       });
 
