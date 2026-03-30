@@ -4,12 +4,17 @@ exports.getAllCategories = async () => {
   return await db('categories').select('category');
 };
 
-exports.getCategoryName = async category => {
-  return await db('categories').select('*').where('category', category).first();
+exports.getCategoriesByNames = async (categoryNames, trx = db) => {
+  return await trx('categories').whereIn(
+    'category',
+    Array.isArray(categoryNames) ? categoryNames : [categoryNames],
+  );
 };
 
-exports.createCategory = async category => {
-  return await db('categories').insert({ category }).returning('*');
+exports.createCategories = async (trx, categoryNames) => {
+  return await trx('categories')
+    .insert(categoryNames.map(category => ({ category })))
+    .returning('*');
 };
 
 exports.updateCategory = async (oldCategory, newCategory) => {

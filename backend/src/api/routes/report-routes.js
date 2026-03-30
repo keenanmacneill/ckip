@@ -6,7 +6,7 @@ const router = express.Router();
 
 const {
   getReportsByCategory,
-  getReportId,
+  getReportById,
   getAllReports,
   createReport,
   updateReport,
@@ -14,7 +14,7 @@ const {
 } = require('../controllers/reports-controller');
 
 router.get('/category/:category', auth, getReportsByCategory);
-router.get('/:id', auth, getReportId);
+router.get('/:id', auth, getReportById);
 router.get('/', auth, getAllReports);
 router.post('/', auth, createReport);
 router.patch('/:id', auth, updateReport);

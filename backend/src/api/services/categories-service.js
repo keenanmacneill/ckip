@@ -6,7 +6,7 @@ exports.getAllCategories = async () => {
 
 exports.createCategory = async category => {
   const normalizedCategory = category.trim().toLowerCase();
-  const match = await categoriesModel.getCategoryName(normalizedCategory);
+  const match = await categoriesModel.getCategoriesByNames(normalizedCategory);
 
   if (match) {
     const error = new Error('Category already exists.');
@@ -23,7 +23,9 @@ exports.createCategory = async category => {
 exports.updateCategory = async (oldCategory, newCategory) => {
   const normalizedOldCategory = oldCategory.trim().toLowerCase();
   const normalizedNewCategory = newCategory.trim().toLowerCase();
-  const match = await categoriesModel.getCategoryName(normalizedOldCategory);
+  const match = await categoriesModel.getCategoriesByNames(
+    normalizedOldCategory,
+  );
 
   if (!match) {
     const error = new Error('Category does not exist.');
@@ -57,7 +59,7 @@ exports.updateCategory = async (oldCategory, newCategory) => {
 
 exports.deleteCategory = async category => {
   const normalizedCategory = category.trim().toLowerCase();
-  const match = await categoriesModel.getCategoryName(normalizedCategory);
+  const match = await categoriesModel.getCategoriesByNames(normalizedCategory);
 
   if (!match) {
     const error = new Error('Category does not exist.');
