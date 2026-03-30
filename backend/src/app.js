@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const API_URL = import.meta.env.VITE_API_URL;
 
 const app = express();
 
@@ -9,7 +8,7 @@ app.use(express.json());
 app.use(cookieParser(process.env.JWT));
 app.use(
   cors({
-    origin: API_URL,
+    origin: 'https://ckip-swtc.vercel.app',
     credentials: true,
   }),
 );
