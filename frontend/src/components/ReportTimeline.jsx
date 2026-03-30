@@ -3,7 +3,7 @@ export default function ReportTimeline({ reportDetails }) {
   const reviewTimeline = [
     {
       title: 'Report submitted',
-      time: created_at,
+      time: created_at.replace('T', ', '),
       meta: submitted_by_email,
       status: 'complete',
     },

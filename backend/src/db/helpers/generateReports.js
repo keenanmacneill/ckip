@@ -15,7 +15,9 @@ exports.generateReports = async (num = 1) => {
       recommendations: generateRecommendations().join('\n'),
       mgrs: generateMGRS()[0],
       lat_long: `${generateMGRS()[1]}, ${generateMGRS()[2]}`,
-      created_at: faker.date.between({ from: '2000-01-01', to: Date.now() }),
+      created_at: faker.date
+        .between({ from: '2000-01-01', to: Date.now() })
+        .toISOString(),
       priority: faker.helpers.arrayElement([
         'routine',
         'attention',

@@ -22,7 +22,9 @@ export default function ReportDetailsSideSection({ reportDetails }) {
 
       <div className="report-details-side-section">
         <div className="report-details-label">Created</div>
-        <div className="report-details-strong">{created_at}</div>
+        <div className="report-details-strong">
+          {created_at.replace('T', ', ')}
+        </div>
       </div>
 
       <div className="report-details-divider" />
