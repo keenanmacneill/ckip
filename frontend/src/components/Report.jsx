@@ -8,8 +8,15 @@ export default function Report({ report }) {
   const { setReportDetails, selectedReports, setSelectedReports } =
     useContext(AppContext);
 
-  const { id, title, mgrs, created_at, priority, submitted_by, categories } =
-    report;
+  const {
+    id,
+    title,
+    mgrs,
+    created_at,
+    priority,
+    submitted_by_email,
+    categories,
+  } = report;
 
   const reportCategories = Array.isArray(categories)
     ? categories
@@ -86,7 +93,9 @@ export default function Report({ report }) {
           </span>
         </div>
 
-        <div className="report-cell report-submitted-by">{submitted_by}</div>
+        <div className="report-cell report-submitted-by">
+          {submitted_by_email}
+        </div>
 
         <div className="report-cell report-date">
           {new Date(created_at).toLocaleDateString('en-CA')}

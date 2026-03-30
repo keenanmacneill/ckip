@@ -222,7 +222,7 @@ export default function Reports() {
       }
 
       const data = await res.json(); // parse response JSON
-      const parsedReports = Array.isArray(data?.data) ? data.data : []; // ensure reports is an array
+      const parsedReports = Array.isArray(data?.reports) ? data.reports : []; // ensure reports is an array
       const parsedTotal = Number.isFinite(data?.total) ? data.total : 0; // ensure total is a valid number
 
       setReports(parsedReports); // update reports state

@@ -278,11 +278,7 @@ export default function Dashboard() {
       const data = await res.json();
 
       // support either a raw array response or an object-wrapped array response
-      const parsedReports = Array.isArray(data)
-        ? data
-        : Array.isArray(data?.data)
-          ? data.data
-          : [];
+      const parsedReports = Array.isArray(data?.reports) ? data.reports : [];
 
       setReports(parsedReports);
     };

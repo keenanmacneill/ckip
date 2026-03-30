@@ -1,9 +1,10 @@
 import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
-import ReportMap from '../components/ReportMap';
+import ReportDetailsMap from '../components/ReportDetailsMap';
+import ReportDetailsSubheader from '../components/ReportDetailsSubheader';
+import ReportTimeline from '../components/ReportTimeline';
 import AppContext from '../context/AppContext';
-import handleDownloadPdf from '../helpers/handleDownloadPdf';
 import '../style/ReportDetails.css';
 
 export default function ReportDetails() {
@@ -16,117 +17,28 @@ export default function ReportDetails() {
     }
   }, [reportDetails, navigate]);
 
-  const handleBack = () => {
-    navigate('/reports');
-  };
-
   if (!reportDetails) return null;
 
   const {
     id,
-    title,
-    mgrs,
     created_at,
-    priority,
-    submitted_by,
+    submitted_by_email,
     categories,
     summary,
     recommendations,
-    lat_long,
-    classification,
   } = reportDetails;
 
-  const reportCategories = Array.isArray(categories)
-    ? categories
-    : categories
-      ? [categories]
-      : [];
-
-  const reviewTimeline = [
-    {
-      title: 'Report submitted',
-      time: created_at,
-      meta: submitted_by,
-      status: 'complete',
-    },
-    {
-      title: 'MGRS verified',
-      time: '2025-03-22 15:10Z',
-      meta: 'Auto validation',
-      status: 'complete',
-    },
-    {
-      title: 'S2 review',
-      status: 'pending',
-    },
-  ];
+  const reportCategories = Array.isArray(categories) ? categories : [];
 
   return (
     <>
       <Header />
 
       <main className="page">
-        <div className="page-header-container">
-          <div className="page-title-container">
-            <div
-              className="page-header-subtitle clickable"
-              onClick={handleBack}
-            >
-              ← Back to reports
-            </div>
-
-            <div
-              className={`classification classification-${String(classification)
-                .toLowerCase()
-                .replace(/\s+/g, '-')}`}
-            >
-              {classification}
-            </div>
-
-            <div className="page-header-title">{title}</div>
-
-            <div className="report-details-tag-row">
-              <span
-                className={`report-details-tag report-details-priority priority-${String(
-                  priority,
-                )
-                  .toLowerCase()
-                  .replace(/\s+/g, '-')}`}
-              >
-                {priority.replace(/_/g, ' ').toUpperCase()}
-              </span>
-            </div>
-          </div>
-
-          <div className="page-utility-container">
-            <button
-              className="page-action-primary"
-              onClick={() => handleDownloadPdf([reportDetails])}
-            >
-              Download
-            </button>
-          </div>
-        </div>
+        <ReportDetailsSubheader reportDetails={reportDetails} />
 
         <div className="report-top-layout">
-          <section className="dashboard-map-container card">
-            <div className="dashboard-panel-header">
-              <div className="dashboard-panel-title">Report location</div>
-              <div className="dashboard-panel-meta">
-                MGRS: {mgrs} // LAT-LONG: {lat_long}
-              </div>
-            </div>
-
-            <div className="dashboard-map">
-              <ReportMap
-                title={title}
-                mgrs={mgrs}
-                lat_long={lat_long}
-                priority={priority}
-                classification={classification}
-              />
-            </div>
-          </section>
+          <ReportDetailsMap reportDetails={reportDetails} />
 
           <aside className="report-details-side-column">
             <section className="report-details-side-card">
@@ -141,7 +53,9 @@ export default function ReportDetails() {
 
               <div className="report-details-side-section">
                 <div className="report-details-label">Submitted By</div>
-                <div className="report-details-strong">{submitted_by}</div>
+                <div className="report-details-strong">
+                  {submitted_by_email}
+                </div>
               </div>
 
               <div className="report-details-divider" />
@@ -172,35 +86,7 @@ export default function ReportDetails() {
               </div>
             </section>
 
-            <section className="report-details-side-card">
-              <div className="report-details-label review-timeline-title">
-                Review Timeline
-              </div>
-
-              <div className="review-timeline-list">
-                {reviewTimeline.map(item => (
-                  <div
-                    key={`${item.title}-${item.time}`}
-                    className="review-timeline-item"
-                  >
-                    <div
-                      className={`review-timeline-dot review-timeline-dot-${item.status}`}
-                    />
-                    <div className="review-timeline-content">
-                      <div className="review-timeline-item-title">
-                        {item.title}
-                      </div>
-                      <div className="review-timeline-item-meta">
-                        {item.time}
-                      </div>
-                      <div className="review-timeline-item-submeta">
-                        {item.meta}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
+            <ReportTimeline reportDetails={reportDetails} />
           </aside>
         </div>
 
