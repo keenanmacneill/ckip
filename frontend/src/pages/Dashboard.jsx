@@ -18,6 +18,7 @@ import Header from '../components/Header';
 import ReportCategories from '../components/ReportCategories';
 import AppContext from '../context/AppContext';
 import '../style/Dashboard.css';
+const API_URL = import.meta.env.VITE_API_URL;
 
 function parseLatLong(value) {
   if (!value || typeof value !== 'string') return null;
@@ -218,7 +219,7 @@ export default function Dashboard() {
 
   const handleSubmit = async () => {
     try {
-      const res = await fetch('http://localhost:8080/reports', {
+      const res = await fetch(`http://${API_URL}/reports`, {
         credentials: 'include',
         method: 'POST',
         headers: {
@@ -266,7 +267,7 @@ export default function Dashboard() {
 
     const getReports = async () => {
       // fetch live reports for markers and heat layer
-      const res = await fetch('http://localhost:8080/reports', {
+      const res = await fetch(`http://${API_URL}/reports`, {
         credentials: 'include',
       });
 

@@ -13,6 +13,7 @@ import Report from '../components/Report';
 import AppContext from '../context/AppContext';
 import handleDownloadPdf from '../helpers/handleDownloadPdf';
 import '../style/Reports.css';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const PAGE_SIZE = 25;
 const SEARCH_DEBOUNCE_MS = 500;
@@ -207,7 +208,7 @@ export default function Reports() {
       setLoading(true); // start loading state
 
       const res = await fetch(
-        `http://localhost:8080/reports?${params.toString()}`, // request with query string
+        `http://${API_URL}/reports?${params.toString()}`, // request with query string
         {
           credentials: 'include', // include cookies (auth/session)
         },

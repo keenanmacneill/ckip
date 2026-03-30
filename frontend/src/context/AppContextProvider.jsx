@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import AppContext from './AppContext';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function AppContextProvider({ children }) {
   const cap = word => word.charAt(0).toUpperCase() + word.slice(1);
@@ -15,7 +16,7 @@ export default function AppContextProvider({ children }) {
   });
 
   useEffect(() => {
-    fetch('http://localhost:8080/auth/me', { credentials: 'include' })
+    fetch(`http://${API_URL}/auth/me`, { credentials: 'include' })
       .then(async res => {
         if (!res.ok) {
           throw new Error('Not authenticated');
@@ -32,7 +33,7 @@ export default function AppContextProvider({ children }) {
   }, []);
 
   const register = async (email, password) => {
-    const res = await fetch('http://localhost:8080/auth/register', {
+    const res = await fetch(`http://${API_URL}/auth/register`, {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -42,7 +43,7 @@ export default function AppContextProvider({ children }) {
   };
 
   const login = async (email, password) => {
-    const res = await fetch('http://localhost:8080/auth/login', {
+    const res = await fetch(`http://${API_URL}/auth/login`, {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -50,7 +51,7 @@ export default function AppContextProvider({ children }) {
     });
 
     if (res.ok) {
-      const me = await fetch('http://localhost:8080/auth/me', {
+      const me = await fetch(`http://${API_URL}/auth/me`, {
         credentials: 'include',
       });
       const data = await me.json();
@@ -61,7 +62,7 @@ export default function AppContextProvider({ children }) {
   };
 
   const logout = async () => {
-    await fetch('http://localhost:8080/auth/logout', {
+    await fetch(`http://${API_URL}/auth/logout`, {
       method: 'POST',
       credentials: 'include',
     });
@@ -76,7 +77,7 @@ export default function AppContextProvider({ children }) {
     if (loading || !user) return;
 
     const getCategories = async () => {
-      const res = await fetch('http://localhost:8080/categories', {
+      const res = await fetch(`http://${API_URL}/categories`, {
         credentials: 'include',
       });
 
