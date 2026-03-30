@@ -170,7 +170,10 @@
 }
 
 .dashboard-report-footer {
+  display: flex;
+  flex-flow: column;
   padding: 0 1rem 1rem;
+  gap: 1rem;
 }
 
 .report-submit-button {
@@ -203,18 +206,13 @@
   box-shadow: 0 0 0 0.1875rem rgba(77, 127, 255, 0.15);
 }
 
-.report-submit-message {
-  justify-self: center;
-  padding: 1rem 0;
-}
-
 .report-submit-message-401 {
   color: red;
 }
 
 /* give the leaflet map a stable rendered height */
 .dashboard-leaflet-map-wrap {
-  height: 65rem;
+  height: 60rem;
 }
 
 /* force leaflet map container to fill the card */

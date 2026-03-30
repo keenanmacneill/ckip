@@ -246,6 +246,7 @@ export default function Dashboard() {
         setReportMGRS('');
         setReportLatLong('');
         setReportPriority('');
+        setReportPriority('');
       }
     } catch (err) {
       setSubmitMessage(err.message);
@@ -487,6 +488,7 @@ export default function Dashboard() {
                   {submitMessage[1]}
                 </div>
               )}
+
               <button className="report-submit-button" onClick={handleSubmit}>
                 Submit report
               </button>
