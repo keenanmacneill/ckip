@@ -69,6 +69,10 @@
   color: #98abd3;
 }
 
+.auth-message {
+  color: red;
+}
+
 .auth-button {
   margin-top: 0.35rem;
 }

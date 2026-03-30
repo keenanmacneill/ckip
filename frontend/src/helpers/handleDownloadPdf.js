@@ -1,6 +1,6 @@
 import { jsPDF } from 'jspdf';
 
-export default function handleExportPdf(reports) {
+export default function handleDownloadPdf(reports) {
   if (!reports || reports.length === 0) return;
 
   const doc = new jsPDF();

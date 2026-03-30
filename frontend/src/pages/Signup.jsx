@@ -6,6 +6,7 @@ import '../style/Auth.css';
 export default function Signup() {
   const [emailValue, setEmailValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
+  const [submitMessage, setSubmitMessage] = useState('');
   const { register, user } = useContext(AppContext);
   const navigate = useNavigate();
 
@@ -18,7 +19,7 @@ export default function Signup() {
     } else {
       setPasswordValue('');
       const data = await res.json();
-      alert(data.message);
+      setSubmitMessage(data.message);
     }
   };
 
@@ -178,6 +179,8 @@ export default function Signup() {
               placeholder="OCONUS CA assessment support"
             />
           </div>
+
+          {submitMessage && <div className="auth-message">{submitMessage}</div>}
 
           <button className="auth-button" type="submit">
             Submit request

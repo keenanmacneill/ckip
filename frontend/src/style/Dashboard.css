@@ -208,9 +208,13 @@
   padding: 1rem 0;
 }
 
+.report-submit-message-401 {
+  color: red;
+}
+
 /* give the leaflet map a stable rendered height */
 .dashboard-leaflet-map-wrap {
-  height: 62rem;
+  height: 65rem;
 }
 
 /* force leaflet map container to fill the card */

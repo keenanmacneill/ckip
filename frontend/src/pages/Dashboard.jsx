@@ -93,7 +93,7 @@ export default function Dashboard() {
   const [reportMGRS, setReportMGRS] = useState('');
   const [reportLatLong, setReportLatLong] = useState('');
   const [reportPriority, setReportPriority] = useState('');
-  const [submitMessage, setSubmitMessage] = useState(null);
+  const [submitMessage, setSubmitMessage] = useState('');
 
   const {
     cap,
@@ -236,15 +236,17 @@ export default function Dashboard() {
       });
 
       const message = await res.json();
-      setSubmitMessage(message.message);
+      setSubmitMessage([res.status, message.message]);
 
-      setSelectedCategories([]);
-      setReportTitle('');
-      setReportSummary('');
-      setReportRecommendations('');
-      setReportMGRS('');
-      setReportLatLong('');
-      setReportPriority('');
+      if (res.status === 201) {
+        setSelectedCategories([]);
+        setReportTitle('');
+        setReportSummary('');
+        setReportRecommendations('');
+        setReportMGRS('');
+        setReportLatLong('');
+        setReportPriority('');
+      }
     } catch (err) {
       setSubmitMessage(err.message);
 
@@ -479,7 +481,11 @@ export default function Dashboard() {
 
             <div className="dashboard-report-footer">
               {submitMessage && (
-                <div className={`report-submit-message`}>{submitMessage}</div>
+                <div
+                  className={`report-submit-message ${submitMessage[0] != 201 ? `report-submit-message-${submitMessage[0]}` : ''}`}
+                >
+                  {submitMessage[1]}
+                </div>
               )}
               <button className="report-submit-button" onClick={handleSubmit}>
                 Submit report

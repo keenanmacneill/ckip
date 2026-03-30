@@ -11,7 +11,7 @@ import FilterPillsGroup from '../components/FilterPillsGroup';
 import Header from '../components/Header';
 import Report from '../components/Report';
 import AppContext from '../context/AppContext';
-import handleExportPdf from '../helpers/handleExportPdf';
+import handleDownloadPdf from '../helpers/handleDownloadPdf';
 import '../style/Reports.css';
 
 const PAGE_SIZE = 25;
@@ -45,7 +45,7 @@ export default function Reports() {
   };
 
   const handleExportSelected = () => {
-    handleExportPdf(selectedReports);
+    handleDownloadPdf(selectedReports);
   };
 
   const handleClearSelected = () => {

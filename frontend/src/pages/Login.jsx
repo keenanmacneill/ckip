@@ -6,6 +6,7 @@ import '../style/Auth.css';
 export default function Login() {
   const [emailValue, setEmailValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
+  const [submitMessage, setSubmitMessage] = useState('');
   const { login, user } = useContext(AppContext);
   const navigate = useNavigate();
 
@@ -16,7 +17,7 @@ export default function Login() {
 
     if (!res.ok) {
       const data = await res.json();
-      alert(data.message);
+      setSubmitMessage(data.message);
       return;
     }
     navigate('/dashboard');
@@ -69,6 +70,8 @@ export default function Login() {
               onChange={e => setPasswordValue(e.target.value)}
             />
           </div>
+
+          {submitMessage && <div className="auth-message">{submitMessage}</div>}
 
           <button className="auth-button" type="submit">
             Authenticate
