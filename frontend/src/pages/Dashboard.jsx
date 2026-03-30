@@ -93,6 +93,7 @@ export default function Dashboard() {
   const [reportMGRS, setReportMGRS] = useState('');
   const [reportLatLong, setReportLatLong] = useState('');
   const [reportPriority, setReportPriority] = useState('');
+  const [submitMessage, setSubmitMessage] = useState(null);
 
   const {
     cap,
@@ -235,7 +236,7 @@ export default function Dashboard() {
       });
 
       const message = await res.json();
-      window.alert(message.message);
+      setSubmitMessage(message.message);
 
       setSelectedCategories([]);
       setReportTitle('');
@@ -245,7 +246,7 @@ export default function Dashboard() {
       setReportLatLong('');
       setReportPriority('');
     } catch (err) {
-      window.alert(err.message);
+      setSubmitMessage(err.message);
 
       setSelectedCategories([]);
       setReportTitle('');
@@ -477,6 +478,9 @@ export default function Dashboard() {
             </div>
 
             <div className="dashboard-report-footer">
+              {submitMessage && (
+                <div className={`report-submit-message`}>{submitMessage}</div>
+              )}
               <button className="report-submit-button" onClick={handleSubmit}>
                 Submit report
               </button>

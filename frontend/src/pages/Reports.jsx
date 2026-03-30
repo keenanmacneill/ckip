@@ -286,7 +286,7 @@ export default function Reports() {
               onClick={handleExportSelected}
               disabled={selectedReports.length === 0}
             >
-              Export selected ({selectedReports.length})
+              Download selected ({selectedReports.length})
             </button>
             <button className="page-action-primary" onClick={handleNewReport}>
               + New report

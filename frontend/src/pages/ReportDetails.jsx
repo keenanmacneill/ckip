@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import ReportMap from '../components/ReportMap';
 import AppContext from '../context/AppContext';
-import handleExportPdf from '../helpers/handleExportPdf';
+import handleDownloadPdf from '../helpers/handleDownloadPdf';
 import '../style/ReportDetails.css';
 
 export default function ReportDetails() {
@@ -101,9 +101,9 @@ export default function ReportDetails() {
           <div className="page-utility-container">
             <button
               className="page-action-primary"
-              onClick={() => handleExportPdf([reportDetails])}
+              onClick={() => handleDownloadPdf([reportDetails])}
             >
-              Export
+              Download
             </button>
           </div>
         </div>

@@ -216,7 +216,7 @@ exports.createReport = async (req, res) => {
 
     res
       .status(201)
-      .json({ message: `${newReport.title} has been successfully posted.` });
+      .json({ message: `'${newReport.title}' has been successfully posted.` });
   } catch (err) {
     res.status(500).json({ message: 'Internal server error.' });
   }
