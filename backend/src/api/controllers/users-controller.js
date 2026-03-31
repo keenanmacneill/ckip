@@ -30,7 +30,6 @@ exports.getUserReports = async (req, res) => {
 
     res.status(200).json(reports);
   } catch (err) {
-    console.log(err);
     res
       .status(err.status || 500)
       .json({ message: err.message || 'Internal server error.' });
@@ -64,7 +63,6 @@ exports.deleteUser = async (req, res) => {
       .status(200)
       .json({ message: `${deletedUser.email} was successfully deleted.` });
   } catch (err) {
-    console.log(err);
     res
       .status(err.status || 500)
       .json({ message: err.message || 'Internal server error.' });

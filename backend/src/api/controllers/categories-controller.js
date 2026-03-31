@@ -41,7 +41,6 @@ exports.updateCategory = async (req, res) => {
         `${oldCategory} has been successfully updated to ${updatedCategory.category}.`,
       );
   } catch (err) {
-    console.log(err);
     res
       .status(err.status || 500)
       .json({ message: err.message || 'Internal server error.' });

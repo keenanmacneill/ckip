@@ -23,7 +23,6 @@ exports.getReportById = async (req, res) => {
 
     res.status(200).json(report);
   } catch (err) {
-    console.log(err);
     res
       .status(err.status || 500)
       .json({ message: err.message || 'Internal server error.' });
@@ -37,7 +36,6 @@ exports.getReportsByCategory = async (req, res) => {
 
     res.status(200).json(reports);
   } catch (err) {
-    console.log(err);
     res
       .status(err.status || 500)
       .json({ message: err.message || 'Internal server error.' });
@@ -54,7 +52,6 @@ exports.createReport = async (req, res) => {
       .status(201)
       .json({ message: `'${newReport.title}' has been successfully posted.` });
   } catch (err) {
-    console.log(err);
     res
       .status(err.status || 500)
       .json({ message: err.message || 'Internal server error.' });
@@ -69,11 +66,10 @@ exports.updateReport = async (req, res) => {
       req.body,
     );
 
-    res
-      .status(200)
-      .json(`'${updatedReport.title}' has been successfully updated.`);
+    res.status(200).json({
+      message: `'${updatedReport.title}' has been successfully updated.`,
+    });
   } catch (err) {
-    console.log(err);
     res.status(err.status || 500).json({
       message: err.message || 'Internal server error.',
     });
