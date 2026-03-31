@@ -11,5 +11,5 @@ exports.seed = async function (knex) {
     throw new Error('generateReportCategories returned no rows.');
   }
 
-  await knex('report_categories').insert(reportCategories);
+  await knex.batchInsert('report_categories', reportCategories, 1000);
 };

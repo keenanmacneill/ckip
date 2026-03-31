@@ -261,7 +261,9 @@ export default function Reports() {
           <div className="page-title-container">
             <div className="page-header-title">All reports</div>
             <div className="page-header-subtitle">
-              {loading ? 'Loading reports...' : `${totalReports} total reports`}
+              {loading
+                ? 'Loading reports...'
+                : `${totalReports.toLocaleString()} total reports`}
             </div>
           </div>
 
@@ -392,7 +394,7 @@ export default function Reports() {
           </button>
 
           <span>
-            Page {pageNumber} of {totalPages}
+            Page {pageNumber} of {totalPages.toLocaleString()}
           </span>
 
           <button

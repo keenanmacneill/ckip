@@ -108,7 +108,7 @@ export default async function handleDownloadPdf(reports) {
     );
     addField('MGRS', report.mgrs);
     addField('Latitude / Longitude', report.lat_long);
-    addField('Submitted By', report.submitted_by);
+    addField('Submitted By', report.submitted_by_email);
     addField(
       'Created At',
       report.created_at ? new Date(report.created_at).toLocaleString() : 'N/A',
