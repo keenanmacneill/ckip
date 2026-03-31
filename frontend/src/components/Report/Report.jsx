@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AppContext from '../context/AppContext';
+import AppContext from '../../context/AppContext';
 import '../style/Reports.css';
 
 export default function Report({ report }) {
