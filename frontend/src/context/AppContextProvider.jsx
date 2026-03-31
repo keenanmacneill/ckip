@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import AppContext from './AppContext';
-const API_URL = import.meta.env.VITE_API_URL;
 
 export default function AppContextProvider({ children }) {
+  const API_URL = import.meta.env.VITE_API_URL;
   const cap = word => word.charAt(0).toUpperCase() + word.slice(1);
   const [reports, setReports] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -30,7 +30,7 @@ export default function AppContextProvider({ children }) {
         setUser(null);
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [API_URL]);
 
   const register = async (email, password) => {
     const res = await fetch(`${API_URL}/auth/register`, {
@@ -43,6 +43,8 @@ export default function AppContextProvider({ children }) {
   };
 
   const login = async (email, password) => {
+    const API_URL = import.meta.env.VITE_API_URL;
+    console.log('API_URL:', import.meta.env.VITE_API_URL);
     const res = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
       credentials: 'include',
@@ -91,7 +93,7 @@ export default function AppContextProvider({ children }) {
     };
 
     getCategories();
-  }, [loading, user]);
+  }, [loading, user, API_URL]);
 
   return (
     <AppContext.Provider

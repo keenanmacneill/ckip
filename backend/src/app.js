@@ -2,13 +2,23 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
+const allowedOrigins = ['http://localhost:5173', process.env.CLIENT_URL].filter(
+  Boolean,
+);
+
 const app = express();
 
 app.use(express.json());
 app.use(cookieParser(process.env.JWT));
 app.use(
   cors({
-    origin: 'https://ckip-swtc.vercel.app',
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
   }),
 );
