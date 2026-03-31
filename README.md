@@ -67,38 +67,38 @@ CKIP addresses these issues by combining a map-first dashboard with structured r
 ```mermaid
 erDiagram
     users ||--o{ reports : submits
-    reports ||--o{ report_categories : tagged_with
-    categories ||--o{ report_categories : classifies
+    reports ||--o{ report_categories : has
+    categories ||--o{ report_categories : has
 
     users {
-      int id PK
-      string email UNIQUE
-      string password
-      string role
+        int id PK
+        string email
+        string password
+        string role
+        datetime created_at
     }
 
     reports {
-      int id PK
-      string title
-      text summary
-      string mgrs
-      string lat_long
-      string created_at
-      text recommendations
-      string priority
-      string classification
-      int submitted_by FK
+        int id PK
+        string title
+        string summary
+        string mgrs
+        string lat_long
+        string recommendations
+        string priority
+        string classification
+        int submitted_by FK
+        datetime created_at
     }
 
     categories {
-      int id PK
-      string category UNIQUE
+        int id PK
+        string category
     }
 
     report_categories {
-      int id PK
-      int report_id FK
-      int category_id FK
+        int report_id FK
+        int category_id FK
     }
 ```
 
