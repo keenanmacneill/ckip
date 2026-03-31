@@ -44,7 +44,7 @@ export default function AppContextProvider({ children }) {
 
   const login = async (email, password) => {
     const API_URL = import.meta.env.VITE_API_URL;
-    console.log('API_URL:', import.meta.env.VITE_API_URL);
+
     const res = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
       credentials: 'include',

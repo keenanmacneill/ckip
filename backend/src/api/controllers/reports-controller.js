@@ -45,7 +45,6 @@ exports.getReportsByCategory = async (req, res) => {
 exports.createReport = async (req, res) => {
   try {
     const { id: userId } = req.user;
-    console.log(userId);
     const newReport = await reportsService.createReport(userId, req.body);
 
     res

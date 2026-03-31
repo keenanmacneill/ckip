@@ -65,7 +65,6 @@ exports.deleteUser = async email => {
   }
 
   const [deletedUser] = await usersModel.deleteUser(email);
-  console.log(deletedUser);
 
   return deletedUser;
 };
