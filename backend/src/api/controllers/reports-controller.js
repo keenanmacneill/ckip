@@ -49,7 +49,10 @@ exports.createReport = async (req, res) => {
 
     res
       .status(201)
-      .json({ message: `'${newReport.title}' has been successfully posted.` });
+      .json({
+        newReport: newReport,
+        message: `'${newReport.title}' has been successfully posted.`,
+      });
   } catch (err) {
     res
       .status(err.status || 500)

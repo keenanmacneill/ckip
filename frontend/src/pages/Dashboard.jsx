@@ -22,6 +22,7 @@ import ViewportFilter from '../components/dashboard/ViewportFilter';
 import Header from '../components/shared/Header';
 import HeatLayer from '../components/shared/HeatLayer';
 import AppContext from '../context/AppContext';
+import handleDownloadPdf from '../helpers/handleDownloadPdf';
 import parseLatLong from '../helpers/parseLatLong';
 import '../style/Dashboard.css';
 
@@ -78,21 +79,25 @@ export default function Dashboard() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json; charset=UTF-8' },
         body: JSON.stringify({
+          classification: reportClassification,
+          lat_long: reportLatLong,
+          mgrs: reportMGRS,
+          priority: reportPriority,
+          recommendations: reportRecommendations,
+          summary: reportSummary,
           title: reportTitle,
           categories: selectedCategories,
-          summary: reportSummary,
-          recommendations: reportRecommendations,
-          mgrs: reportMGRS,
-          lat_long: reportLatLong,
-          priority: reportPriority,
-          classification: reportClassification,
         }),
       });
 
-      const message = await res.json();
-      setSubmitMessage([res.status, message.message]);
+      const data = await res.json();
+      setSubmitMessage([res.status, data.message]);
 
-      if (res.status === 201) resetForm();
+      if (res.status === 201) {
+        console.log(data.newReport);
+        handleDownloadPdf([data.newReport]);
+        resetForm();
+      }
     } catch (err) {
       setSubmitMessage(err.message);
       resetForm();
@@ -103,7 +108,7 @@ export default function Dashboard() {
     if (loading || !user) return;
 
     const getReports = async () => {
-      const res = await fetch(`${API_URL}/reports/`, {
+      const res = await fetch(`${API_URL}/reports?date_range=last_year`, {
         credentials: 'include',
       });
 

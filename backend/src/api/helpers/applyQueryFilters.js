@@ -112,6 +112,9 @@ exports.applyQueryFilters = (query, filters, options = {}) => {
     last_30_days: 30,
     last_60_days: 60,
     last_90_days: 90,
+    last_90_days: 90,
+    last_6_months: 180,
+    last_year: 365,
   };
 
   if (date_range && date_range !== 'all_dates' && dateRangeDays[date_range]) {

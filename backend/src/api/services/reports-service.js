@@ -104,7 +104,7 @@ exports.createReport = async (
       })),
     );
 
-    return report;
+    return { ...report, categories: cleanedCategories };
   });
 };
 

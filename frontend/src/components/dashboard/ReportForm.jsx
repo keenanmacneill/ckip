@@ -150,8 +150,9 @@ export default function ReportForm({
             {submitMessage[1]}
           </div>
         )}
+
         <button className="report-submit-button" onClick={onSubmit}>
-          Submit report
+          Submit and download report
         </button>
       </div>
     </div>

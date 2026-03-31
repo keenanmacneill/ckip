@@ -15,7 +15,7 @@ exports.generateReports = async (db, num = 1) => {
     const userId = userIds[randomIndex];
 
     array.push({
-      title: `${region}: ${city} ${generateTitle()}`,
+      title: `${city} ${generateTitle()}`,
       summary: generateSummary(),
       recommendations: generateRecommendations().join('\n'),
       mgrs: mgrs,
