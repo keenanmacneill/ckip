@@ -1,6 +1,6 @@
 const { faker } = require('@faker-js/faker');
 const mgrs = require('mgrs');
-const { populationCenters } = require('./populationCenters');
+const { cityCenters } = require('./cityCenters');
 
 const randomBetween = (min, max) => Math.random() * (max - min) + min;
 
@@ -18,7 +18,7 @@ const addOffset = (lat, lon, maxOffset = 1) => {
 
 exports.generateMGRS = () => {
   for (let i = 0; i < 50; i++) {
-    const center = faker.helpers.arrayElement(populationCenters);
+    const center = faker.helpers.arrayElement(cityCenters);
     const { lat, lon } = addOffset(center.lat, center.lon, 0.35);
 
     if (

@@ -1,4 +1,4 @@
-exports.populationCenters = [
+exports.rawPopulationCenters = [
   // EUCOM
   { region: 'EUCOM', name: 'Berlin, Germany', lat: 52.52, lon: 13.405 },
   { region: 'EUCOM', name: 'Warsaw, Poland', lat: 52.2297, lon: 21.0122 },
@@ -209,6 +209,7 @@ exports.populationCenters = [
     region: 'SOUTHCOM',
     name: 'Montevideo, Uruguay',
     lat: -34.9011,
+
     lon: -56.1645,
   },
 
