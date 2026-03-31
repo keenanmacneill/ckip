@@ -10,6 +10,9 @@ const DATE_RANGE_OPTIONS = [
   { value: 'last_30_days', label: 'Last 30 days' },
   { value: 'last_60_days', label: 'Last 60 days' },
   { value: 'last_90_days', label: 'Last 90 days' },
+  { value: 'last_6_months', label: 'Last 6 months' },
+  { value: 'last_year', label: 'Last year' },
+  { value: 'last_5_years', label: 'Last 5 years' },
 ];
 
 const PRIORITY_OPTIONS = ['attention', 'critical', 'routine'];

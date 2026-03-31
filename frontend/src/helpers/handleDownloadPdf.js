@@ -99,13 +99,18 @@ export default async function handleDownloadPdf(reports) {
     doc.setFontSize(11);
     doc.setFont(undefined, 'normal');
 
+    // addField('Report ID', String(report.id));
     addField('Title', report.title);
-    addField('Report ID', String(report.id));
     addField('Priority', report.priority ? cap(report.priority) : 'N/A');
     addField(
       report.categories.length > 1 ? 'Categories' : 'Category',
       formatCategories(report.categories),
     );
+
+    y += 3;
+    addSection('Summary', report.summary);
+    addSection('Recommendations', report.recommendations);
+
     addField('MGRS', report.mgrs);
     addField('Latitude / Longitude', report.lat_long);
     addField('Submitted By', report.submitted_by_email);
@@ -113,10 +118,6 @@ export default async function handleDownloadPdf(reports) {
       'Created At',
       report.created_at ? new Date(report.created_at).toLocaleString() : 'N/A',
     );
-
-    y += 3;
-    addSection('Summary', report.summary);
-    addSection('Recommendations', report.recommendations);
 
     addCenteredField(
       'Classification',
@@ -129,7 +130,7 @@ export default async function handleDownloadPdf(reports) {
 
   doc.save(
     reports.length === 1
-      ? `report-${reports[0].id}.pdf`
+      ? `${reports[0].created_at.slice(0, 10)}-${reports[0].title.replaceAll(' ', '-').toLowerCase()}.pdf`
       : `selected-reports-${reports.length}.pdf`,
   );
 }

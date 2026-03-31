@@ -2,7 +2,8 @@ export default function MetricsBar({ reports }) {
   const metrics = [
     {
       value: reports.length,
-      label: 'TOTAL REPORTS',
+      //update dynamically
+      label: 'REPORTS IN THE LAST YEAR',
       tone: 'successMessage',
     },
     {
