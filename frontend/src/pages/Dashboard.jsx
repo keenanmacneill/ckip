@@ -4,7 +4,14 @@ window.L = L;
 import 'leaflet.heat';
 import 'leaflet/dist/leaflet.css';
 import * as mgrsLib from 'mgrs';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {
   MapContainer,
   Marker,
@@ -96,6 +103,8 @@ export default function Dashboard() {
   const [reportPriority, setReportPriority] = useState('');
   const [submitMessage, setSubmitMessage] = useState('');
   const [reportClassification, setReportClassification] = useState('');
+  const allReportsRef = useRef([]);
+  const [visibleReports, setVisibleReports] = useState([]);
 
   const {
     cap,
@@ -185,13 +194,13 @@ export default function Dashboard() {
   ];
 
   const reportMarkers = useMemo(() => {
-    return reports
+    return visibleReports
       .map(report => ({
         report,
         coordinate: parseLatLong(report.lat_long),
       }))
       .filter(item => item.coordinate);
-  }, [reports]);
+  }, [visibleReports]);
 
   const heatPoints = useMemo(
     // convert marker coordinates to leaflet.heat point format
@@ -270,26 +279,76 @@ export default function Dashboard() {
     if (loading || !user) return;
 
     const getReports = async () => {
-      // fetch live reports for markers and heat layer
-      const res = await fetch(`${API_URL}/reports`, {
+      const res = await fetch(`${API_URL}/reports/`, {
         credentials: 'include',
       });
 
       if (!res.ok) {
         setReports([]);
+        allReportsRef.current = [];
+        setVisibleReports([]);
         return;
       }
 
       const data = await res.json();
-
-      // support either a raw array response or an object-wrapped array response
       const parsedReports = Array.isArray(data?.reports) ? data.reports : [];
 
       setReports(parsedReports);
+      allReportsRef.current = parsedReports;
+      setVisibleReports(parsedReports); // viewport filter will trim on first render
     };
 
     getReports();
   }, [loading, user, setReports]);
+
+  function ViewportFilter({ allReportsRef, onUpdate }) {
+    const map = useMap();
+
+    console.log('ViewportFilter render');
+
+    useEffect(() => {
+      let timer = null;
+
+      function update() {
+        const bounds = map.getBounds();
+        const filtered = allReportsRef.current.filter(report => {
+          const coord = parseLatLong(report.lat_long);
+          if (!coord) return false;
+          return bounds.contains(coord);
+        });
+
+        // Only update state if the set of visible report IDs actually changed
+        onUpdate(prev => {
+          const prevIds = prev.map(r => r.id).join(',');
+          const nextIds = filtered.map(r => r.id).join(',');
+          if (prevIds === nextIds) return prev;
+          return filtered;
+        });
+      }
+
+      function debounced() {
+        clearTimeout(timer);
+        timer = setTimeout(update, 300);
+      }
+
+      update();
+
+      map.on('move', debounced);
+      map.on('zoomend', debounced);
+
+      return () => {
+        clearTimeout(timer);
+        map.off('move', debounced);
+        map.off('zoomend', debounced);
+      };
+    }, [map, allReportsRef, onUpdate]); // ref object is stable, won't retrigger
+
+    return null;
+  }
+
+  const handleVisibleReports = useCallback(updater => {
+    setVisibleReports(updater);
+  }, []);
 
   if (!categories.length) return null;
 
@@ -342,6 +401,11 @@ export default function Dashboard() {
 
                 {/* clicking the map updates MGRS and lat/lng form fields */}
                 <MapClickHandler onMapClick={handleMapClick} />
+
+                <ViewportFilter
+                  allReportsRef={allReportsRef}
+                  onUpdate={handleVisibleReports}
+                />
 
                 {/* draw a heatmap from all report coordinates */}
                 {heatPoints.length ? <HeatLayer points={heatPoints} /> : null}
