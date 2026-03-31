@@ -1,4 +1,4 @@
-import Report from '../Report/Report';
+import Report from '../report/Report';
 
 export default function ReportsTable({ reports, loading }) {
   return (
