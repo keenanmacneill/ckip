@@ -43,17 +43,6 @@ exports.createReport = async (
     categories = [],
   },
 ) => {
-  console.log({
-    userId,
-    title,
-    summary,
-    mgrs,
-    lat_long,
-    recommendations,
-    priority,
-    classification,
-    categories,
-  });
   if (
     !title ||
     !summary ||

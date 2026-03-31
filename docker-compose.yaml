@@ -4,7 +4,7 @@ services:
     ports:
       - '5173:5173'
     env_file:
-      - .env.development
+      - frontend/.env.development
     depends_on:
       - backend
     networks:
@@ -15,7 +15,7 @@ services:
     ports:
       - '8080:8080'
     env_file:
-      - .env.development
+      - backend/.env.development
     depends_on:
       db:
         condition: service_healthy
@@ -25,7 +25,7 @@ services:
   db:
     image: postgres:17-alpine
     env_file:
-      - .env.development
+      - backend/.env.development
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
