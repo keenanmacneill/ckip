@@ -1,9 +1,6 @@
-import L from 'leaflet';
-window.L = L;
-
 import toClassName from '../helpers/toClassName';
 
-export default function createReportMarkerIcon(priority, classification) {
+export default function createReportMarkerIcon(L, priority, classification) {
   const priorityClass = `marker-${toClassName(priority)}`;
   const classificationClass = `marker-classification-${toClassName(
     classification,

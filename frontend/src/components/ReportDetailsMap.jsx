@@ -28,7 +28,7 @@ export default function ReportDetailsMap({ reportDetails }) {
   }, [coordinate]);
 
   const markerIcon = useMemo(() => {
-    return createReportMarkerIcon(priority, classification);
+    return createReportMarkerIcon(L, priority, classification);
   }, [priority, classification]);
 
   if (!coordinate) {

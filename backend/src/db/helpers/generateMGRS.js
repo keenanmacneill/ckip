@@ -41,8 +41,8 @@ exports.generateMGRS = () => {
 
       return {
         mgrs: mgrsCoordinate,
-        lat,
-        lon,
+        lat: Math.round(lat * 1000000) / 1000000,
+        lon: Math.round(lon * 1000000) / 1000000,
         region: center.region,
         city: center.name,
       };

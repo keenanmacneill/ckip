@@ -33,7 +33,7 @@ function parseLatLong(value) {
 }
 
 // build a themed custom marker icon from report priority and classification
-function createReportMarkerIcon(priority) {
+function createReportMarkerIcon(L, priority) {
   const safePriority = priority || 'routine';
 
   return L.divIcon({
@@ -65,8 +65,7 @@ function HeatLayer({ points }) {
       blur: 18,
       maxZoom: 11,
       minOpacity: 0.5,
-    });
-    // .addTo(map);
+    }).addTo(map);
 
     return () => {
       map.removeLayer(layer);
@@ -115,7 +114,7 @@ export default function Dashboard() {
 
     // memoize a custom marker icon for this report
     const markerIcon = useMemo(() => {
-      return createReportMarkerIcon(priority, classification);
+      return createReportMarkerIcon(L, priority, classification);
     }, [priority, classification]);
 
     return (
