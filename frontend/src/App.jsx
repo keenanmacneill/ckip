@@ -1,5 +1,5 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import ProtectedRoute from './components/ProtectedRoute';
+import ProtectedRoute from './components/shared/ProtectedRoute';
 import AppContextProvider from './context/AppContextProvider';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';

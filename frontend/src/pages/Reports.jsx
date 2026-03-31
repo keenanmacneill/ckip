@@ -1,9 +1,9 @@
 import { useContext } from 'react';
-import Header from '../components/Header';
-import ReportsFilters from '../components/ReportsFilters';
-import ReportsPagination from '../components/ReportsPagination';
-import ReportsTable from '../components/ReportsTable';
-import ReportsToolbar from '../components/ReportsToolbar';
+import ReportsFilters from '../components/reports/ReportsFilters';
+import ReportsPagination from '../components/reports/ReportsPagination';
+import ReportsTable from '../components/reports/ReportsTable';
+import ReportsToolbar from '../components/reports/ReportsToolbar';
+import Header from '../components/shared/Header';
 import AppContext from '../context/AppContext';
 import useReportsData from '../hooks/useReportsData';
 import useReportsQuery from '../hooks/useReportsQuery';

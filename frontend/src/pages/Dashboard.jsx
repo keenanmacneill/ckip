@@ -12,86 +12,21 @@ import {
   useRef,
   useState,
 } from 'react';
-import {
-  MapContainer,
-  Marker,
-  Popup,
-  TileLayer,
-  useMap,
-  useMapEvents,
-} from 'react-leaflet';
-import { useNavigate } from 'react-router-dom';
-import Header from '../components/Header';
-import ReportCategories from '../components/Report/ReportCategories';
+import { MapContainer, TileLayer } from 'react-leaflet';
+import MapClickHandler from '../components/dashboard/MapClickHandler';
+import MapLegend from '../components/dashboard/MapLegend';
+import MetricsBar from '../components/dashboard/MetricsBar';
+import ReportForm from '../components/dashboard/ReportForm';
+import ReportMarker from '../components/dashboard/ReportMarker';
+import ViewportFilter from '../components/dashboard/ViewportFilter';
+import Header from '../components/shared/Header';
+import HeatLayer from '../components/shared/HeatLayer';
 import AppContext from '../context/AppContext';
+import { parseLatLong } from '../helpers/parseLatLong';
 import '../style/Dashboard.css';
 
 const API_URL = import.meta.env.VITE_API_URL;
-
-function parseLatLong(value) {
-  if (!value || typeof value !== 'string') return null;
-
-  const [a, b] = value.split(',').map(v => Number.parseFloat(v.trim()));
-  if (!Number.isFinite(a) || !Number.isFinite(b)) return null;
-
-  if (Math.abs(a) <= 90 && Math.abs(b) <= 180) return [a, b];
-  if (Math.abs(a) <= 180 && Math.abs(b) <= 90) return [b, a];
-  return null;
-}
-
-// build a themed custom marker icon from report priority and classification
-function createReportMarkerIcon(L, priority) {
-  const safePriority = priority || 'routine';
-
-  return L.divIcon({
-    className: 'dashboard-report-marker-icon-wrapper',
-    html: `
-      <div class="dashboard-report-marker dashboard-report-marker-${safePriority} ${
-        safePriority === 'critical'
-          ? `marker-pulse marker-pulse-${safePriority}`
-          : ''
-      }">
-        <div class="dashboard-report-marker-core"></div>
-      </div>
-    `,
-    iconSize: [34, 42],
-    iconAnchor: [17, 42],
-    popupAnchor: [0, -34],
-  });
-}
-
-function HeatLayer({ points }) {
-  const map = useMap();
-
-  useEffect(() => {
-    if (!points.length) return undefined;
-
-    // render leaflet heat layer from valid report coordinates
-    const layer = L.heatLayer(points, {
-      radius: 25,
-      blur: 18,
-      maxZoom: 11,
-      minOpacity: 0.5,
-    }).addTo(map);
-
-    return () => {
-      map.removeLayer(layer);
-    };
-  }, [map, points]);
-
-  return null;
-}
-
-function MapClickHandler({ onMapClick }) {
-  // listen for clicks on the map and forward lat/lng to the form updater
-  useMapEvents({
-    click(event) {
-      onMapClick(event.latlng);
-    },
-  });
-
-  return null;
-}
+const PINELAND_CENTER = [34.8, -79.1];
 
 export default function Dashboard() {
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -101,129 +36,38 @@ export default function Dashboard() {
   const [reportMGRS, setReportMGRS] = useState('');
   const [reportLatLong, setReportLatLong] = useState('');
   const [reportPriority, setReportPriority] = useState('');
-  const [submitMessage, setSubmitMessage] = useState('');
   const [reportClassification, setReportClassification] = useState('');
+  const [submitMessage, setSubmitMessage] = useState('');
+
   const allReportsRef = useRef([]);
   const [visibleReports, setVisibleReports] = useState([]);
 
-  const {
-    cap,
-    categories,
-    reports,
-    setReports,
-    loading,
-    user,
-    setReportDetails,
-  } = useContext(AppContext);
+  const { categories, reports, setReports, loading, user } =
+    useContext(AppContext);
 
-  function ReportMarker({ report, coordinate }) {
-    const navigate = useNavigate();
-    const priority = report.priority || 'routine';
-    const classification = report.classification || 'unclassified';
-
-    // memoize a custom marker icon for this report
-    const markerIcon = useMemo(() => {
-      return createReportMarkerIcon(L, priority, classification);
-    }, [priority, classification]);
-
-    return (
-      <Marker position={coordinate} icon={markerIcon}>
-        <Popup>
-          <div className="dashboard-popup-content">
-            <div className="dashboard-popup-title">{report.title}</div>
-            <div className="dashboard-popup-row">
-              <span className="dashboard-popup-label">Classification</span>
-              <span>
-                {report.classification.replace(/_/g, ' ').toUpperCase() ||
-                  'N/A'}
-              </span>
-            </div>
-            <div className="dashboard-popup-row">
-              <span className="dashboard-popup-label">Priority</span>
-              <span>
-                {report.priority.replace(/_/g, ' ').toUpperCase() || 'N/A'}
-              </span>
-            </div>
-            <div className="dashboard-popup-row">
-              <span className="dashboard-popup-label">MGRS</span>
-              <span>{report.mgrs || 'N/A'}</span>
-            </div>
-            <div className="dashboard-popup-row">
-              <span className="dashboard-popup-label">LAT, LONG</span>
-              <span>{report.lat_long || 'N/A'}</span>
-            </div>
-
-            <button
-              type="button"
-              className="page-action-secondary dashboard-popup-button"
-              onClick={() => {
-                setReportDetails(report);
-                navigate(`/reports/${report.title}`);
-              }}
-            >
-              View Report
-            </button>
-          </div>
-        </Popup>
-      </Marker>
-    );
-  }
-
-  const sortedCategories = [...(categories || [])].sort((a, b) =>
-    a.category.localeCompare(b.category, undefined, { sensitivity: 'base' }),
-  );
-
-  const PINELAND_CENTER = [34.8, -79.1];
-
-  const metrics = [
-    {
-      value: reports.length,
-      label: 'TOTAL REPORTS',
-      tone: 'successMessage',
-    },
-    {
-      value: reports.filter(r => r.priority === 'attention').length,
-      label: 'PENDING REVIEW',
-      tone: 'warning',
-    },
-    {
-      value: reports.filter(r => r.priority === 'critical').length,
-      label: 'PRIORITY ALERTS',
-      tone: 'danger',
-    },
-  ];
-
-  const reportMarkers = useMemo(() => {
-    return visibleReports
-      .map(report => ({
-        report,
-        coordinate: parseLatLong(report.lat_long),
-      }))
-      .filter(item => item.coordinate);
-  }, [visibleReports]);
-
-  const heatPoints = useMemo(
-    // convert marker coordinates to leaflet.heat point format
-    () => reportMarkers.map(({ coordinate }) => [...coordinate, 1]),
-    [reportMarkers],
-  );
+  const resetForm = () => {
+    setSelectedCategories([]);
+    setReportTitle('');
+    setReportSummary('');
+    setReportRecommendations('');
+    setReportMGRS('');
+    setReportLatLong('');
+    setReportPriority('');
+    setReportClassification('');
+  };
 
   const handleMapClick = latlng => {
-    // normalize clicked coordinates for the submission form
     const lat = latlng.lat.toFixed(6);
     const lng = latlng.lng.toFixed(6);
 
     let mgrs = '';
     try {
-      // derive MGRS from the clicked lng/lat pair
       mgrs = mgrsLib.forward([latlng.lng, latlng.lat], 5);
     } catch {
       mgrs = '';
     }
 
-    // populate the visible lat/lng field
     setReportLatLong(`${lat}, ${lng}`);
-    // populate the visible MGRS field
     setReportMGRS(mgrs);
   };
 
@@ -232,9 +76,7 @@ export default function Dashboard() {
       const res = await fetch(`${API_URL}/reports`, {
         credentials: 'include',
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
+        headers: { 'Content-Type': 'application/json; charset=UTF-8' },
         body: JSON.stringify({
           title: reportTitle,
           categories: selectedCategories,
@@ -250,28 +92,10 @@ export default function Dashboard() {
       const message = await res.json();
       setSubmitMessage([res.status, message.message]);
 
-      if (res.status === 201) {
-        setSelectedCategories([]);
-        setReportTitle('');
-        setReportSummary('');
-        setReportRecommendations('');
-        setReportMGRS('');
-        setReportLatLong('');
-        setReportPriority('');
-        setReportPriority('');
-        setReportClassification('');
-      }
+      if (res.status === 201) resetForm();
     } catch (err) {
       setSubmitMessage(err.message);
-
-      setSelectedCategories([]);
-      setReportTitle('');
-      setReportSummary('');
-      setReportRecommendations('');
-      setReportMGRS('');
-      setReportLatLong('');
-      setReportPriority('');
-      setReportClassification('');
+      resetForm();
     }
   };
 
@@ -291,60 +115,26 @@ export default function Dashboard() {
       }
 
       const data = await res.json();
-      const parsedReports = Array.isArray(data?.reports) ? data.reports : [];
+      const parsed = Array.isArray(data?.reports) ? data.reports : [];
 
-      setReports(parsedReports);
-      allReportsRef.current = parsedReports;
-      setVisibleReports(parsedReports); // viewport filter will trim on first render
+      setReports(parsed);
+      allReportsRef.current = parsed;
+      setVisibleReports(parsed);
     };
 
     getReports();
   }, [loading, user, setReports]);
 
-  function ViewportFilter({ allReportsRef, onUpdate }) {
-    const map = useMap();
+  const reportMarkers = useMemo(() => {
+    return visibleReports
+      .map(report => ({ report, coordinate: parseLatLong(report.lat_long) }))
+      .filter(item => item.coordinate);
+  }, [visibleReports]);
 
-    console.log('ViewportFilter render');
-
-    useEffect(() => {
-      let timer = null;
-
-      function update() {
-        const bounds = map.getBounds();
-        const filtered = allReportsRef.current.filter(report => {
-          const coord = parseLatLong(report.lat_long);
-          if (!coord) return false;
-          return bounds.contains(coord);
-        });
-
-        // Only update state if the set of visible report IDs actually changed
-        onUpdate(prev => {
-          const prevIds = prev.map(r => r.id).join(',');
-          const nextIds = filtered.map(r => r.id).join(',');
-          if (prevIds === nextIds) return prev;
-          return filtered;
-        });
-      }
-
-      function debounced() {
-        clearTimeout(timer);
-        timer = setTimeout(update, 300);
-      }
-
-      update();
-
-      map.on('move', debounced);
-      map.on('zoomend', debounced);
-
-      return () => {
-        clearTimeout(timer);
-        map.off('move', debounced);
-        map.off('zoomend', debounced);
-      };
-    }, [map, allReportsRef, onUpdate]); // ref object is stable, won't retrigger
-
-    return null;
-  }
+  const heatPoints = useMemo(
+    () => reportMarkers.map(({ coordinate }) => [...coordinate, 1]),
+    [reportMarkers],
+  );
 
   const handleVisibleReports = useCallback(updater => {
     setVisibleReports(updater);
@@ -364,18 +154,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="dashboard-metrics-container">
-          {metrics.map(metric => (
-            <div
-              key={metric.label}
-              className={`dashboard-metric-card card metric-card-${metric.tone}`}
-            >
-              <div className="dashboard-metric-value">{metric.value}</div>
-              <div className="dashboard-metric-label">{metric.label}</div>
-              <div className="dashboard-metric-note">{metric.note}</div>
-            </div>
-          ))}
-        </div>
+        <MetricsBar reports={reports} />
 
         <div className="dashboard-main-container">
           <section className="dashboard-map-container card">
@@ -393,24 +172,16 @@ export default function Dashboard() {
                 zoom={9}
                 className="dashboard-leaflet-map"
               >
-                {/* render tile map background */}
                 <TileLayer
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-
-                {/* clicking the map updates MGRS and lat/lng form fields */}
                 <MapClickHandler onMapClick={handleMapClick} />
-
                 <ViewportFilter
                   allReportsRef={allReportsRef}
                   onUpdate={handleVisibleReports}
                 />
-
-                {/* draw a heatmap from all report coordinates */}
                 {heatPoints.length ? <HeatLayer points={heatPoints} /> : null}
-
-                {/* render report markers with themed popups and report navigation */}
                 {reportMarkers.map(({ report, coordinate }) => (
                   <ReportMarker
                     key={report.id}
@@ -419,164 +190,30 @@ export default function Dashboard() {
                   />
                 ))}
               </MapContainer>
-
-              {/* static legend anchored bottom-left of the map */}
-              <div className="dashboard-map-legend dashboard-map-legend-bottom-left">
-                <div>
-                  <span className="dashboard-legend-dot dashboard-legend-critical"></span>
-                  Critical
-                </div>
-                <div>
-                  <span className="dashboard-legend-dot dashboard-legend-attention"></span>
-                  Attention
-                </div>
-                <div>
-                  <span className="dashboard-legend-dot dashboard-legend-routine"></span>
-                  Routine
-                </div>
-              </div>
+              <MapLegend />
             </div>
           </section>
 
-          <div className="dashboard-report-container card">
-            <div className="dashboard-panel-header">
-              <div className="dashboard-panel-title">Submit report</div>
-            </div>
-
-            <div className="dashboard-report-body">
-              <div className="auth-field-group">
-                <div className="auth-label">Classification</div>
-                <select
-                  className="report-priority clickable"
-                  defaultValue=""
-                  value={reportClassification}
-                  onChange={e => {
-                    setReportClassification(e.target.value);
-                  }}
-                >
-                  <option value="" disabled>
-                    Select
-                  </option>
-                  <option value="confidential">Confidential</option>
-                  <option value="secret">Secret</option>
-                  <option value="top_secret">Top Secret</option>
-                </select>
-              </div>
-
-              <div className="auth-field-group">
-                <div className="auth-label">Title</div>
-                <input
-                  className="report-title"
-                  type="text"
-                  placeholder="Brief descriptive title..."
-                  value={reportTitle}
-                  onChange={e => {
-                    setReportTitle(e.target.value);
-                  }}
-                />
-              </div>
-
-              <div className="auth-field-group">
-                <div className="auth-label">Summary</div>
-                <textarea
-                  className="report-summary"
-                  type="text"
-                  placeholder="Concise summary..."
-                  value={reportSummary}
-                  onChange={e => {
-                    setReportSummary(e.target.value);
-                  }}
-                />
-              </div>
-
-              <div className="auth-field-group">
-                <div className="auth-label">Recommendations</div>
-                <textarea
-                  className="report-recommendations"
-                  type="text"
-                  placeholder="Concise recommendations..."
-                  value={reportRecommendations}
-                  onChange={e => {
-                    setReportRecommendations(e.target.value);
-                  }}
-                />
-              </div>
-
-              <div className="auth-field-group">
-                <div className="auth-label">MGRS</div>
-                <input
-                  className="report-mgrs"
-                  type="text"
-                  placeholder="MGRS"
-                  value={reportMGRS}
-                  onChange={e => {
-                    setReportMGRS(e.target.value);
-                  }}
-                />
-              </div>
-
-              <div className="auth-field-group">
-                <div className="auth-label">Latitude, longitude</div>
-                <input
-                  className="report-lat-long"
-                  type="text"
-                  placeholder="Latitude, longitude"
-                  value={reportLatLong}
-                  onChange={e => {
-                    setReportLatLong(e.target.value);
-                  }}
-                />
-              </div>
-
-              <div className="auth-field-group">
-                <div className="auth-label">Priority</div>
-                <select
-                  className="report-priority clickable"
-                  defaultValue=""
-                  value={reportPriority}
-                  onChange={e => {
-                    setReportPriority(e.target.value);
-                  }}
-                >
-                  <option value="" disabled>
-                    Select
-                  </option>
-                  <option value="attention">Attention</option>
-                  <option value="critical">Critical</option>
-                  <option value="routine">Routine</option>
-                </select>
-              </div>
-
-              <div className="auth-field-group">
-                <ReportCategories
-                  label="Categories"
-                  selectedValues={selectedCategories}
-                  onChange={values => setSelectedCategories(values)}
-                  options={sortedCategories.map(category => ({
-                    value: category.category,
-                    label: category.category
-                      .split('_')
-                      .map(word => cap(word))
-                      .join(' '),
-                  }))}
-                />
-              </div>
-            </div>
-
-            <div className="dashboard-report-footer">
-              {submitMessage && (
-                <div
-                  className={`report-submit-message ${submitMessage[0] != 201 ? `report-submit-message-${submitMessage[0]}` : ''}`}
-                >
-                  {submitMessage[1]}
-                </div>
-              )}
-
-              <button className="report-submit-button" onClick={handleSubmit}>
-                Submit report
-              </button>
-            </div>
-          </div>
+          <ReportForm
+            reportClassification={reportClassification}
+            setReportClassification={setReportClassification}
+            reportTitle={reportTitle}
+            setReportTitle={setReportTitle}
+            reportSummary={reportSummary}
+            setReportSummary={setReportSummary}
+            reportRecommendations={reportRecommendations}
+            setReportRecommendations={setReportRecommendations}
+            reportMGRS={reportMGRS}
+            setReportMGRS={setReportMGRS}
+            reportLatLong={reportLatLong}
+            setReportLatLong={setReportLatLong}
+            reportPriority={reportPriority}
+            setReportPriority={setReportPriority}
+            selectedCategories={selectedCategories}
+            setSelectedCategories={setSelectedCategories}
+            submitMessage={submitMessage}
+            onSubmit={handleSubmit}
+          />
         </div>
       </main>
     </>

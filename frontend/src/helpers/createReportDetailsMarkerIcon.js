@@ -1,4 +1,4 @@
-import toClassName from '../helpers/toClassName';
+import toClassName from './toClassName';
 
 export default function createReportMarkerIcon(L, priority, classification) {
   const priorityClass = `marker-${toClassName(priority)}`;

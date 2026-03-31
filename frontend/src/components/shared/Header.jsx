@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppContext from '../../context/AppContext';
-import '../style/Header.css';
+import '../../style/Header.css';
 
 export default function Header() {
   const navigate = useNavigate();

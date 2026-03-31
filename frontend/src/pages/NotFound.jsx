@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import Header from '../components/Header';
+import Header from '../components/shared/Header';
 import '../style/NotFound.css';
 
 export default function NotFound() {
