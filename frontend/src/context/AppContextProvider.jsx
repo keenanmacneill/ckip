@@ -3,7 +3,6 @@ import AppContext from './AppContext';
 
 export default function AppContextProvider({ children }) {
   const API_URL = import.meta.env.VITE_API_URL;
-  // const API_URL = import.meta.env.CLIENT_URL;
 
   const cap = word => word.charAt(0).toUpperCase() + word.slice(1);
   const [reports, setReports] = useState([]);
