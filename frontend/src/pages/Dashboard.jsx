@@ -95,6 +95,7 @@ export default function Dashboard() {
   const [reportLatLong, setReportLatLong] = useState('');
   const [reportPriority, setReportPriority] = useState('');
   const [submitMessage, setSubmitMessage] = useState('');
+  const [reportClassification, setReportClassification] = useState('');
 
   const {
     cap,
@@ -233,6 +234,7 @@ export default function Dashboard() {
           mgrs: reportMGRS,
           lat_long: reportLatLong,
           priority: reportPriority,
+          classification: reportClassification,
         }),
       });
 
@@ -248,6 +250,7 @@ export default function Dashboard() {
         setReportLatLong('');
         setReportPriority('');
         setReportPriority('');
+        setReportClassification('');
       }
     } catch (err) {
       setSubmitMessage(err.message);
@@ -259,6 +262,7 @@ export default function Dashboard() {
       setReportMGRS('');
       setReportLatLong('');
       setReportPriority('');
+      setReportClassification('');
     }
   };
 
@@ -377,6 +381,25 @@ export default function Dashboard() {
 
             <div className="dashboard-report-body">
               <div className="auth-field-group">
+                <div className="auth-label">Classification</div>
+                <select
+                  className="report-priority clickable"
+                  defaultValue=""
+                  value={reportClassification}
+                  onChange={e => {
+                    setReportClassification(e.target.value);
+                  }}
+                >
+                  <option value="" disabled>
+                    Select
+                  </option>
+                  <option value="confidential">Confidential</option>
+                  <option value="secret">Secret</option>
+                  <option value="top_secret">Top Secret</option>
+                </select>
+              </div>
+
+              <div className="auth-field-group">
                 <div className="auth-label">Title</div>
                 <input
                   className="report-title"
@@ -456,7 +479,6 @@ export default function Dashboard() {
                   </option>
                   <option value="attention">Attention</option>
                   <option value="critical">Critical</option>
-
                   <option value="routine">Routine</option>
                 </select>
               </div>

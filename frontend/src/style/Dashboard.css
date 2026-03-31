@@ -212,7 +212,7 @@
 
 /* give the leaflet map a stable rendered height */
 .dashboard-leaflet-map-wrap {
-  height: 60rem;
+  height: 65rem;
 }
 
 /* force leaflet map container to fill the card */

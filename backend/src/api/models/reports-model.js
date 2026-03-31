@@ -1,10 +1,11 @@
 const db = require('../../db/knex');
 const { applyQueryFilters } = require('../helpers/applyQueryFilters');
 
-const baseQuery = db('reports')
-  .join('report_categories', 'reports.id', 'report_categories.report_id')
-  .join('categories', 'report_categories.category_id', 'categories.id')
-  .join('users', 'reports.submitted_by', 'users.id');
+const baseQuery = () =>
+  db('reports')
+    .join('report_categories', 'reports.id', 'report_categories.report_id')
+    .join('categories', 'report_categories.category_id', 'categories.id')
+    .join('users', 'reports.submitted_by', 'users.id');
 
 const joinAllTables = query => {
   return query
@@ -38,13 +39,10 @@ const joinAllTables = query => {
 };
 
 exports.getAllReports = async query => {
-  const reports = await applyQueryFilters(
-    joinAllTables(baseQuery.clone()),
-    query,
-  );
+  const reports = await applyQueryFilters(joinAllTables(baseQuery()), query);
 
   const countReports = await applyQueryFilters(
-    baseQuery.clone().countDistinct('reports.id as total').first(),
+    baseQuery().countDistinct('reports.id as total').first(),
     query,
     {
       includeSort: false,
@@ -56,13 +54,13 @@ exports.getAllReports = async query => {
 };
 
 exports.getReportById = async id => {
-  return await joinAllTables(baseQuery.clone()).where('reports.id', id).first();
+  return await joinAllTables(baseQuery()).where('reports.id', id).first();
 };
 
 exports.getReportsByCategory = async category => {
-  return await joinAllTables(baseQuery.clone()).where(
-    'categories.category',
-    category,
+  return await joinAllTables(baseQuery()).whereRaw(
+    'LOWER(categories.category) = LOWER(?)',
+    [category],
   );
 };
 

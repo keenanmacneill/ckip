@@ -43,6 +43,17 @@ exports.createReport = async (
     categories = [],
   },
 ) => {
+  console.log({
+    userId,
+    title,
+    summary,
+    mgrs,
+    lat_long,
+    recommendations,
+    priority,
+    classification,
+    categories,
+  });
   if (
     !title ||
     !summary ||
@@ -50,8 +61,7 @@ exports.createReport = async (
     !lat_long ||
     !recommendations ||
     !priority ||
-    !classification ||
-    !categories
+    !classification
   ) {
     const error = new Error('All fields are required.');
     error.status = 400;
