@@ -14,8 +14,7 @@ import AppContext from '../context/AppContext';
 import handleDownloadPdf from '../helpers/handleDownloadPdf';
 import '../style/Reports.css';
 
-// const API_URL = import.meta.env.VITE_API_URL;
-const API_URL = import.meta.env.CLIENT_URL;
+const API_URL = import.meta.env.VITE_API_URL;
 const PAGE_SIZE = 25;
 const SEARCH_DEBOUNCE_MS = 500;
 const PRIORITY_OPTIONS = ['attention', 'critical', 'routine'];
