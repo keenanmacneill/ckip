@@ -5,11 +5,11 @@ import 'leaflet.heat';
 import 'leaflet/dist/leaflet.css';
 import { useMemo } from 'react';
 import { MapContainer, Marker, TileLayer } from 'react-leaflet';
-import createReportMarkerIcon from '../helpers/createReportMarkerIcon';
-import parseLatLong from '../helpers/parseLatLong';
-import parseMgrs from '../helpers/parseMgrs';
+import createReportMarkerIcon from '../../helpers/createReportMarkerIcon';
+import parseLatLong from '../../helpers/parseLatLong';
+import parseMgrs from '../../helpers/parseMgrs';
+import HeatLayer from '../shared/HeatLayer';
 import '../style/ReportDetailsMap.css';
-import HeatLayer from './HeatLayer';
 
 export default function ReportDetailsMap({ reportDetails }) {
   const { mgrs, priority, lat_long, classification } = reportDetails;

@@ -1,5 +1,5 @@
-import useSearchInput from '../hooks/useSearchInput';
-import FilterPillsGroup from './FilterPillsGroup';
+import useSearchInput from '../../hooks/useSearchInput';
+import FilterPillsGroup from '../shared/FilterPillsGroup';
 
 export default function ReportsFilters({
   query,

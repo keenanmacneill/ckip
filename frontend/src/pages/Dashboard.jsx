@@ -22,7 +22,7 @@ import {
 } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
-import ReportCategories from '../components/ReportCategories';
+import ReportCategories from '../components/Report/ReportCategories';
 import AppContext from '../context/AppContext';
 import '../style/Dashboard.css';
 

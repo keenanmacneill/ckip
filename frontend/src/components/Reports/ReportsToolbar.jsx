@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AppContext from '../context/AppContext';
-import handleDownloadPdf from '../helpers/handleDownloadPdf';
+import AppContext from '../../context/AppContext';
+import handleDownloadPdf from '../../helpers/handleDownloadPdf';
 
 export default function ReportsToolbar({ reports, loading, totalReports }) {
   const navigate = useNavigate();

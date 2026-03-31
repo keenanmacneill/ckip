@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import handleDownloadPdf from '../helpers/handleDownloadPdf';
+import handleDownloadPdf from '../../helpers/handleDownloadPdf';
 
 export default function ReportDetailsSubheader({ reportDetails }) {
   const { title, priority, classification } = reportDetails;
