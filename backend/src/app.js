@@ -4,11 +4,9 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
-const allowedOrigins = [
-  // 'https://ckip-swtc.vercel.app',
-  'http://localhost:5173',
-  process.env.CLIENT_URL,
-].filter(Boolean);
+const allowedOrigins = ['http://localhost:5173', process.env.CLIENT_URL].filter(
+  Boolean,
+);
 
 const app = express();
 
