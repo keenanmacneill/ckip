@@ -1,8 +1,7 @@
-import { jsPDF } from 'jspdf';
-
-export default function handleDownloadPdf(reports) {
+export default async function handleDownloadPdf(reports) {
   if (!reports || reports.length === 0) return;
 
+  const { jsPDF } = await import('jspdf');
   const doc = new jsPDF();
   const cap = word => word.charAt(0).toUpperCase() + word.slice(1);
 
