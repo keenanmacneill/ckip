@@ -3,7 +3,7 @@ const { generateReports } = require('../helpers/generateReports');
 exports.seed = async function (knex) {
   await knex('reports').del();
 
-  const reports = await generateReports(knex, 10000);
+  const reports = await generateReports(knex, 100000);
 
   if (!reports.length) {
     throw new Error('generateReports returned no rows.');

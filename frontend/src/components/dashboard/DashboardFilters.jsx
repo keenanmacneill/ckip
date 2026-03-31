@@ -1,7 +1,7 @@
 import useSearchInput from '../../hooks/useSearchInput';
 import FilterPillsGroup from '../shared/FilterPillsGroup';
 
-export default function ReportsFilters({
+export default function DashboardFilters({
   query,
   updateQuery,
   categoryOptions,
@@ -35,7 +35,7 @@ export default function ReportsFilters({
         options={categoryOptions}
       />
 
-      <div className="reports-bar-bottom">
+      <div className="dashboard-bar-bottom">
         <FilterPillsGroup
           label="Priorities"
           allValue="all_priorities"
@@ -45,7 +45,7 @@ export default function ReportsFilters({
           options={priorityOptions}
         />
 
-        <div className="reports-date">
+        <div className="dashboard-date">
           <select
             className="filter-select"
             value={query.dateRange}
