@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useMap } from 'react-leaflet';
-import { parseLatLong } from '../../helpers/parseLatLong';
+import parseLatLong from '../../helpers/parseLatLong';
 
 export default function ViewportFilter({ allReportsRef, onUpdate }) {
   const map = useMap();

@@ -22,7 +22,7 @@ import ViewportFilter from '../components/dashboard/ViewportFilter';
 import Header from '../components/shared/Header';
 import HeatLayer from '../components/shared/HeatLayer';
 import AppContext from '../context/AppContext';
-import { parseLatLong } from '../helpers/parseLatLong';
+import parseLatLong from '../helpers/parseLatLong';
 import '../style/Dashboard.css';
 
 const API_URL = import.meta.env.VITE_API_URL;
