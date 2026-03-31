@@ -184,9 +184,7 @@ erDiagram
 
 ---
 
-## Local Setup
-
-## Prerequisites
+## Local Setup Prerequisites
 
 - Node.js 20+
 - npm 10+
