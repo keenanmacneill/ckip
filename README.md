@@ -304,6 +304,8 @@ npm run reset
 
 ## Future Improvements
 
+- Refactor Dashboard, Reports
+- add Dashboard filtering, auto-filter reports over a year old
+- Scale to 100k, 1mil, 10mil rows
 - Users can only edit their own reports
 - Admins can add, edit, or delete any report or category
-- Refactor Dashboard.jsx, Reports.jsx
