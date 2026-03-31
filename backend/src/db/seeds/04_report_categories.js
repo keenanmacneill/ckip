@@ -3,7 +3,13 @@ const {
 } = require('../helpers/generateReportCategories');
 
 exports.seed = async function (knex) {
-  // Deletes ALL existing entries
   await knex('report_categories').del();
-  await knex('report_categories').insert(generateReportCategories(100));
+
+  const reportCategories = await generateReportCategories(knex);
+
+  if (!reportCategories.length) {
+    throw new Error('generateReportCategories returned no rows.');
+  }
+
+  await knex('report_categories').insert(reportCategories);
 };

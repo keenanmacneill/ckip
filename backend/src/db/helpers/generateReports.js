@@ -1,20 +1,25 @@
 const { faker } = require('@faker-js/faker');
 const { generateMGRS } = require('./generateMGRS');
-const { generateInt } = require('./generateInt');
 const { generateTitle } = require('./generateTitle');
 const { generateSummary } = require('./generateSummary');
 const { generateRecommendations } = require('./generateRecommendations');
 
-exports.generateReports = async (num = 1) => {
+exports.generateReports = async (db, num = 1) => {
   const array = [];
+  const users = await db('users').select('id');
+  const userIds = users.map(u => u.id);
 
   for (let i = 0; i < num; i++) {
+    const { mgrs, lat, lon, region, city } = generateMGRS();
+    const randomIndex = Math.floor(Math.random() * userIds.length);
+    const userId = userIds[randomIndex];
+
     array.push({
-      title: generateTitle(),
+      title: `${region}: ${city} ${generateTitle()}`,
       summary: generateSummary(),
       recommendations: generateRecommendations().join('\n'),
-      mgrs: generateMGRS()[0],
-      lat_long: `${generateMGRS()[1]}, ${generateMGRS()[2]}`,
+      mgrs: mgrs,
+      lat_long: `${lat}, ${lon}`,
       created_at: faker.date
         .between({ from: '2000-01-01', to: Date.now() })
         .toISOString(),
@@ -28,7 +33,7 @@ exports.generateReports = async (num = 1) => {
         'top secret',
         'confidential',
       ]),
-      submitted_by: generateInt(1, 100),
+      submitted_by: userId,
     });
   }
   return array;

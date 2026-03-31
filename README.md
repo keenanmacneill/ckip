@@ -288,9 +288,9 @@ npm run seed
 
 ### What gets seeded
 
-- `users`: **100** generated users
-- `reports`: **100** generated reports
-- `categories`: fixed list (11 values)
+- `users`: **1000** generated users
+- `reports`: **1000** generated reports
+- `categories`: based on categories table
 - `report_categories`: generated many-to-many links for seeded reports
 
 ### Full reset (rollback + migrate + seed)
