@@ -18,7 +18,8 @@ import Header from '../components/Header';
 import ReportCategories from '../components/ReportCategories';
 import AppContext from '../context/AppContext';
 import '../style/Dashboard.css';
-const API_URL = import.meta.env.VITE_API_URL;
+// const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.CLIENT_URL;
 
 function parseLatLong(value) {
   if (!value || typeof value !== 'string') return null;
