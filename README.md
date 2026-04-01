@@ -288,8 +288,8 @@ npm run seed
 
 ### What gets seeded
 
-- `users`: **1000** generated users
-- `reports`: **1000** generated reports
+- `users`: **10,000** generated users
+- `reports`: **10,000** generated reports
 - `categories`: based on categories table
 - `report_categories`: generated many-to-many links for seeded reports
 
