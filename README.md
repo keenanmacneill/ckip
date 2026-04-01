@@ -42,7 +42,42 @@ CKIP addresses these issues by combining a map-first dashboard with structured r
 - **Report detail view**
   - Dedicated screen for deeper review with map, side panel, timeline, and bottom detail card
 
-### Main routes
+### Main backend routes
+
+| Method | Endpoint                | Description                         |
+| ------ | ----------------------- | ----------------------------------- |
+| GET    | `/users/:email/reports` | Get all reports submitted by a user |
+| GET    | `/users/:email`         | Get user by email                   |
+| GET    | `/users`                | Get all users                       |
+| PATCH  | `/users/:email`         | Update user (admin only)            |
+| DELETE | `/users/:email`         | Delete user (admin only)            |
+
+| Method | Endpoint                      | Description             |
+| ------ | ----------------------------- | ----------------------- |
+| GET    | `/reports/category/:category` | Get reports by category |
+| GET    | `/reports/:id`                | Get report by ID        |
+| GET    | `/reports`                    | Get all reports         |
+| POST   | `/reports`                    | Create a new report     |
+| PATCH  | `/reports/:id`                | Update a report         |
+| DELETE | `/reports/:id`                | Delete a report         |
+
+| Method | Endpoint                | Description                  |
+| ------ | ----------------------- | ---------------------------- |
+| GET    | `/categories`           | Get all categories           |
+| POST   | `/categories`           | Create category (admin only) |
+| PATCH  | `/categories/:category` | Update category (admin only) |
+| DELETE | `/categories/:category` | Delete category (admin only) |
+
+| Method | Endpoint         | Description                    |
+| ------ | ---------------- | ------------------------------ |
+| GET    | `/auth/me`       | Get current authenticated user |
+| POST   | `/auth/register` | Register new user              |
+| POST   | `/auth/login`    | Login user                     |
+| POST   | `/auth/logout`   | Logout user                    |
+
+---
+
+### Main frontend routes
 
 - `/` → Login
 - `/signup` → Access request / registration
