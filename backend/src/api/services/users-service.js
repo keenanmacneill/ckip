@@ -7,8 +7,8 @@ exports.getAllUsers = async () => {
   return await usersModel.getAllUsers();
 };
 
-exports.getUserEmail = async email => {
-  const user = await usersModel.getUserEmail(email);
+exports.getUserById = async id => {
+  const user = await usersModel.getUserById(id);
 
   if (!user) {
     const error = new Error('User does not exist.');

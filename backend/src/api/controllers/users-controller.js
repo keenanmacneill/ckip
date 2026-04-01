@@ -10,10 +10,10 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-exports.getUserEmail = async (req, res) => {
+exports.getUserById = async (req, res) => {
   try {
-    const { email } = req.params;
-    const user = await usersService.getUserEmail(email);
+    const { id } = req.params;
+    const user = await usersService.getUserById(id);
 
     res.status(200).json(user);
   } catch (err) {

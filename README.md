@@ -42,15 +42,17 @@ CKIP addresses these issues by combining a map-first dashboard with structured r
 - **Report detail view**
   - Dedicated screen for deeper review with map, side panel, timeline, and bottom detail card
 
+---
+
 ### Main backend routes
 
-| Method | Endpoint                | Description                         |
-| ------ | ----------------------- | ----------------------------------- |
-| GET    | `/users/:email/reports` | Get all reports submitted by a user |
-| GET    | `/users/:email`         | Get user by email                   |
-| GET    | `/users`                | Get all users                       |
-| PATCH  | `/users/:email`         | Update user (admin only)            |
-| DELETE | `/users/:email`         | Delete user (admin only)            |
+| Method | Endpoint             | Description                         |
+| ------ | -------------------- | ----------------------------------- |
+| GET    | `/users/:id/reports` | Get all reports submitted by a user |
+| GET    | `/users/:id`         | Get user by id                      |
+| GET    | `/users`             | Get all users                       |
+| PATCH  | `/users/:id`         | Update user (admin only)            |
+| DELETE | `/users/:id`         | Delete user (admin only)            |
 
 | Method | Endpoint                      | Description             |
 | ------ | ----------------------------- | ----------------------- |

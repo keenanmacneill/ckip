@@ -3,14 +3,11 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const app = express();
 
+const app = express();
 const allowedOrigins = ['http://localhost:5173', process.env.CLIENT_URL].filter(
   Boolean,
 );
-
-console.log('CLIENT_URL:', process.env.CLIENT_URL);
-console.log('allowedOrigins:', allowedOrigins);
 
 app.use(express.json());
 app.use(cookieParser(process.env.JWT));

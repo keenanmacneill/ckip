@@ -94,7 +94,6 @@ export default function Dashboard() {
       setSubmitMessage([res.status, data.message]);
 
       if (res.status === 201) {
-        console.log(data.newReport);
         handleDownloadPdf([data.newReport]);
         resetForm();
       }

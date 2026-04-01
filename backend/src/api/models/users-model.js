@@ -4,10 +4,10 @@ exports.getAllUsers = async () => {
   return await db('users').select('email');
 };
 
-exports.getUserEmail = async email => {
+exports.getUserById = async id => {
   return await db('users')
     .select('id', 'email', 'role')
-    .where('email', email)
+    .where('id', id)
     .first();
 };
 
