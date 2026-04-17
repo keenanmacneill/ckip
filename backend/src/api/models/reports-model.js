@@ -9,33 +9,9 @@ const baseQuery = () =>
 
 const joinAllTables = query => {
   return query
-    .select(
-      'reports.id',
-      'reports.title',
-      'reports.mgrs',
-      'reports.lat_long',
-      'reports.priority',
-      'reports.summary',
-      'reports.recommendations',
-      'reports.submitted_by',
-      'users.email as submitted_by_email',
-      'reports.created_at',
-      'reports.classification',
-    )
+    .select('reports.*', 'users.email as submitted_by_email')
     .select(db.raw('ARRAY_AGG(categories.category) as categories'))
-    .groupBy(
-      'reports.id',
-      'reports.title',
-      'reports.mgrs',
-      'reports.lat_long',
-      'reports.priority',
-      'reports.summary',
-      'reports.recommendations',
-      'reports.submitted_by',
-      'users.email',
-      'reports.created_at',
-      'reports.classification',
-    );
+    .groupBy('reports.id', 'users.email');
 };
 
 exports.getAllReports = async query => {
