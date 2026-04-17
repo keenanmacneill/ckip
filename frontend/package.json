@@ -11,6 +11,7 @@
     "deploy": "vite build && gh-pages -d dist"
   },
   "dependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
     "docker": "^1.0.0",
     "jspdf": "^4.2.1",
     "leaflet": "^1.9.4",
@@ -22,8 +23,7 @@
     "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.13.2",
     "use-query-params": "^2.2.2",
-    "vite": "^8.0.1",
-    "@vitejs/plugin-react": "^6.0.1"
+    "vite": "^8.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
@@ -32,6 +32,7 @@
     "eslint": "^9.39.4",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
+    "gh-pages": "^6.3.0",
     "globals": "^17.4.0"
   }
 }

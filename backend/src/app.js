@@ -5,9 +5,10 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
 const app = express();
-const allowedOrigins = ['http://localhost:5173', process.env.CLIENT_URL].filter(
-  Boolean,
-);
+const allowedOrigins = [
+  'http://localhost:5173',
+  ...(process.env.CLIENT_URLS ? process.env.CLIENT_URLS.split(',') : []),
+];
 
 app.use(express.json());
 app.use(cookieParser(process.env.JWT));
