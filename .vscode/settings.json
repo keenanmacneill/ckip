@@ -1,0 +1,42 @@
+{
+  "sqltools.connections": [
+    {
+      "ssh": "Disabled",
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "ckip_db",
+      "database": "ckip_db",
+      "username": "postgres",
+      "password": "docker"
+    }
+  ],
+  "cSpell.words": [
+    "Ababa",
+    "Addis",
+    "AFRICOM",
+    "AFSOC",
+    "CENTCOM",
+    "CKIP",
+    "EUCOM",
+    "INDOPACOM",
+    "JSOC",
+    "latlng",
+    "MARSOC",
+    "NSWC",
+    "OCONUS",
+    "PSYOP",
+    "SOCAFRICA",
+    "SOCCENT",
+    "SOCEUR",
+    "SOCKOR",
+    "SOCNORTH",
+    "SOCPAC",
+    "SOCSOUTH",
+    "SOUTHCOM",
+    "TSOCs",
+    "USASOC",
+    "USSOCOM"
+  ]
+}
