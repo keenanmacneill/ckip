@@ -12,7 +12,7 @@ import './style/App.css';
 export default function App() {
   return (
     <AppContextProvider>
-      <Router>
+      <Router basename="/ckip">
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/signup" element={<Signup />} />

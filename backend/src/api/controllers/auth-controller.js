@@ -50,7 +50,7 @@ exports.login = async (req, res) => {
 
 exports.logout = (req, res) => {
   try {
-    res.clearCookie('token');
+    res.clearCookie('token', { httpOnly: true, secure: true, sameSite: 'none' });
     return res.status(200).json({ message: 'Logged out.' });
   } catch (err) {
     res.status(500).json({ message: 'Internal server error.' });
